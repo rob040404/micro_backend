@@ -1,0 +1,63 @@
+
+services:
+  mysql-books:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: 0407
+      MYSQL_DATABASE: BPlot_books
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - app-network   # <-- AÑADIR ESTO
+
+  book-service:
+    build: ./BookMicroservice/BookMicroservice
+    ports:
+      - "9002:9002"
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+      APP_SECURITY_BLOT_APIKEY: ${APP_SECURITY_BLOT_APIKEY}
+      APP_BOOKS_BOOKS_APIKEY: ${APP_BOOKS_BOOKS_APIKEY}
+    depends_on:
+      - mysql-books
+    networks:
+      - app-network
+
+  user-service:
+    build: ./UserMicroservice
+    ports:
+      - "9001:9001"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/BPlot_users
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 0407
+    depends_on:
+      - mysql
+    networks:
+      - app-network
+
+
+    
+  # ============================
+  # Security (sin BD por ahora)
+  # ============================
+  security-service:
+    build: ./security2/security
+    ports:
+      - "9000:9000"
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+    networks:
+      - app-network
+
+
+volumes:
+  mysql_data:
+    external: true
+    name: 86d81aeed83666fe5a7d455b754e2dc008a3d72ab395f337569346d1b9ac1594
+
+networks:
+  app-network:
+    driver: bridge

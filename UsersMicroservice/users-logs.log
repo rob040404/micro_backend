@@ -1,0 +1,452 @@
+2025-11-10 10:11:53 [restartedMain] INFO  c.u.U.UsersMicroserviceApplication [] - Starting UsersMicroserviceApplication using Java 17.0.1 with PID 25324 (D:\Documents\micro_backend\UsersMicroservice\UsersMicroservice\target\classes started by rober in D:\Documents\micro_backend\UsersMicroservice\UsersMicroservice)
+2025-11-10 10:11:53 [restartedMain] DEBUG c.u.U.UsersMicroserviceApplication [] - Running with Spring Boot v3.5.5, Spring v6.2.10
+2025-11-10 10:11:53 [restartedMain] INFO  c.u.U.UsersMicroserviceApplication [] - The following 1 profile is active: "local"
+2025-11-10 10:11:53 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor [] - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-11-10 10:11:53 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor [] - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-11-10 10:11:54 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate [] - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-11-10 10:11:54 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate [] - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2025-11-10 10:11:54 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport [] - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.users.UsersMicroservice.repositories.BookListRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2025-11-10 10:11:54 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport [] - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.users.UsersMicroservice.repositories.UserEntityRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2025-11-10 10:11:54 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport [] - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.users.UsersMicroservice.repositories.UserListRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2025-11-10 10:11:54 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate [] - Finished Spring Data repository scanning in 60 ms. Found 0 JDBC repository interfaces.
+2025-11-10 10:11:54 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate [] - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-11-10 10:11:54 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate [] - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-10 10:11:54 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate [] - Finished Spring Data repository scanning in 46 ms. Found 3 JPA repository interfaces.
+2025-11-10 10:11:55 [restartedMain] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] - Bean 'net.bull.javamelody.JavaMelodyAutoConfiguration' of type [net.bull.javamelody.JavaMelodyAutoConfiguration$$SpringCGLIB$$0] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). The currently created BeanPostProcessor [monitoringDataSourceBeanPostProcessor] is declared through a non-static factory method on that class; consider declaring it as static instead.
+2025-11-10 10:11:55 [restartedMain] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] - Bean 'monitoringSpringAdvisor' of type [net.bull.javamelody.MonitoringSpringAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [projectingArgumentResolverBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2025-11-10 10:11:55 [restartedMain] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] - Bean 'monitoringSpringServiceAdvisor' of type [net.bull.javamelody.MonitoringSpringAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [projectingArgumentResolverBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2025-11-10 10:11:55 [restartedMain] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] - Bean 'monitoringSpringControllerAdvisor' of type [net.bull.javamelody.MonitoringSpringAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [projectingArgumentResolverBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2025-11-10 10:11:55 [restartedMain] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] - Bean 'monitoringSpringRestControllerAdvisor' of type [net.bull.javamelody.MonitoringSpringAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [projectingArgumentResolverBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2025-11-10 10:11:55 [restartedMain] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] - Bean 'monitoringSpringAsyncAdvisor' of type [net.bull.javamelody.MonitoringSpringAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [projectingArgumentResolverBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2025-11-10 10:11:55 [restartedMain] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] - Bean 'monitoringSpringScheduledAdvisor' of type [net.bull.javamelody.MonitoringSpringAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [projectingArgumentResolverBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2025-11-10 10:11:56 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer [] - Tomcat initialized with port 9001 (http)
+2025-11-10 10:11:56 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext [] - Root WebApplicationContext: initialization completed in 3249 ms
+2025-11-10 10:11:56 [restartedMain] ERROR o.s.b.w.e.tomcat.TomcatStarter [] - Error starting Tomcat context. Exception: org.springframework.beans.factory.UnsatisfiedDependencyException. Message: Error creating bean with name 'apiFilter': Unsatisfied dependency expressed through field 'jwtUtil': Error creating bean with name 'JWTUtil': Injection of autowired dependencies failed
+2025-11-10 10:11:56 [restartedMain] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext [] - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Unable to start web server
+2025-11-10 10:12:53 [restartedMain] INFO  c.u.U.UsersMicroserviceApplication [] - Starting UsersMicroserviceApplication using Java 17.0.1 with PID 3796 (D:\Documents\micro_backend\UsersMicroservice\UsersMicroservice\target\classes started by rober in D:\Documents\micro_backend\UsersMicroservice\UsersMicroservice)
+2025-11-10 10:12:53 [restartedMain] DEBUG c.u.U.UsersMicroserviceApplication [] - Running with Spring Boot v3.5.5, Spring v6.2.10
+2025-11-10 10:12:53 [restartedMain] INFO  c.u.U.UsersMicroserviceApplication [] - The following 1 profile is active: "local"
+2025-11-10 10:12:53 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor [] - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-11-10 10:12:53 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor [] - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-11-10 10:12:54 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate [] - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-11-10 10:12:54 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate [] - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2025-11-10 10:12:55 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport [] - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.users.UsersMicroservice.repositories.BookListRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2025-11-10 10:12:55 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport [] - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.users.UsersMicroservice.repositories.UserEntityRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2025-11-10 10:12:55 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport [] - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.users.UsersMicroservice.repositories.UserListRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2025-11-10 10:12:55 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate [] - Finished Spring Data repository scanning in 63 ms. Found 0 JDBC repository interfaces.
+2025-11-10 10:12:55 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate [] - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-11-10 10:12:55 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate [] - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-10 10:12:55 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate [] - Finished Spring Data repository scanning in 44 ms. Found 3 JPA repository interfaces.
+2025-11-10 10:12:55 [restartedMain] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] - Bean 'net.bull.javamelody.JavaMelodyAutoConfiguration' of type [net.bull.javamelody.JavaMelodyAutoConfiguration$$SpringCGLIB$$0] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). The currently created BeanPostProcessor [monitoringDataSourceBeanPostProcessor] is declared through a non-static factory method on that class; consider declaring it as static instead.
+2025-11-10 10:12:55 [restartedMain] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] - Bean 'monitoringSpringAdvisor' of type [net.bull.javamelody.MonitoringSpringAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [projectingArgumentResolverBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2025-11-10 10:12:55 [restartedMain] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] - Bean 'monitoringSpringServiceAdvisor' of type [net.bull.javamelody.MonitoringSpringAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [projectingArgumentResolverBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2025-11-10 10:12:55 [restartedMain] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] - Bean 'monitoringSpringControllerAdvisor' of type [net.bull.javamelody.MonitoringSpringAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [projectingArgumentResolverBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2025-11-10 10:12:55 [restartedMain] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] - Bean 'monitoringSpringRestControllerAdvisor' of type [net.bull.javamelody.MonitoringSpringAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [projectingArgumentResolverBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2025-11-10 10:12:55 [restartedMain] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] - Bean 'monitoringSpringAsyncAdvisor' of type [net.bull.javamelody.MonitoringSpringAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [projectingArgumentResolverBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2025-11-10 10:12:55 [restartedMain] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] - Bean 'monitoringSpringScheduledAdvisor' of type [net.bull.javamelody.MonitoringSpringAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [projectingArgumentResolverBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2025-11-10 10:12:56 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer [] - Tomcat initialized with port 9001 (http)
+2025-11-10 10:12:56 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol [] - Initializing ProtocolHandler ["http-nio-9001"]
+2025-11-10 10:12:56 [restartedMain] INFO  o.a.catalina.core.StandardService [] - Starting service [Tomcat]
+2025-11-10 10:12:56 [restartedMain] INFO  o.a.catalina.core.StandardEngine [] - Starting Servlet engine: [Apache Tomcat/10.1.44]
+2025-11-10 10:12:56 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] [] - Initializing Spring embedded WebApplicationContext
+2025-11-10 10:12:56 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext [] - Root WebApplicationContext: initialization completed in 3152 ms
+2025-11-10 10:12:56 [restartedMain] ERROR o.s.b.w.e.tomcat.TomcatStarter [] - Error starting Tomcat context. Exception: org.springframework.beans.factory.UnsatisfiedDependencyException. Message: Error creating bean with name 'apiFilter': Unsatisfied dependency expressed through field 'jwtUtil': Error creating bean with name 'JWTUtil': Injection of autowired dependencies failed
+2025-11-10 10:12:56 [restartedMain] INFO  o.a.catalina.core.StandardService [] - Stopping service [Tomcat]
+2025-11-10 10:12:56 [restartedMain] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext [] - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Unable to start web server
+2025-11-10 10:12:56 [restartedMain] INFO  o.s.b.a.l.ConditionEvaluationReportLogger [] - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-11-10 10:12:56 [restartedMain] ERROR o.s.boot.SpringApplication [] - Application run failed
+org.springframework.context.ApplicationContextException: Unable to start web server
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:170)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:752)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:318)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350)
+	at com.users.UsersMicroservice.UsersMicroserviceApplication.main(UsersMicroserviceApplication.java:10)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50)
+Caused by: org.springframework.boot.web.server.WebServerException: Unable to start embedded Tomcat
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize(TomcatWebServer.java:147)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.<init>(TomcatWebServer.java:107)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getTomcatWebServer(TomcatServletWebServerFactory.java:517)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getWebServer(TomcatServletWebServerFactory.java:219)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.createWebServer(ServletWebServerApplicationContext.java:193)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:167)
+	... 13 common frames omitted
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'apiFilter': Unsatisfied dependency expressed through field 'jwtUtil': Error creating bean with name 'JWTUtil': Injection of autowired dependencies failed
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:788)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:768)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:146)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:509)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1459)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:606)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:207)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.getOrderedBeansOfType(ServletContextInitializerBeans.java:230)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:184)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:179)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAdaptableBeans(ServletContextInitializerBeans.java:164)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.<init>(ServletContextInitializerBeans.java:96)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.getServletContextInitializerBeans(ServletWebServerApplicationContext.java:271)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.selfInitialize(ServletWebServerApplicationContext.java:245)
+	at org.springframework.boot.web.embedded.tomcat.TomcatStarter.onStartup(TomcatStarter.java:52)
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:4464)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1203)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1193)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75)
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:145)
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:749)
+	at org.apache.catalina.core.StandardHost.startInternal(StandardHost.java:772)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1203)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1193)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75)
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:145)
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:749)
+	at org.apache.catalina.core.StandardEngine.startInternal(StandardEngine.java:203)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.core.StandardService.startInternal(StandardService.java:412)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.core.StandardServer.startInternal(StandardServer.java:870)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.startup.Tomcat.start(Tomcat.java:438)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize(TomcatWebServer.java:128)
+	... 18 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'JWTUtil': Injection of autowired dependencies failed
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:515)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1459)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:606)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1752)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1635)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:785)
+	... 60 common frames omitted
+Caused by: org.springframework.util.PlaceholderResolutionException: Circular placeholder reference 'APP_SECURITY_BLOT_APIKEY' in value "${APP_SECURITY_BLOT_APIKEY}" <-- "${APP_SECURITY_BLOT_APIKEY}"
+	at org.springframework.util.PlaceholderResolutionException.withValue(PlaceholderResolutionException.java:81)
+	at org.springframework.util.PlaceholderParser$ParsedValue.resolve(PlaceholderParser.java:423)
+	at org.springframework.util.PlaceholderParser.replacePlaceholders(PlaceholderParser.java:128)
+	at org.springframework.util.PropertyPlaceholderHelper.parseStringValue(PropertyPlaceholderHelper.java:118)
+	at org.springframework.util.PropertyPlaceholderHelper.replacePlaceholders(PropertyPlaceholderHelper.java:114)
+	at org.springframework.core.env.AbstractPropertyResolver.doResolvePlaceholders(AbstractPropertyResolver.java:293)
+	at org.springframework.core.env.AbstractPropertyResolver.resolveRequiredPlaceholders(AbstractPropertyResolver.java:264)
+	at org.springframework.context.support.PropertySourcesPlaceholderConfigurer.lambda$processProperties$0(PropertySourcesPlaceholderConfigurer.java:186)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.resolveEmbeddedValue(AbstractBeanFactory.java:971)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1657)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1635)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:785)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:768)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:146)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:509)
+	... 71 common frames omitted
+2025-11-10 10:14:39 [restartedMain] INFO  c.u.U.UsersMicroserviceApplication [] - Starting UsersMicroserviceApplication using Java 17.0.1 with PID 24780 (D:\Documents\micro_backend\UsersMicroservice\UsersMicroservice\target\classes started by rober in D:\Documents\micro_backend\UsersMicroservice\UsersMicroservice)
+2025-11-10 10:14:39 [restartedMain] DEBUG c.u.U.UsersMicroserviceApplication [] - Running with Spring Boot v3.5.5, Spring v6.2.10
+2025-11-10 10:14:39 [restartedMain] INFO  c.u.U.UsersMicroserviceApplication [] - The following 1 profile is active: "local"
+2025-11-10 10:14:39 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor [] - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-11-10 10:14:39 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor [] - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-11-10 10:14:40 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate [] - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-11-10 10:14:40 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate [] - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2025-11-10 10:14:40 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport [] - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.users.UsersMicroservice.repositories.BookListRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2025-11-10 10:14:40 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport [] - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.users.UsersMicroservice.repositories.UserEntityRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2025-11-10 10:14:40 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport [] - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.users.UsersMicroservice.repositories.UserListRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2025-11-10 10:14:40 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate [] - Finished Spring Data repository scanning in 68 ms. Found 0 JDBC repository interfaces.
+2025-11-10 10:14:40 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate [] - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-11-10 10:14:40 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate [] - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-10 10:14:41 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate [] - Finished Spring Data repository scanning in 32 ms. Found 3 JPA repository interfaces.
+2025-11-10 10:14:41 [restartedMain] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] - Bean 'net.bull.javamelody.JavaMelodyAutoConfiguration' of type [net.bull.javamelody.JavaMelodyAutoConfiguration$$SpringCGLIB$$0] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). The currently created BeanPostProcessor [monitoringDataSourceBeanPostProcessor] is declared through a non-static factory method on that class; consider declaring it as static instead.
+2025-11-10 10:14:41 [restartedMain] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] - Bean 'monitoringSpringAdvisor' of type [net.bull.javamelody.MonitoringSpringAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [projectingArgumentResolverBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2025-11-10 10:14:41 [restartedMain] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] - Bean 'monitoringSpringServiceAdvisor' of type [net.bull.javamelody.MonitoringSpringAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [projectingArgumentResolverBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2025-11-10 10:14:41 [restartedMain] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] - Bean 'monitoringSpringControllerAdvisor' of type [net.bull.javamelody.MonitoringSpringAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [projectingArgumentResolverBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2025-11-10 10:14:41 [restartedMain] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] - Bean 'monitoringSpringRestControllerAdvisor' of type [net.bull.javamelody.MonitoringSpringAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [projectingArgumentResolverBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2025-11-10 10:14:41 [restartedMain] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] - Bean 'monitoringSpringAsyncAdvisor' of type [net.bull.javamelody.MonitoringSpringAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [projectingArgumentResolverBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2025-11-10 10:14:41 [restartedMain] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] - Bean 'monitoringSpringScheduledAdvisor' of type [net.bull.javamelody.MonitoringSpringAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [projectingArgumentResolverBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2025-11-10 10:14:42 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer [] - Tomcat initialized with port 9001 (http)
+2025-11-10 10:14:42 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol [] - Initializing ProtocolHandler ["http-nio-9001"]
+2025-11-10 10:14:42 [restartedMain] INFO  o.a.catalina.core.StandardService [] - Starting service [Tomcat]
+2025-11-10 10:14:42 [restartedMain] INFO  o.a.catalina.core.StandardEngine [] - Starting Servlet engine: [Apache Tomcat/10.1.44]
+2025-11-10 10:14:42 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] [] - Initializing Spring embedded WebApplicationContext
+2025-11-10 10:14:42 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext [] - Root WebApplicationContext: initialization completed in 3019 ms
+2025-11-10 10:14:45 [restartedMain] DEBUG c.u.U.security.JwtRequestFilter [] - Filter 'jwtRequestFilter' configured for use
+2025-11-10 10:14:45 [restartedMain] DEBUG c.u.U.security.ApiFilter [] - Filter 'apiFilter' configured for use
+2025-11-10 10:14:45 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper [] - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-10 10:14:45 [restartedMain] INFO  org.hibernate.Version [] - HHH000412: Hibernate ORM core version 6.6.26.Final
+2025-11-10 10:14:45 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator [] - HHH000026: Second-level cache disabled
+2025-11-10 10:14:46 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo [] - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-10 10:14:46 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource [] - HikariPool-1 - Starting...
+2025-11-10 10:14:46 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool [] - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@41a9c0d0
+2025-11-10 10:14:46 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource [] - HikariPool-1 - Start completed.
+2025-11-10 10:14:47 [restartedMain] WARN  org.hibernate.orm.deprecation [] - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-10 10:14:47 [restartedMain] WARN  org.hibernate.orm.deprecation [] - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-10 10:14:47 [restartedMain] INFO  o.hibernate.orm.connections.pooling [] - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-10 10:14:47 [restartedMain] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry [] - addDescriptor(12, org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@729a61b2) replaced previous registration(org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@39017e2f)
+2025-11-10 10:14:47 [restartedMain] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry [] - addDescriptor(-9, org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@65b993ef) replaced previous registration(org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@4955aa3)
+2025-11-10 10:14:47 [restartedMain] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry [] - addDescriptor(-3, org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@25232c72) replaced previous registration(org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@17e1ceff)
+2025-11-10 10:14:47 [restartedMain] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry [] - addDescriptor(4003, org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@3e6e1107) replaced previous registration(org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@1000142b)
+2025-11-10 10:14:47 [restartedMain] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry [] - addDescriptor(4001, org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@2cfceae5) replaced previous registration(org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@35f35fb3)
+2025-11-10 10:14:47 [restartedMain] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry [] - addDescriptor(4002, org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@7b5b9623) replaced previous registration(org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@6bea742f)
+2025-11-10 10:14:47 [restartedMain] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry [] - addDescriptor(2004, org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@200a1075) replaced previous registration(org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@fabdd00)
+2025-11-10 10:14:47 [restartedMain] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry [] - addDescriptor(2005, org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@28e6a858) replaced previous registration(org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@1095ea67)
+2025-11-10 10:14:47 [restartedMain] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry [] - addDescriptor(2011, org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@606cd9b8) replaced previous registration(org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@31fe4b68)
+2025-11-10 10:14:48 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator [] - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-10 10:14:48 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean [] - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-10 10:14:49 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration [] - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-10 10:14:49 [restartedMain] INFO  o.s.v.b.OptionalValidatorFactoryBean [] - Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+2025-11-10 10:14:50 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer [] - LiveReload server is running on port 35729
+2025-11-10 10:14:50 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol [] - Starting ProtocolHandler ["http-nio-9001"]
+2025-11-10 10:14:50 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer [] - Tomcat started on port 9001 (http) with context path '/'
+2025-11-10 10:14:50 [restartedMain] INFO  c.u.U.UsersMicroserviceApplication [] - Started UsersMicroserviceApplication in 12.222 seconds (process running for 12.938)
+2025-11-10 10:14:59 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown [] - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-10 10:14:59 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown [] - Graceful shutdown complete
+2025-11-10 10:14:59 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean [] - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-10 10:14:59 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource [] - HikariPool-1 - Shutdown initiated...
+2025-11-10 10:14:59 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource [] - HikariPool-1 - Shutdown completed.
+2025-11-10 10:28:16 [restartedMain] INFO  c.u.U.UsersMicroserviceApplication [] - Starting UsersMicroserviceApplication using Java 17.0.1 with PID 3588 (D:\Documents\micro_backend\UsersMicroservice\UsersMicroservice\target\classes started by rober in D:\Documents\micro_backend\UsersMicroservice\UsersMicroservice)
+2025-11-10 10:28:16 [restartedMain] DEBUG c.u.U.UsersMicroserviceApplication [] - Running with Spring Boot v3.5.5, Spring v6.2.10
+2025-11-10 10:28:16 [restartedMain] INFO  c.u.U.UsersMicroserviceApplication [] - The following 1 profile is active: "local"
+2025-11-10 10:28:16 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor [] - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-11-10 10:28:16 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor [] - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-11-10 10:28:17 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate [] - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-11-10 10:28:17 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate [] - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2025-11-10 10:28:17 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport [] - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.users.UsersMicroservice.repositories.BookListRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2025-11-10 10:28:17 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport [] - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.users.UsersMicroservice.repositories.UserEntityRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2025-11-10 10:28:17 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport [] - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.users.UsersMicroservice.repositories.UserListRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2025-11-10 10:28:17 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate [] - Finished Spring Data repository scanning in 67 ms. Found 0 JDBC repository interfaces.
+2025-11-10 10:28:17 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate [] - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-11-10 10:28:17 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate [] - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-10 10:28:17 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate [] - Finished Spring Data repository scanning in 40 ms. Found 3 JPA repository interfaces.
+2025-11-10 10:28:18 [restartedMain] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] - Bean 'net.bull.javamelody.JavaMelodyAutoConfiguration' of type [net.bull.javamelody.JavaMelodyAutoConfiguration$$SpringCGLIB$$0] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). The currently created BeanPostProcessor [monitoringDataSourceBeanPostProcessor] is declared through a non-static factory method on that class; consider declaring it as static instead.
+2025-11-10 10:28:18 [restartedMain] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] - Bean 'monitoringSpringAdvisor' of type [net.bull.javamelody.MonitoringSpringAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [projectingArgumentResolverBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2025-11-10 10:28:18 [restartedMain] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] - Bean 'monitoringSpringServiceAdvisor' of type [net.bull.javamelody.MonitoringSpringAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [projectingArgumentResolverBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2025-11-10 10:28:18 [restartedMain] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] - Bean 'monitoringSpringControllerAdvisor' of type [net.bull.javamelody.MonitoringSpringAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [projectingArgumentResolverBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2025-11-10 10:28:18 [restartedMain] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] - Bean 'monitoringSpringRestControllerAdvisor' of type [net.bull.javamelody.MonitoringSpringAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [projectingArgumentResolverBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2025-11-10 10:28:18 [restartedMain] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] - Bean 'monitoringSpringAsyncAdvisor' of type [net.bull.javamelody.MonitoringSpringAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [projectingArgumentResolverBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2025-11-10 10:28:18 [restartedMain] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] - Bean 'monitoringSpringScheduledAdvisor' of type [net.bull.javamelody.MonitoringSpringAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [projectingArgumentResolverBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2025-11-10 10:28:19 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer [] - Tomcat initialized with port 9001 (http)
+2025-11-10 10:28:19 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext [] - Root WebApplicationContext: initialization completed in 3188 ms
+2025-11-10 10:28:19 [restartedMain] ERROR o.s.b.w.e.tomcat.TomcatStarter [] - Error starting Tomcat context. Exception: org.springframework.beans.factory.UnsatisfiedDependencyException. Message: Error creating bean with name 'apiFilter': Unsatisfied dependency expressed through field 'jwtUtil': Error creating bean with name 'JWTUtil': Injection of autowired dependencies failed
+2025-11-10 10:28:19 [restartedMain] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext [] - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Unable to start web server
+2025-11-10 10:29:11 [restartedMain] INFO  c.u.U.UsersMicroserviceApplication [] - Starting UsersMicroserviceApplication using Java 17.0.1 with PID 26740 (D:\Documents\micro_backend\UsersMicroservice\UsersMicroservice\target\classes started by rober in D:\Documents\micro_backend\UsersMicroservice\UsersMicroservice)
+2025-11-10 10:29:11 [restartedMain] DEBUG c.u.U.UsersMicroserviceApplication [] - Running with Spring Boot v3.5.5, Spring v6.2.10
+2025-11-10 10:29:11 [restartedMain] INFO  c.u.U.UsersMicroserviceApplication [] - The following 1 profile is active: "local"
+2025-11-10 10:29:11 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor [] - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-11-10 10:29:11 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor [] - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-11-10 10:29:13 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate [] - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-11-10 10:29:13 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate [] - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2025-11-10 10:29:13 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport [] - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.users.UsersMicroservice.repositories.BookListRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2025-11-10 10:29:13 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport [] - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.users.UsersMicroservice.repositories.UserEntityRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2025-11-10 10:29:13 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport [] - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.users.UsersMicroservice.repositories.UserListRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2025-11-10 10:29:13 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate [] - Finished Spring Data repository scanning in 56 ms. Found 0 JDBC repository interfaces.
+2025-11-10 10:29:13 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate [] - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-11-10 10:29:13 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate [] - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-10 10:29:13 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate [] - Finished Spring Data repository scanning in 42 ms. Found 3 JPA repository interfaces.
+2025-11-10 10:29:13 [restartedMain] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] - Bean 'net.bull.javamelody.JavaMelodyAutoConfiguration' of type [net.bull.javamelody.JavaMelodyAutoConfiguration$$SpringCGLIB$$0] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). The currently created BeanPostProcessor [monitoringDataSourceBeanPostProcessor] is declared through a non-static factory method on that class; consider declaring it as static instead.
+2025-11-10 10:29:13 [restartedMain] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] - Bean 'monitoringSpringAdvisor' of type [net.bull.javamelody.MonitoringSpringAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [projectingArgumentResolverBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2025-11-10 10:29:13 [restartedMain] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] - Bean 'monitoringSpringServiceAdvisor' of type [net.bull.javamelody.MonitoringSpringAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [projectingArgumentResolverBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2025-11-10 10:29:13 [restartedMain] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] - Bean 'monitoringSpringControllerAdvisor' of type [net.bull.javamelody.MonitoringSpringAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [projectingArgumentResolverBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2025-11-10 10:29:13 [restartedMain] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] - Bean 'monitoringSpringRestControllerAdvisor' of type [net.bull.javamelody.MonitoringSpringAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [projectingArgumentResolverBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2025-11-10 10:29:13 [restartedMain] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] - Bean 'monitoringSpringAsyncAdvisor' of type [net.bull.javamelody.MonitoringSpringAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [projectingArgumentResolverBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2025-11-10 10:29:13 [restartedMain] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] - Bean 'monitoringSpringScheduledAdvisor' of type [net.bull.javamelody.MonitoringSpringAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [projectingArgumentResolverBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2025-11-10 10:29:14 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer [] - Tomcat initialized with port 9001 (http)
+2025-11-10 10:29:14 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol [] - Initializing ProtocolHandler ["http-nio-9001"]
+2025-11-10 10:29:14 [restartedMain] INFO  o.a.catalina.core.StandardService [] - Starting service [Tomcat]
+2025-11-10 10:29:14 [restartedMain] INFO  o.a.catalina.core.StandardEngine [] - Starting Servlet engine: [Apache Tomcat/10.1.44]
+2025-11-10 10:29:14 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] [] - Initializing Spring embedded WebApplicationContext
+2025-11-10 10:29:14 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext [] - Root WebApplicationContext: initialization completed in 3081 ms
+2025-11-10 10:29:14 [restartedMain] ERROR o.s.b.w.e.tomcat.TomcatStarter [] - Error starting Tomcat context. Exception: org.springframework.beans.factory.UnsatisfiedDependencyException. Message: Error creating bean with name 'apiFilter': Unsatisfied dependency expressed through field 'jwtUtil': Error creating bean with name 'JWTUtil': Injection of autowired dependencies failed
+2025-11-10 10:29:14 [restartedMain] INFO  o.a.catalina.core.StandardService [] - Stopping service [Tomcat]
+2025-11-10 10:29:14 [restartedMain] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext [] - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Unable to start web server
+2025-11-10 10:29:14 [restartedMain] INFO  o.s.b.a.l.ConditionEvaluationReportLogger [] - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-11-10 10:29:14 [restartedMain] ERROR o.s.boot.SpringApplication [] - Application run failed
+org.springframework.context.ApplicationContextException: Unable to start web server
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:170)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:752)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:318)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350)
+	at com.users.UsersMicroservice.UsersMicroserviceApplication.main(UsersMicroserviceApplication.java:10)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50)
+Caused by: org.springframework.boot.web.server.WebServerException: Unable to start embedded Tomcat
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize(TomcatWebServer.java:147)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.<init>(TomcatWebServer.java:107)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getTomcatWebServer(TomcatServletWebServerFactory.java:517)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getWebServer(TomcatServletWebServerFactory.java:219)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.createWebServer(ServletWebServerApplicationContext.java:193)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:167)
+	... 13 common frames omitted
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'apiFilter': Unsatisfied dependency expressed through field 'jwtUtil': Error creating bean with name 'JWTUtil': Injection of autowired dependencies failed
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:788)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:768)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:146)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:509)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1459)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:606)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:207)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.getOrderedBeansOfType(ServletContextInitializerBeans.java:230)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:184)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:179)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAdaptableBeans(ServletContextInitializerBeans.java:164)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.<init>(ServletContextInitializerBeans.java:96)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.getServletContextInitializerBeans(ServletWebServerApplicationContext.java:271)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.selfInitialize(ServletWebServerApplicationContext.java:245)
+	at org.springframework.boot.web.embedded.tomcat.TomcatStarter.onStartup(TomcatStarter.java:52)
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:4464)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1203)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1193)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75)
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:145)
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:749)
+	at org.apache.catalina.core.StandardHost.startInternal(StandardHost.java:772)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1203)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1193)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75)
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:145)
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:749)
+	at org.apache.catalina.core.StandardEngine.startInternal(StandardEngine.java:203)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.core.StandardService.startInternal(StandardService.java:412)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.core.StandardServer.startInternal(StandardServer.java:870)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.startup.Tomcat.start(Tomcat.java:438)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize(TomcatWebServer.java:128)
+	... 18 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'JWTUtil': Injection of autowired dependencies failed
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:515)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1459)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:606)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1752)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1635)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:785)
+	... 60 common frames omitted
+Caused by: org.springframework.util.PlaceholderResolutionException: Could not resolve placeholder 'APP_SECURITY_BLOT_APIKEY_SECRET' in value "${APP_SECURITY_BLOT_APIKEY_SECRET}" <-- "${APP_SECURITY_BLOT_APIKEY}"
+	at org.springframework.util.PlaceholderResolutionException.withValue(PlaceholderResolutionException.java:81)
+	at org.springframework.util.PlaceholderParser$ParsedValue.resolve(PlaceholderParser.java:423)
+	at org.springframework.util.PlaceholderParser.replacePlaceholders(PlaceholderParser.java:128)
+	at org.springframework.util.PropertyPlaceholderHelper.parseStringValue(PropertyPlaceholderHelper.java:118)
+	at org.springframework.util.PropertyPlaceholderHelper.replacePlaceholders(PropertyPlaceholderHelper.java:114)
+	at org.springframework.core.env.AbstractPropertyResolver.doResolvePlaceholders(AbstractPropertyResolver.java:293)
+	at org.springframework.core.env.AbstractPropertyResolver.resolveRequiredPlaceholders(AbstractPropertyResolver.java:264)
+	at org.springframework.context.support.PropertySourcesPlaceholderConfigurer.lambda$processProperties$0(PropertySourcesPlaceholderConfigurer.java:186)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.resolveEmbeddedValue(AbstractBeanFactory.java:971)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1657)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1635)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:785)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:768)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:146)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:509)
+	... 71 common frames omitted
+2025-11-10 10:41:48 [restartedMain] INFO  c.u.U.UsersMicroserviceApplication [] - Starting UsersMicroserviceApplication using Java 17.0.1 with PID 19684 (D:\Documents\micro_backend\UsersMicroservice\UsersMicroservice\target\classes started by rober in D:\Documents\micro_backend\UsersMicroservice\UsersMicroservice)
+2025-11-10 10:41:48 [restartedMain] DEBUG c.u.U.UsersMicroserviceApplication [] - Running with Spring Boot v3.5.5, Spring v6.2.10
+2025-11-10 10:41:48 [restartedMain] INFO  c.u.U.UsersMicroserviceApplication [] - The following 1 profile is active: "local"
+2025-11-10 10:41:48 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor [] - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-11-10 10:41:48 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor [] - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-11-10 10:41:50 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate [] - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-11-10 10:41:50 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate [] - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2025-11-10 10:41:50 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport [] - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.users.UsersMicroservice.repositories.BookListRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2025-11-10 10:41:50 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport [] - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.users.UsersMicroservice.repositories.UserEntityRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2025-11-10 10:41:50 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport [] - Spring Data JDBC - Could not safely identify store assignment for repository candidate interface com.users.UsersMicroservice.repositories.UserListRepository; If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
+2025-11-10 10:41:50 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate [] - Finished Spring Data repository scanning in 57 ms. Found 0 JDBC repository interfaces.
+2025-11-10 10:41:50 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate [] - Multiple Spring Data modules found, entering strict repository configuration mode
+2025-11-10 10:41:50 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate [] - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-10 10:41:50 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate [] - Finished Spring Data repository scanning in 37 ms. Found 3 JPA repository interfaces.
+2025-11-10 10:41:50 [restartedMain] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] - Bean 'net.bull.javamelody.JavaMelodyAutoConfiguration' of type [net.bull.javamelody.JavaMelodyAutoConfiguration$$SpringCGLIB$$0] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). The currently created BeanPostProcessor [monitoringDataSourceBeanPostProcessor] is declared through a non-static factory method on that class; consider declaring it as static instead.
+2025-11-10 10:41:50 [restartedMain] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] - Bean 'monitoringSpringAdvisor' of type [net.bull.javamelody.MonitoringSpringAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [projectingArgumentResolverBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2025-11-10 10:41:50 [restartedMain] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] - Bean 'monitoringSpringServiceAdvisor' of type [net.bull.javamelody.MonitoringSpringAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [projectingArgumentResolverBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2025-11-10 10:41:50 [restartedMain] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] - Bean 'monitoringSpringControllerAdvisor' of type [net.bull.javamelody.MonitoringSpringAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [projectingArgumentResolverBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2025-11-10 10:41:50 [restartedMain] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] - Bean 'monitoringSpringRestControllerAdvisor' of type [net.bull.javamelody.MonitoringSpringAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [projectingArgumentResolverBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2025-11-10 10:41:50 [restartedMain] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] - Bean 'monitoringSpringAsyncAdvisor' of type [net.bull.javamelody.MonitoringSpringAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [projectingArgumentResolverBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2025-11-10 10:41:50 [restartedMain] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] - Bean 'monitoringSpringScheduledAdvisor' of type [net.bull.javamelody.MonitoringSpringAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [projectingArgumentResolverBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2025-11-10 10:41:51 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer [] - Tomcat initialized with port 9001 (http)
+2025-11-10 10:41:51 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol [] - Initializing ProtocolHandler ["http-nio-9001"]
+2025-11-10 10:41:51 [restartedMain] INFO  o.a.catalina.core.StandardService [] - Starting service [Tomcat]
+2025-11-10 10:41:51 [restartedMain] INFO  o.a.catalina.core.StandardEngine [] - Starting Servlet engine: [Apache Tomcat/10.1.44]
+2025-11-10 10:41:51 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] [] - Initializing Spring embedded WebApplicationContext
+2025-11-10 10:41:51 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext [] - Root WebApplicationContext: initialization completed in 3095 ms
+2025-11-10 10:41:52 [restartedMain] DEBUG c.u.U.security.JwtRequestFilter [] - Filter 'jwtRequestFilter' configured for use
+2025-11-10 10:41:52 [restartedMain] DEBUG c.u.U.security.ApiFilter [] - Filter 'apiFilter' configured for use
+2025-11-10 10:41:53 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper [] - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-10 10:41:53 [restartedMain] INFO  org.hibernate.Version [] - HHH000412: Hibernate ORM core version 6.6.26.Final
+2025-11-10 10:41:53 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator [] - HHH000026: Second-level cache disabled
+2025-11-10 10:41:53 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo [] - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-10 10:41:53 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource [] - HikariPool-1 - Starting...
+2025-11-10 10:41:54 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool [] - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@471ba271
+2025-11-10 10:41:54 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource [] - HikariPool-1 - Start completed.
+2025-11-10 10:41:54 [restartedMain] WARN  org.hibernate.orm.deprecation [] - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-10 10:41:54 [restartedMain] WARN  org.hibernate.orm.deprecation [] - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-10 10:41:54 [restartedMain] INFO  o.hibernate.orm.connections.pooling [] - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-10 10:41:54 [restartedMain] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry [] - addDescriptor(12, org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@17e1ceff) replaced previous registration(org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@3e6e1107)
+2025-11-10 10:41:54 [restartedMain] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry [] - addDescriptor(-9, org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@1000142b) replaced previous registration(org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@2cfceae5)
+2025-11-10 10:41:54 [restartedMain] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry [] - addDescriptor(-3, org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@35f35fb3) replaced previous registration(org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@7b5b9623)
+2025-11-10 10:41:54 [restartedMain] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry [] - addDescriptor(4003, org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@6bea742f) replaced previous registration(org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@200a1075)
+2025-11-10 10:41:54 [restartedMain] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry [] - addDescriptor(4001, org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@fabdd00) replaced previous registration(org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@28e6a858)
+2025-11-10 10:41:54 [restartedMain] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry [] - addDescriptor(4002, org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@1095ea67) replaced previous registration(org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@606cd9b8)
+2025-11-10 10:41:54 [restartedMain] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry [] - addDescriptor(2004, org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@31fe4b68) replaced previous registration(org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@2c479167)
+2025-11-10 10:41:54 [restartedMain] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry [] - addDescriptor(2005, org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@133e905a) replaced previous registration(org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@15992a9c)
+2025-11-10 10:41:54 [restartedMain] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry [] - addDescriptor(2011, org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@567f864c) replaced previous registration(org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@4623e94d)
+2025-11-10 10:41:55 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator [] - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-10 10:41:56 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean [] - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-10 10:41:56 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration [] - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-10 10:41:57 [restartedMain] INFO  o.s.v.b.OptionalValidatorFactoryBean [] - Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+2025-11-10 10:41:57 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer [] - LiveReload server is running on port 35729
+2025-11-10 10:41:57 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol [] - Starting ProtocolHandler ["http-nio-9001"]
+2025-11-10 10:41:57 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer [] - Tomcat started on port 9001 (http) with context path '/'
+2025-11-10 10:41:57 [restartedMain] INFO  c.u.U.UsersMicroserviceApplication [] - Started UsersMicroserviceApplication in 10.249 seconds (process running for 11.03)
+2025-11-10 10:42:01 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown [] - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-10 10:42:01 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown [] - Graceful shutdown complete
+2025-11-10 10:42:02 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean [] - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-10 10:42:02 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource [] - HikariPool-1 - Shutdown initiated...
+2025-11-10 10:42:02 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource [] - HikariPool-1 - Shutdown completed.
