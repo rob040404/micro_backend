@@ -30,4 +30,5 @@ jobs:
     # 4️⃣ Construir la imagen Docker
     - name: Build Docker image
       run: |
-        docker build --progress=plain -t security-service ./security
+        docker build -t rob040404/security-service:latest ./security
+        docker tag rob040404/security-service:latest rob040404/security-service:${{ github.sha }}
