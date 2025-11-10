@@ -45,7 +45,7 @@ jobs:
     # 5️⃣ Build de la imagen Docker
     - name: Build Docker image
       run: |
-        docker build -t rob040404/bplot-book-service:latest ./BookMicroservice
+        docker build -t rob040404/bplot-book-service:latest ./BooksMicroservice
         docker tag rob040404/bplot-book-service:latest rob040404/bplot-book-service:${{ github.sha }}
 
     # 6️⃣ Push de la imagen a Docker Hub
