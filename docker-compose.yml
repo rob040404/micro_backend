@@ -1,0 +1,64 @@
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_existing:/var/lib/mysql
+    networks:
+      - app-network
+
+
+  book-service:
+    build: ./BookMicroservice
+    ports:
+      - "9002:9002"
+    environment:
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      APP_SECURITY_BLOT_APIKEY: ${APP_SECURITY_BLOT_APIKEY}
+      APP_BOOKS_BOOKS_APIKEY: ${APP_BOOKS_BOOKS_APIKEY}
+      APP_USERS_USERS_APIKEY: ${APP_USERS_USERS_APIKEY}
+      SPRING_PROFILES_ACTIVE: docker
+    depends_on:
+      - mysql
+    networks:
+      - app-network
+
+  user-service:
+    build: ./UsersMicroservice
+    ports:
+      - "9003:9003"
+    environment:
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      APP_SECURITY_BLOT_APIKEY: ${APP_SECURITY_BLOT_APIKEY}
+      APP_USERS_USERS_APIKEY: ${APP_USERS_USERS_APIKEY}
+      SPRING_PROFILES_ACTIVE: docker
+    depends_on:
+      - mysql
+    networks:
+      - app-network
+
+
+  security-service:
+    build: ./security
+    ports:
+      - "9000:9000"
+    environment:
+      APP_SECURITY_BLOT_APIKEY: ${APP_SECURITY_BLOT_APIKEY}
+      APP_USERS_USERS_APIKEY: ${APP_USERS_USERS_APIKEY}
+    networks:
+      - app-network
+
+
+volumes:
+  mysql_existing:
+    external: true
+    name: 86d81aeed83666fe5a7d455b754e2dc008a3d72ab395f337569346d1b9ac1594
+
+networks:
+  app-network:
+    driver: bridge

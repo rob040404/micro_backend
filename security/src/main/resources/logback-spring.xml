@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+
+    <!--
+        VARIABLES DE ENTORNO
+        Estas variables permiten definir fácilmente diferentes niveles o rutas de logs
+        según el entorno (desarrollo, test, producción).
+    -->
+    <springProperty scope="context" name="LOG_PATH" source="LOG_PATH" defaultValue="logs"/>
+    <springProperty scope="context" name="APP_NAME" source="securiy" defaultValue="bplot"/>
+
+    <!--
+        FORMATO COMÚN PARA LOS LOGS
+        Incluye: fecha, nivel, hilo, logger, mensaje y excepciones.
+        %X{userId} permite mostrar el contexto (por ejemplo, usuario logueado).
+    -->
+    <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} [%X{userId}] - %msg%n"/>
+
+    <!--
+        CONSOLA
+        Ideal para desarrollo.
+    -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!--
+        ARCHIVO DE LOG PRINCIPAL (rotativo por día)
+        Se guarda en /logs/app.log, con backups diarios y compresión automática.
+    -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_FILE}.log</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/${APP_NAME}.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+            <maxHistory>30</maxHistory> <!-- guarda logs de los últimos 30 días -->
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!--
+        LOG DE ERRORES SEPARADO
+        Solo los errores irán aquí, para analizarlos fácilmente.
+    -->
+    <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/${APP_NAME}-errors.log</file>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/${APP_NAME}-errors.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+            <maxHistory>60</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!--
+        NIVELES DE LOG PARA TUS PAQUETES
+        Ajusta según lo que necesites monitorizar.
+    -->
+    <logger name="com.bookworld" level="INFO"/>
+    <logger name="org.springframework.web" level="WARN"/>
+    <logger name="org.hibernate.SQL" level="DEBUG"/> <!-- Muestra las consultas SQL -->
+    <logger name="org.hibernate.type.descriptor.sql" level="TRACE"/> <!-- Muestra valores de parámetros -->
+    <logger name="org.springframework.security" level="INFO"/>
+
+    <!--
+        ROOT LOGGER (nivel por defecto)
+        Apunta a consola y archivos.
+    -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="ERROR_FILE"/>
+    </root>
+
+</configuration>
