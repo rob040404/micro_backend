@@ -31,7 +31,6 @@ public class UserServiceClient {
 
     private static final String api_url = "http://localhost:9001";
     private static final String full_api_url = api_url + "/getUserId";
-    //private String users_apikey = "kajds324DJSKNDdnjsaDNJWaA12SDDax09324dsDITncsaeu95482"; //Ocultar en variable de entorno
 
     String users_apikey;
 
