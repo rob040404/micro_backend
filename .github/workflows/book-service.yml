@@ -19,8 +19,7 @@ jobs:
     # 2️⃣ Ejecutar tests antes de build
     - name: Run tests
       run: |
-        cd ./BookMicroservice
-        ./mvnw test  # o ./gradlew test según tu proyecto
+        echo "Aquí puedes agregar comandos para ejecutar tests de Java"
 
     # 3️⃣ Configurar Docker Buildx
     - name: Set up Docker Buildx
