@@ -40,12 +40,12 @@ jobs:
 
     - name: Build with Maven
       run: mvn clean package -DskipTests
-      working-directory: ./BooksMicroservice
+      working-directory: ./BookMicroservice
 
     # 5️⃣ Build de la imagen Docker
     - name: Build Docker image
       run: |
-        docker build -t rob040404/bplot-book-service:latest ./BooksMicroservice
+        docker build -t rob040404/bplot-book-service:latest ./BookMicroservice
         docker tag rob040404/bplot-book-service:latest rob040404/bplot-book-service:${{ github.sha }}
 
     # 6️⃣ Push de la imagen a Docker Hub
