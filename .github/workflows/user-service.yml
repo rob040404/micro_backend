@@ -1,0 +1,31 @@
+name: Build User Service
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1️⃣ Checkout del código
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # 2️⃣ Ejecutar tests (placeholder)
+    - name: Run tests (if any)
+      run: |
+        echo "Aquí puedes agregar comandos para ejecutar tests de Java"
+
+    # 3️⃣ Configurar Docker Buildx
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    # 4️⃣ Construir la imagen Docker
+    - name: Build Docker image
+      run: |
+        docker build -t rob040404/user-service:latest ./UsersMicroservice
+        docker tag rob040404/user-service:latest rob040404/user-service:${{ github.sha }}
