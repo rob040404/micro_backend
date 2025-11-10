@@ -1,0 +1,46 @@
+name: Build, Test and Push BookMicroservice Docker Image
+
+# Se ejecuta en push o pull request a main
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1️⃣ Checkout del código
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # 2️⃣ Ejecutar tests antes de build
+    - name: Run tests
+      run: |
+        cd ./BookMicroservice
+        ./mvnw test  # o ./gradlew test según tu proyecto
+
+    # 3️⃣ Configurar Docker Buildx
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    # 4️⃣ Login en Docker Hub
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    # 5️⃣ Build de la imagen Docker
+    - name: Build Docker image
+      run: |
+        docker build -t rob040404/bplot-book-service:latest ./BookMicroservice
+        docker tag rob040404/bplot-book-service:latest rob040404/bplot-book-service:${{ github.sha }}
+
+    # 6️⃣ Push de la imagen a Docker Hub
+    - name: Push Docker image
+      run: |
+        docker push rob040404/bplot-book-service:latest
+        docker push rob040404/bplot-book-service:${{ github.sha }}

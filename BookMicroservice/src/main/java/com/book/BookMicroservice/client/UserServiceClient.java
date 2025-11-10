@@ -26,7 +26,7 @@ public class UserServiceClient {
 
 
     private JWTUtil jwtUtil;
-    private Util util;
+
     private final RestClient userRestClient;
 
     private static final String api_url = "http://localhost:9001";
@@ -36,10 +36,9 @@ public class UserServiceClient {
     String users_apikey;
 
     // Inyección por constructor (mejor práctica). Ase podría usar AllArgsConstruct en vez del constructor manual
-    public UserServiceClient(JWTUtil jwtUtil, RestClient userRestClient, Util util, @Value("${app.users.users.apikey}")String usersApikey) {
+    public UserServiceClient(JWTUtil jwtUtil, RestClient userRestClient, @Value("${app.users.users.apikey}")String usersApikey) {
         this.jwtUtil = jwtUtil;
         this.userRestClient = userRestClient;
-        this.util = util;
         this.users_apikey=usersApikey;
     }
 
