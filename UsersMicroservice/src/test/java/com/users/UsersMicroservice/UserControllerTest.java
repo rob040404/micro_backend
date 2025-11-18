@@ -33,6 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc(addFilters = false) //Desactiva la seguridad, que en los tests se aplica aunque sea ruta publica
+
 @WebMvcTest(UserController.class)
 public class UserControllerTest {
 

@@ -74,6 +74,7 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler{
      * @param ex
      * @return
      */
+    /*
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiError> handleValidationExceptions(MethodArgumentNotValidException ex) {
         List<String> errors = ex.getBindingResult()
@@ -87,7 +88,7 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler{
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, errorMessage);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
     }
-
+*/
 	@Override
 	protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers,
 			HttpStatusCode statusCode, WebRequest request) {
