@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -35,7 +36,7 @@ public class UserController {
             @ApiResponse(responseCode = "400", description = "The passwords don't match")
     })
     @PostMapping(value = "/register", consumes=MediaType.MULTIPART_FORM_DATA_VALUE) //Duplicar requestbody
-    public ResponseEntity<ResponseUserDTO> newUser(@RequestBody @RequestPart("new") RequestUserRegisterDTO newUser, @RequestBody @RequestPart("file") MultipartFile file) {
+    public ResponseEntity<ResponseUserDTO> newUser(@RequestBody @Valid @RequestPart("new") RequestUserRegisterDTO newUser, @RequestBody @RequestPart("file") MultipartFile file) {
 
 
         log.trace("POST /user/register email: {}", newUser.getEmail());

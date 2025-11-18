@@ -16,9 +16,10 @@ jobs:
       uses: actions/checkout@v3
 
     # 2️⃣ Ejecutar tests (placeholder)
-    - name: Run tests (if any)
-      run: |
-        echo "Aquí puedes agregar comandos para ejecutar tests de Java"
+    - name: Build and run tests
+      run: mvn -B clean verify
+      working-directory: ./UsersMicroservice
+        
 
     - name: Set up JDK 17
       uses: actions/setup-java@v3

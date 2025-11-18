@@ -6,10 +6,14 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalControllerAdvice extends ResponseEntityExceptionHandler{
@@ -62,6 +66,25 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler{
     @ExceptionHandler
     public ResponseEntity<ApiError> handleDataIntegrityException(DataIntegrityException ex){
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
+    }
+
+    /**
+     * Method that captures all validation errors, so we don't have to do BindingResult result any time
+     * @param ex
+     * @return
+     */
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ApiError> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        List<String> errors = ex.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(error -> error.getField() + ": " + error.getDefaultMessage())
+                .collect(Collectors.toList());
+
+        String errorMessage = String.join(", ", errors);
+
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, errorMessage);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
     }
 
