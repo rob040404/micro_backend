@@ -20,7 +20,6 @@ import java.util.function.Function;
 @Component
 public class JWTUtil {
 
-    //private final String apiKey = "AjskNKlnklnNLnL3234kn07283ANhsbe092d3mksmknNNHHJ3ja81m323nnzaZAAL21dmskv"; //Misma clave que en la misma clase de Security. Para desserializar el token
     @Value("${app.security.blot.apikey}")
     private String apiKey;
 

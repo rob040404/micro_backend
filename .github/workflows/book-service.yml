@@ -16,10 +16,10 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    # 2️⃣ Ejecutar tests antes de build
-    - name: Run tests
-      run: |
-        echo "Aquí puedes agregar comandos para ejecutar tests de Java"
+    # 2️⃣ Ejecutar tests antes de build. Ejecutar tests (y build) en un solo paso seguro
+    - name: Build and run tests
+      run: mvn -B clean verify
+      working-directory: ./BookMicroservice
 
     # 3️⃣ Configurar Docker Buildx
     - name: Set up Docker Buildx
@@ -29,7 +29,7 @@ jobs:
     - name: Log in to Docker Hub
       uses: docker/login-action@v2
       with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        username: ${{ secrets.DOCKERHUB_USERNAME }}  #Los coje de Git Tokens, donde los he definido
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
     - name: Set up JDK 17

@@ -59,6 +59,12 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler{
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
     }
 
+    @ExceptionHandler
+    public ResponseEntity<ApiError> handleDataIntegrityException(DataIntegrityException ex){
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
+    }
+
 	@Override
 	protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers,
 			HttpStatusCode statusCode, WebRequest request) {

@@ -1,6 +1,122 @@
-2025-11-10 10:11:56 [restartedMain] ERROR o.s.b.w.e.tomcat.TomcatStarter [] - Error starting Tomcat context. Exception: org.springframework.beans.factory.UnsatisfiedDependencyException. Message: Error creating bean with name 'apiFilter': Unsatisfied dependency expressed through field 'jwtUtil': Error creating bean with name 'JWTUtil': Injection of autowired dependencies failed
-2025-11-10 10:12:56 [restartedMain] ERROR o.s.b.w.e.tomcat.TomcatStarter [] - Error starting Tomcat context. Exception: org.springframework.beans.factory.UnsatisfiedDependencyException. Message: Error creating bean with name 'apiFilter': Unsatisfied dependency expressed through field 'jwtUtil': Error creating bean with name 'JWTUtil': Injection of autowired dependencies failed
-2025-11-10 10:12:56 [restartedMain] ERROR o.s.boot.SpringApplication [] - Application run failed
+2025-11-18 10:17:13 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter [] - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field jwtUtil in com.users.UsersMicroservice.security.ApiFilter required a bean of type 'com.users.UsersMicroservice.security.JWTUtil' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.users.UsersMicroservice.security.JWTUtil' in your configuration.
+
+2025-11-18 10:33:41 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter [] - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field jwtUtil in com.users.UsersMicroservice.security.ApiFilter required a bean of type 'com.users.UsersMicroservice.security.JWTUtil' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.users.UsersMicroservice.security.JWTUtil' in your configuration.
+
+2025-11-18 10:34:33 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter [] - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field jwtUtil in com.users.UsersMicroservice.security.ApiFilter required a bean of type 'com.users.UsersMicroservice.security.JWTUtil' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.users.UsersMicroservice.security.JWTUtil' in your configuration.
+
+2025-11-18 11:36:31 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter [] - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field jwtUtil in com.users.UsersMicroservice.security.ApiFilter required a bean of type 'com.users.UsersMicroservice.security.JWTUtil' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.users.UsersMicroservice.security.JWTUtil' in your configuration.
+
+2025-11-18 11:41:49 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter [] - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 1 of constructor in com.users.UsersMicroservice.security.JwtRequestFilter required a bean of type 'com.users.UsersMicroservice.service.CustomUserDetails' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.users.UsersMicroservice.service.CustomUserDetails' in your configuration.
+
+2025-11-18 11:51:01 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter [] - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 1 of constructor in com.users.UsersMicroservice.security.JwtRequestFilter required a bean of type 'com.users.UsersMicroservice.service.CustomUserDetails' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.users.UsersMicroservice.service.CustomUserDetails' in your configuration.
+
+2025-11-18 12:01:28 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter [] - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 1 of constructor in com.users.UsersMicroservice.security.JwtRequestFilter required a bean of type 'com.users.UsersMicroservice.service.CustomUserDetails' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.users.UsersMicroservice.service.CustomUserDetails' in your configuration.
+
+2025-11-18 12:02:33 [restartedMain] ERROR o.s.b.w.e.tomcat.TomcatStarter [] - Error starting Tomcat context. Exception: org.springframework.beans.factory.UnsatisfiedDependencyException. Message: Error creating bean with name 'apiFilter': Unsatisfied dependency expressed through field 'jwtUtil': Error creating bean with name 'JWTUtil': Injection of autowired dependencies failed
+2025-11-18 12:02:34 [restartedMain] ERROR o.s.boot.SpringApplication [] - Application run failed
 org.springframework.context.ApplicationContextException: Unable to start web server
 	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:170)
 	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621)
@@ -83,7 +199,7 @@ Caused by: org.springframework.beans.factory.BeanCreationException: Error creati
 	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1635)
 	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:785)
 	... 60 common frames omitted
-Caused by: org.springframework.util.PlaceholderResolutionException: Circular placeholder reference 'APP_SECURITY_BLOT_APIKEY' in value "${APP_SECURITY_BLOT_APIKEY}" <-- "${APP_SECURITY_BLOT_APIKEY}"
+Caused by: org.springframework.util.PlaceholderResolutionException: Could not resolve placeholder 'APP_SECURITY_BLOT_APIKEY_SECRET' in value "${APP_SECURITY_BLOT_APIKEY_SECRET}" <-- "${app.security.blot.apikey}"
 	at org.springframework.util.PlaceholderResolutionException.withValue(PlaceholderResolutionException.java:81)
 	at org.springframework.util.PlaceholderParser$ParsedValue.resolve(PlaceholderParser.java:423)
 	at org.springframework.util.PlaceholderParser.replacePlaceholders(PlaceholderParser.java:128)
@@ -100,9 +216,8 @@ Caused by: org.springframework.util.PlaceholderResolutionException: Circular pla
 	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:146)
 	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:509)
 	... 71 common frames omitted
-2025-11-10 10:28:19 [restartedMain] ERROR o.s.b.w.e.tomcat.TomcatStarter [] - Error starting Tomcat context. Exception: org.springframework.beans.factory.UnsatisfiedDependencyException. Message: Error creating bean with name 'apiFilter': Unsatisfied dependency expressed through field 'jwtUtil': Error creating bean with name 'JWTUtil': Injection of autowired dependencies failed
-2025-11-10 10:29:14 [restartedMain] ERROR o.s.b.w.e.tomcat.TomcatStarter [] - Error starting Tomcat context. Exception: org.springframework.beans.factory.UnsatisfiedDependencyException. Message: Error creating bean with name 'apiFilter': Unsatisfied dependency expressed through field 'jwtUtil': Error creating bean with name 'JWTUtil': Injection of autowired dependencies failed
-2025-11-10 10:29:14 [restartedMain] ERROR o.s.boot.SpringApplication [] - Application run failed
+2025-11-18 12:03:25 [restartedMain] ERROR o.s.b.w.e.tomcat.TomcatStarter [] - Error starting Tomcat context. Exception: org.springframework.beans.factory.UnsatisfiedDependencyException. Message: Error creating bean with name 'apiFilter': Unsatisfied dependency expressed through field 'jwtUtil': Error creating bean with name 'JWTUtil': Injection of autowired dependencies failed
+2025-11-18 12:03:25 [restartedMain] ERROR o.s.boot.SpringApplication [] - Application run failed
 org.springframework.context.ApplicationContextException: Unable to start web server
 	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:170)
 	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621)
@@ -185,7 +300,7 @@ Caused by: org.springframework.beans.factory.BeanCreationException: Error creati
 	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1635)
 	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:785)
 	... 60 common frames omitted
-Caused by: org.springframework.util.PlaceholderResolutionException: Could not resolve placeholder 'APP_SECURITY_BLOT_APIKEY_SECRET' in value "${APP_SECURITY_BLOT_APIKEY_SECRET}" <-- "${APP_SECURITY_BLOT_APIKEY}"
+Caused by: org.springframework.util.PlaceholderResolutionException: Could not resolve placeholder 'APP_SECURITY_BLOT_APIKEY_SECRET' in value "${APP_SECURITY_BLOT_APIKEY_SECRET}" <-- "${app.security.blot.apikey}"
 	at org.springframework.util.PlaceholderResolutionException.withValue(PlaceholderResolutionException.java:81)
 	at org.springframework.util.PlaceholderParser$ParsedValue.resolve(PlaceholderParser.java:423)
 	at org.springframework.util.PlaceholderParser.replacePlaceholders(PlaceholderParser.java:128)
@@ -202,3 +317,18 @@ Caused by: org.springframework.util.PlaceholderResolutionException: Could not re
 	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:146)
 	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:509)
 	... 71 common frames omitted
+2025-11-18 12:11:19 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter [] - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 1 of constructor in com.users.UsersMicroservice.security.JwtRequestFilter required a bean of type 'com.users.UsersMicroservice.service.CustomUserDetails' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.users.UsersMicroservice.service.CustomUserDetails' in your configuration.
+

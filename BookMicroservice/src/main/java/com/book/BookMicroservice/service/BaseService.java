@@ -51,8 +51,10 @@ public abstract class BaseService<T, ID, R extends JpaRepository<T, ID>> {
 	public void deleteById(ID id) {
 		repositorio.deleteById(id);
 	}
-	
 
+    public void setRepositorio(R repositorio) {
+        this.repositorio = repositorio;
+    }
 	
 	
 }
