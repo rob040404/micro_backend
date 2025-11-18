@@ -72,7 +72,7 @@ public class UserController {
     }
 
     @PostMapping("/auth/addBookToList")
-    public ResponseEntity<?> addToList(@org.springframework.web.bind.annotation.RequestBody SaveBookDTO newBook, Authentication authentication){
+    public ResponseEntity<?> addToList(@org.springframework.web.bind.annotation.RequestBody @Valid SaveBookDTO newBook, Authentication authentication){
 
         log.trace("POST /add book controller: {}", newBook.getBookId());
         return ResponseEntity.status(HttpStatus.CREATED).body(userEntityService.saveBookToList(newBook, authentication));
