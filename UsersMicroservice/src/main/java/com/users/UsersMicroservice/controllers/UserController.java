@@ -36,7 +36,7 @@ public class UserController {
             @ApiResponse(responseCode = "400", description = "The passwords don't match")
     })
     @PostMapping(value = "/register", consumes=MediaType.MULTIPART_FORM_DATA_VALUE) //Duplicar requestbody
-    public ResponseEntity<ResponseUserDTO> newUser(@RequestBody @Valid @RequestPart("new") RequestUserRegisterDTO newUser, @RequestBody @RequestPart("file") MultipartFile file) {
+    public ResponseEntity<ResponseUserDTO> newUser(@RequestBody @RequestPart("new") RequestUserRegisterDTO newUser, @RequestBody @RequestPart("file") MultipartFile file) {
 
 
         log.trace("POST /user/register email: {}", newUser.getEmail());
