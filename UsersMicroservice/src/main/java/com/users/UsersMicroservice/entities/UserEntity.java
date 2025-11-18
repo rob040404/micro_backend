@@ -1,7 +1,7 @@
 package com.users.UsersMicroservice.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -38,17 +38,20 @@ public class UserEntity implements UserDetails {
 	private UUID id;
     //private Long id;
 
-	@NotNull
+	@NotBlank
 	@Column(name = "username", unique = true)
 	private String username;
 
+    @NotBlank
 	@Column(name = "fullname", nullable = false)
 	private String fullname;
-	
+
+    @NotBlank @Email
 	@Column(name = "email", unique = true)
 	private String email;
-	
-	@NotNull //Se activa cuando usas @Valid o @Validated en controladores, servicios, etc. Es diferente a la anotación de abajo
+
+    @Size(min = 3) //change to more
+	@NotBlank //Se activa cuando usas @Valid o @Validated en controladores, servicios, etc. Es diferente a la anotación de abajo
     @Column(name = "password", nullable = false)
 	private String password;
 
@@ -72,6 +75,7 @@ public class UserEntity implements UserDetails {
 
 	@ElementCollection(fetch = FetchType.EAGER) //Como es una colección
 	@Enumerated(EnumType.STRING)	//Almacena la enumereción de la clase enum UserRole como un String
+    @NotEmpty
 	private Set<UserRole> roles;
 
 	@CreatedDate
