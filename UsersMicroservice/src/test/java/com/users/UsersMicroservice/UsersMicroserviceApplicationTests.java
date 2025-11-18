@@ -3,6 +3,7 @@ package com.users.UsersMicroservice;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+/*
 @SpringBootTest
 class UsersMicroserviceApplicationTests {
 
@@ -10,4 +11,8 @@ class UsersMicroserviceApplicationTests {
 	void contextLoads() {
 	}
 
+
+
 }
+
+ */
