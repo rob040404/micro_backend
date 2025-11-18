@@ -24,7 +24,7 @@ public class UserDTOConverter {
 	 * @param userDto
 	 * @return
 	 */
-	public UserEntity convertToUserReg(UserRegisterDTO userDto){
+	public UserEntity convertToUserReg(RequestUserRegisterDTO userDto){
 		
 		return modelMapper.map(userDto, UserEntity.class);
 	}
@@ -34,10 +34,10 @@ public class UserDTOConverter {
 		return modelMapper.map(userDto, UserEntity.class);
 	}
 	
-	public GetUserDTO convertUserEntityToGetUserDTO(UserEntity userEntity) {
+	public ResponseUserDTO convertUserEntityToGetUserDTO(UserEntity userEntity) {
 		
 		//Esta es otra forma de hacerlo, simplmente construimos un objeto GetUserDTO de userEntity
-		return GetUserDTO.builder()
+		return ResponseUserDTO.builder()
 				.username(userEntity.getUsername())
 				.fullname(userEntity.getFullname())
 				.email(userEntity.getFullname())

@@ -1,12 +1,11 @@
 package com.users.UsersMicroservice.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
-@Getter @Setter
-public class UserRegisterDTO {
+@Getter @Setter @Builder @AllArgsConstructor @NoArgsConstructor
+public class RequestUserRegisterDTO {
 
 	private String username;
 	private String email;

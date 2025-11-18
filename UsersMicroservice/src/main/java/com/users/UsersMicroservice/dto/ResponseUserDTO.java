@@ -7,7 +7,7 @@ import java.util.Set;
 
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor @Builder
-public class GetUserDTO {
+public class ResponseUserDTO {
 
 	//Info que podemos devolver del usuario tras hacer el registro
 

@@ -13,13 +13,10 @@ import com.users.UsersMicroservice.repositories.StorageService;
 import com.users.UsersMicroservice.repositories.UserEntityRepository;
 import com.users.UsersMicroservice.repositories.UserListRepository;
 import com.users.UsersMicroservice.security.PasswordEncoderConfig;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.apache.catalina.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,33 +34,19 @@ import java.util.UUID;
  */
 @Log4j2
 @Service 
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class UserEntityService extends BaseService<UserEntity, UUID, UserEntityRepository>{
 
-	@Autowired
     private PasswordEncoderConfig passwordEncoderConfig;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
-
-    @Autowired
     private StorageService storageService;
-
-    @Autowired
     private UserDTOConverter userDTOConverter;
-
-    @Autowired
     private UserEntityRepository userEntityRepository;
-
-    @Autowired
     private UserListRepository userListRepository;
-
-    @Autowired
     private BookListRepository bookListRepository;
 
 	/**
 	 * Nos permite buscar un usuario por su nombre de usuario. LLama al método de BaseService
-	 * 
 	 * @param username
 	 * @return
 	 */
@@ -77,21 +60,22 @@ public class UserEntityService extends BaseService<UserEntity, UUID, UserEntityR
 
 
 
-    public GetUserDTO createUser(UserRegisterDTO newUser, MultipartFile file) {
+    public ResponseUserDTO createUser(RequestUserRegisterDTO newUser, MultipartFile file) {
 
         log.trace("UserEntityService - createUser - Entrando en método");
         String urlImage = null;
         UserEntity savedUser;
 
-        if(!file.isEmpty()) {
-            log.trace("UserEntityService - createUser - Entrando en if ...");
-            String image = storageService.store(file); //It returns the name of the stored file name
-            urlImage = MvcUriComponentsBuilder            //Construimos la uri completa que vamos a almacenar en la bd
-                    .fromMethodName(FileController.class, "serveFile", image, null) //Coge la info del metodo serveFile del FileController
-                    .build().toString();								//We construct all the uri path of the file to String
-        }
-
         if (newUser.getPassword().contentEquals(newUser.getPassword2())) {    //Si coinciden contraseña 1 con contraseña 2 (de confirmación)
+
+            if(!file.isEmpty()) {
+                log.trace("UserEntityService - createUser - Entrando en if ...");
+                String image = storageService.store(file); //It returns the name of the stored file name
+                urlImage = MvcUriComponentsBuilder            //Construimos la uri completa que vamos a almacenar en la bd
+                        .fromMethodName(FileController.class, "serveFile", image, null) //Coge la info del metodo serveFile del FileController
+                        .build().toString();								//We construct all the uri path of the file to String
+            }
+
             //Construimos el objeto userEntity simplemente con el builder
             UserEntity userEntity = UserEntity.builder()
                     .username(newUser.getUsername())
@@ -104,24 +88,24 @@ public class UserEntityService extends BaseService<UserEntity, UUID, UserEntityR
                     .roles(Set.of(UserRole.USER))
                     .build();
             //En Java 9 podría ser Set.of(UserRole.USER)
-            try {
+            try { //Ver qué ocurre si se trata de register un usuario con email o username existente
                 savedUser =  save(userEntity); //Metodo extendido de BaseService que tiene métodos Jpa
                 log.info("USER SAVED with id {}", userEntity.getId());
                 return userDTOConverter.convertUserEntityToGetUserDTO(savedUser);
 
             } catch (DataIntegrityViolationException ex) { //Capturamos si se viola la integridad (si se repite el username o email)
                 log.warn("Data Integrity Violation Exception");
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username already exists");
+                throw new DataIntegrityException("Username probably already exists");
             }
 
         } else {    //Si no coinciden las contraseñas, lanzamos excepción
-            log.warn("Uuser's passwords are different");
+            log.warn("User's passwords are different");
             throw new NewUserWithDifferentPasswordsException();
         }
     }
 
     //Prueba de llamadas ente apis, no se usa
-    public GetUserDTO sendUser(UUID id){
+    public ResponseUserDTO sendUser(UUID id){
 
         UserEntity user = userEntityRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException(" "));
 

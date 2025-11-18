@@ -13,6 +13,7 @@ import com.book.BookMicroservice.exception.VoteConversionException;
 import com.book.BookMicroservice.repositories.BookRepository;
 import com.book.BookMicroservice.repositories.RatingRepository;
 import com.book.BookMicroservice.security.JWTUtil;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,20 +32,17 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class RatingService extends BaseService <Rating, UUID, RatingRepository> {
 
-	@Autowired
+
 	private final RatingRepository ratingRepository;
 
     //No inyectamos BookService para obtener los métodos porque crae una dependencia circular entre BookController, RatingService y BookSrevice
-    @Autowired
+
     private final BookRepository bookRepository;
 
-    @Autowired
     private final ReviewDTOConverter reviewDTOConverter;
 
-    @Autowired
     private final RatingDTOConverter ratingDTOConverter;
 
-    @Autowired
     private final CustomUserDetails customUserDetails;
 
 

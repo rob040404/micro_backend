@@ -24,11 +24,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class JwtRequestFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private JWTUtil jwtUtil;
-
-    private final CustomUserDetails customUserDetails;
-
+    private final JWTUtil jwtUtil;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
