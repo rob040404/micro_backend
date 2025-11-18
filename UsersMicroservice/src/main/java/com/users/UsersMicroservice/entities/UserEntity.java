@@ -39,7 +39,7 @@ public class UserEntity implements UserDetails {
     //private Long id;
 
 	@NotBlank
-	@Column(name = "username", unique = true)
+	@Column(name = "username", unique = true, nullable = false)
 	private String username;
 
     @NotBlank
@@ -47,7 +47,7 @@ public class UserEntity implements UserDetails {
 	private String fullname;
 
     @NotBlank @Email
-	@Column(name = "email", unique = true)
+	@Column(name = "email", unique = true, nullable = false)
 	private String email;
 
     @Size(min = 3) //change to more
