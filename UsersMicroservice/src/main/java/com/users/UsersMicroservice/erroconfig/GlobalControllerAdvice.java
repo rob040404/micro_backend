@@ -59,8 +59,8 @@ public class GlobalControllerAdvice /*extends ResponseEntityExceptionHandler*/{
 
     @ExceptionHandler(NoApiKeyOrJwtException.class)
     public ResponseEntity<ApiError> handleNoApiKeyOrJwtException(NoApiKeyOrJwtException ex){
-        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
+        ApiError apiError = new ApiError(HttpStatus.UNAUTHORIZED, ex.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(apiError);
     }
 
     @ExceptionHandler
