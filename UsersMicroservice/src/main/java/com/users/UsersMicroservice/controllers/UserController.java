@@ -64,6 +64,12 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userEntityService.userLogin(email));
     }
 
+    @GetMapping("/auth/userId/{username}")
+    public ResponseEntity<?> sendUserId(@PathVariable String username){
+        log.trace("POST /auth/ Entering controller with username: {}", username);
+        return ResponseEntity.status(HttpStatus.OK).body(userEntityService.sendUserId(username));
+    }
+
     @PostMapping("/auth/newlist")
     public ResponseEntity<?> createList(@org.springframework.web.bind.annotation.RequestBody @Valid CreateListRequestDTO newline, Authentication authentication){
 

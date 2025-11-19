@@ -38,6 +38,7 @@ public class Cors {
         getUserIdCors.setAllowCredentials(true);
         getUserIdCors.setMaxAge(3600L);
 
+        //Innecesrario. Cors solo se aplica a petidiones del navegador
         CorsConfiguration userLoginCors = new CorsConfiguration();
         userLoginCors.setAllowedOrigins(List.of("http://localhost:4200"));
         userLoginCors.setAllowedMethods(List.of("GET", "OPTIONS"));
@@ -58,6 +59,8 @@ public class Cors {
         bookListCors.setAllowedHeaders(List.of("*"));
         bookListCors.setAllowCredentials(true);
         bookListCors.setMaxAge(3600L);
+
+
 
         // Registro
         source.registerCorsConfiguration("/user/register", userCors);

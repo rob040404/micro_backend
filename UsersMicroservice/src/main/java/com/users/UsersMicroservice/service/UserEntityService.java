@@ -121,6 +121,13 @@ public class UserEntityService extends BaseService<UserEntity, UUID, UserEntityR
         return userLoginDTO;
     }
 
+    public UUID sendUserId(String username){
+        UserEntity user = userEntityRepository.findByUsername(username).
+                orElseThrow(()-> new UserNotFoundException("Did not find user with username " + username));
+        log.trace("User id: {}", user.getId());
+        return user.getId();
+    }
+
 
     public String createList(CreateListRequestDTO newList, Authentication authentication){
 
