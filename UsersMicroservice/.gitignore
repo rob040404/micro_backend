@@ -36,3 +36,5 @@ build/
 .env
 
 upload-dir
+
+.application-local.properties
