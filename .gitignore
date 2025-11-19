@@ -1,0 +1,8 @@
+.env
+security/logs/*
+security/*.log
+UsersMicroservice/*.log
+UsersMicroservice/logs/*
+BookMicroservice/*.log
+BookMicroservice/logs/**.log
+logs/

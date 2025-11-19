@@ -1,0 +1,3 @@
+# Renombra este archivo a application-local.properties y añade tu clave
+app.security.bplot_apikey=TU_CLAVE_AQUI
+app.books.books_apikey=TU_CLAVE_AQUI
