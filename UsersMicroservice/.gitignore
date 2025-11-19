@@ -37,4 +37,6 @@ build/
 
 upload-dir
 
-.application-local.properties
+application-local.properties
+
+LOG_FILE_IS_UNDEFINED.log
