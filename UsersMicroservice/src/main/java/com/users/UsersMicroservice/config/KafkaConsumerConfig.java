@@ -22,7 +22,7 @@ public class KafkaConsumerConfig {
     private String bootstrapServers;
 
     @Bean
-    public ConsumerFactory<String, FollowRequestEvent> consumerFactory() {
+    public ConsumerFactory<String, Object> consumerFactory() {
         Map<String, Object> config = new HashMap<>();
 
         config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
@@ -53,37 +53,51 @@ public class KafkaConsumerConfig {
          * FollowRequestEvent. This is crucial when the producer does not include
          * type metadata (for example, because USE_TYPE_INFO_HEADERS is disabled).
          */
-        config.put(JsonDeserializer.VALUE_DEFAULT_TYPE, FollowRequestEvent.class.getName());
+        //config.put(JsonDeserializer.VALUE_DEFAULT_TYPE, FollowRequestEvent.class.getName());
 
         /*
          * It allows the deserializer to accept classes from any package (instead of being restricted to a safe set).
          * This is useful in development, but in production it's better to specify only trusted packages.
          */
-        config.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
+        //config.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
+
+
+        // ✅ HABILITA el uso de los headers de tipo (enviados por el productor)
+        config.put(JsonDeserializer.USE_TYPE_INFO_HEADERS, true);
+
+        // ✅ Mapea el alias "followRequest" al tipo LOCAL en este microservicio
+        config.put(JsonDeserializer.TYPE_MAPPINGS,
+                "followRequest:com.users.UsersMicroservice.kafka.dto.FollowRequestEvent," +
+                        "followAccepted:com.users.UsersMicroservice.kafka.dto.FollowAnsweredEvent");
+
+        // ✅ Limita los paquetes confiables (mejor que "*")
+        config.put(JsonDeserializer.TRUSTED_PACKAGES,
+                "com.users.UsersMicroservice.kafka.dto");
+
 
         /*
          * It indicates that type headers (such as __TypeId__) that the producer might have included should not be
          * relied upon. Instead, the configured default type (FollowRequestEvent) will be used, which prevents errors
          * if the headers do not match or are missing.
          */
-        config.put(JsonDeserializer.USE_TYPE_INFO_HEADERS, false); // ✅ Ignora los headers de tipo del producer
+        //config.put(JsonDeserializer.USE_TYPE_INFO_HEADERS, false); // ✅ Ignora los headers de tipo del producer
 
         /*
-         * Create a consumer factory with the above configuration and also explicitly pass the actual deserializers
-         * as arguments (key as String, value as JSON to FollowRequestEvent).
+         * No specified type, it gets resolved by headers
          */
         return new DefaultKafkaConsumerFactory<>(config,
                 new StringDeserializer(),
-                new JsonDeserializer<>(FollowRequestEvent.class));
+                new JsonDeserializer<>());
     }
 
     /*
      * Create a concurrent listening container factory (to process multiple partitions or messages in parallel)
      * and assign the configured consumer factory to it.
      */
+
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, FollowRequestEvent> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, FollowRequestEvent> factory =
+    public ConcurrentKafkaListenerContainerFactory<String, Object> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, Object> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         return factory;

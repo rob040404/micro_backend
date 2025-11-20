@@ -62,7 +62,7 @@ public class FollowersService {
 
         FollowRequest followRequest = followRequestRepository.getById(answer.getFollowRequestId());
 
-        if(followRequest.getFollowedId().equals(followedId)){
+        if(!followRequest.getFollowedId().equals(followedId)){
             throw new FollowedIdsDontMatchException(followRequest.getFollowedId() + " vs " + followedId);
         }
 
@@ -83,7 +83,8 @@ public class FollowersService {
                     .followerId(followRequest.getFollowerId())
                     .build();
 
-            followersRepository.save(newFollower);
+            Followers savedFollower = followersRepository.save(newFollower);
+            followEventProducer.publisFollowAnswerEvent(savedFollower);
 
         }else if (!answer.isAnswer()){
             followRequest.setStatus(FollowStatus.REJECTED);
