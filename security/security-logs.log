@@ -1,27 +1,29 @@
-2025-11-18 17:26:58 [restartedMain] INFO  c.s.security.SecurityApplication [] - Starting SecurityApplication using Java 17.0.1 with PID 21144 (D:\Documents\micro_backend\security\target\classes started by rober in D:\Documents\micro_backend\security)
-2025-11-18 17:26:58 [restartedMain] DEBUG c.s.security.SecurityApplication [] - Running with Spring Boot v3.5.5, Spring v6.2.10
-2025-11-18 17:26:58 [restartedMain] INFO  c.s.security.SecurityApplication [] - The following 1 profile is active: "local"
-2025-11-18 17:26:58 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor [] - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
-2025-11-18 17:26:58 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor [] - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
-2025-11-18 17:27:01 [restartedMain] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] - Bean 'net.bull.javamelody.JavaMelodyAutoConfiguration' of type [net.bull.javamelody.JavaMelodyAutoConfiguration$$SpringCGLIB$$0] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). The currently created BeanPostProcessor [monitoringDataSourceBeanPostProcessor] is declared through a non-static factory method on that class; consider declaring it as static instead.
-2025-11-18 17:27:03 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer [] - Tomcat initialized with port 9000 (http)
-2025-11-18 17:27:03 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol [] - Initializing ProtocolHandler ["http-nio-9000"]
-2025-11-18 17:27:03 [restartedMain] INFO  o.a.catalina.core.StandardService [] - Starting service [Tomcat]
-2025-11-18 17:27:03 [restartedMain] INFO  o.a.catalina.core.StandardEngine [] - Starting Servlet engine: [Apache Tomcat/10.1.44]
-2025-11-18 17:27:03 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] [] - Initializing Spring embedded WebApplicationContext
-2025-11-18 17:27:03 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext [] - Root WebApplicationContext: initialization completed in 5201 ms
-2025-11-18 17:27:12 [restartedMain] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration [] - 
+2025-11-20 12:08:44 [restartedMain] INFO  c.s.security.SecurityApplication [] - Starting SecurityApplication using Java 17.0.1 with PID 15716 (D:\Documents\micro_backend\security\target\classes started by rober in D:\Documents\micro_backend\security)
+2025-11-20 12:08:44 [restartedMain] DEBUG c.s.security.SecurityApplication [] - Running with Spring Boot v3.5.5, Spring v6.2.10
+2025-11-20 12:08:44 [restartedMain] INFO  c.s.security.SecurityApplication [] - The following 1 profile is active: "local"
+2025-11-20 12:08:44 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor [] - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-11-20 12:08:44 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor [] - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-11-20 12:08:49 [restartedMain] WARN  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [] - Bean 'net.bull.javamelody.JavaMelodyAutoConfiguration' of type [net.bull.javamelody.JavaMelodyAutoConfiguration$$SpringCGLIB$$0] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). The currently created BeanPostProcessor [monitoringDataSourceBeanPostProcessor] is declared through a non-static factory method on that class; consider declaring it as static instead.
+2025-11-20 12:08:51 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer [] - Tomcat initialized with port 9000 (http)
+2025-11-20 12:08:51 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol [] - Initializing ProtocolHandler ["http-nio-9000"]
+2025-11-20 12:08:51 [restartedMain] INFO  o.a.catalina.core.StandardService [] - Starting service [Tomcat]
+2025-11-20 12:08:51 [restartedMain] INFO  o.a.catalina.core.StandardEngine [] - Starting Servlet engine: [Apache Tomcat/10.1.44]
+2025-11-20 12:08:52 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] [] - Initializing Spring embedded WebApplicationContext
+2025-11-20 12:08:52 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext [] - Root WebApplicationContext: initialization completed in 7039 ms
+2025-11-20 12:08:56 [restartedMain] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration [] - 
 
-Using generated security password: 552c49c5-8660-40a7-9b2d-07261910dbd7
+Using generated security password: a0d3b7a0-adb3-42d3-9ca7-6c2778a17147
 
 This generated password is for development use only. Your security configuration must be updated before running your application in production.
 
-2025-11-18 17:27:12 [restartedMain] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer [] - Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
-2025-11-18 17:27:13 [restartedMain] INFO  o.s.v.b.OptionalValidatorFactoryBean [] - Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
-2025-11-18 17:27:14 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer [] - LiveReload server is running on port 35729
-2025-11-18 17:27:14 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol [] - Starting ProtocolHandler ["http-nio-9000"]
-2025-11-18 17:27:14 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer [] - Tomcat started on port 9000 (http) with context path '/'
-2025-11-18 17:27:14 [restartedMain] INFO  c.s.security.SecurityApplication [] - Started SecurityApplication in 17.939 seconds (process running for 18.988)
-2025-11-18 17:31:49 [http-nio-9000-exec-2] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] [] - Initializing Spring DispatcherServlet 'dispatcherServlet'
-2025-11-18 17:31:50 [http-nio-9000-exec-3] TRACE c.s.s.controller.LoginController [] - Entrando en /auth/login con roykent@outlook.com, roykent@outlook.com
-2025-11-18 17:31:53 [http-nio-9000-exec-3] INFO  javamelody [] - remoteAddr = 127.0.0.1, request = /user/auth/login POST: 3219 ms, 0 Kb
+2025-11-20 12:08:56 [restartedMain] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer [] - Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2025-11-20 12:08:56 [restartedMain] INFO  o.s.v.b.OptionalValidatorFactoryBean [] - Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+2025-11-20 12:08:57 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer [] - LiveReload server is running on port 35729
+2025-11-20 12:08:57 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol [] - Starting ProtocolHandler ["http-nio-9000"]
+2025-11-20 12:08:57 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer [] - Tomcat started on port 9000 (http) with context path '/'
+2025-11-20 12:08:57 [restartedMain] INFO  c.s.security.SecurityApplication [] - Started SecurityApplication in 15.124 seconds (process running for 17.171)
+2025-11-20 12:10:37 [http-nio-9000-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] [] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-20 12:10:37 [http-nio-9000-exec-2] TRACE c.s.s.controller.LoginController [] - Entrando en /auth/login con roykent@outlook.com, roykent@outlook.com
+2025-11-20 12:10:43 [http-nio-9000-exec-2] INFO  javamelody [] - remoteAddr = 127.0.0.1, request = /user/auth/login POST: 5498 ms, 0 Kb
+2025-11-20 12:12:12 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown [] - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-20 12:12:14 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown [] - Graceful shutdown complete

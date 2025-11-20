@@ -24,6 +24,7 @@ public class FollowRequestService {
 
     public boolean followRequest(UsernameRequestDTO usernameRequestDTO, Authentication authentication){
 
+        //Comprobar que no existe ya la solicitud
         String followedUsername = usernameRequestDTO.getUsername();
 
         if (followedUsername==null || followedUsername.isBlank()){
@@ -43,11 +44,17 @@ public class FollowRequestService {
 
         try {
             followRequestRepository.save(followRequest);
-            // 2. Kafka event publication
+            // Kafka event publication
             followEventProducer.publishFollowRequestEvent(followRequest);
         } catch (Exception e) {
             throw new FollowRequestNotSavedException();
         }
         return true;
     }
+
+    public boolean acceptRequest(){
+        //Que la solicitud sea borrada tras ser aceptada
+        return true;
+    }
+
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class FollowEventProducer {
 
+    //The KafkaTemplate created in configuration to send messages to topics using the configured fabric
     private final KafkaTemplate<String, FollowRequestEvent> kafkaTemplate;
 
     @Value("${topic.follow-requests}")
@@ -18,6 +19,7 @@ public class FollowEventProducer {
         this.kafkaTemplate = kafkaTemplate;
     }
 
+    //Instance of publishFollowRequestEvent object that will be past as the event
     public void publishFollowRequestEvent(FollowRequest fr) {
         FollowRequestEvent event = new FollowRequestEvent(
                 fr.getId(),
