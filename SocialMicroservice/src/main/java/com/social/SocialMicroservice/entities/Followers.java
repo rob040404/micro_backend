@@ -2,6 +2,7 @@ package com.social.SocialMicroservice.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
@@ -21,8 +22,9 @@ public class Followers {
     @Column(name = "followed_id", nullable = false)
     private UUID followedId;
 
-    @CreatedDate
+    @CreationTimestamp
     @Column(name = "followed_since")
     private LocalDateTime followedSince;
+
 
 }

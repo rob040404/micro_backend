@@ -1,7 +1,8 @@
 package com.social.SocialMicroservice.controllers;
 
+import com.social.SocialMicroservice.dto.AnswerFollowRequestsDTO;
 import com.social.SocialMicroservice.dto.UsernameRequestDTO;
-import com.social.SocialMicroservice.services.FollowRequestService;
+import com.social.SocialMicroservice.services.FollowersService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,11 +18,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/social")
 public class FollowersController {
 
-    private final FollowRequestService followRequestService;
+    private final FollowersService followersService;
 
     @PostMapping("/follow_request")
     public ResponseEntity<?> followRequest(@RequestBody @Valid UsernameRequestDTO followedUsername, Authentication authentication){
 
-        return ResponseEntity.status(HttpStatus.OK).body(followRequestService.followRequest(followedUsername, authentication));
+        return ResponseEntity.status(HttpStatus.OK).body(followersService.followRequest(followedUsername, authentication));
+    }
+
+    @PostMapping("/follow_answer")
+    public ResponseEntity<?> answerRequest(@RequestBody @Valid AnswerFollowRequestsDTO answer, Authentication authentication){
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(followersService.answerRequest(answer, authentication));
     }
 }

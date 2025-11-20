@@ -1,6 +1,7 @@
 package com.social.SocialMicroservice.kafka.dto;
 
 import com.social.SocialMicroservice.entities.FollowStatus;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
