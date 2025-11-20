@@ -21,8 +21,9 @@ public class KafkaProducerConfig {
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServers;
 
+    //Generic fabric
     @Bean
-    public ProducerFactory<String, FollowRequestEvent> producerFactory() {
+    public ProducerFactory<String, Object> producerFactory() {
         Map<String, Object> config = new HashMap<>();
 
         //Establishes to which Kafka brokers the Producer should connect
@@ -31,13 +32,17 @@ public class KafkaProducerConfig {
         config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         //The value oth the Kafka message will be serialized as a JSON
         config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+        //Includes metha data of types in the header. Example: every message will include aheader liek: __TypeId__: "followRequest"
+        config.put(JsonSerializer.ADD_TYPE_INFO_HEADERS, true);
 
         /*
          * Establishes an alias (followRequest) for the full class FollowRequestEvent
          * so when the message is serialized to JSON this short key (followRequest) will be included instead of the whole name
          * so other consumers can map correctly the type without using the FQDN (Fully Qualified Class Name).
          */
-        config.put(JsonSerializer.TYPE_MAPPINGS, "followRequest:com.social.SocialMicroservice.kafka.dto.FollowRequestEvent");
+        config.put(JsonSerializer.TYPE_MAPPINGS,
+                "followRequest:com.social.SocialMicroservice.kafka.dto.FollowRequestEvent," +
+                "followAccepted:com.social.SocialMicroservice.kafka.dto.FollowAnsweredEvent");
 
         //Creates a reusable fabric that will serve to create instances of producers
         return new DefaultKafkaProducerFactory<>(config);
@@ -45,7 +50,7 @@ public class KafkaProducerConfig {
 
     //Creates a KafkaTemplate, a wrapper that is used to send messages to topics using the configures fabric
     @Bean
-    public KafkaTemplate<String, FollowRequestEvent> kafkaTemplate() {
+    public KafkaTemplate<String, Object> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 }
