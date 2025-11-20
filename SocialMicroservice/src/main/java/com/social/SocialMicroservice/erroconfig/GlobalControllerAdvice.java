@@ -1,9 +1,6 @@
 package com.social.SocialMicroservice.erroconfig;
 
-import com.social.SocialMicroservice.exceptions.FollowRequestNotSavedException;
-import com.social.SocialMicroservice.exceptions.NoApiKeyOrJwtException;
-import com.social.SocialMicroservice.exceptions.NoUserWithSuchUserNameException;
-import com.social.SocialMicroservice.exceptions.TokenExpiredException;
+import com.social.SocialMicroservice.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -38,6 +35,18 @@ public class GlobalControllerAdvice /*extends ResponseEntityExceptionHandler*/{
     public ResponseEntity<ApiError> handleFollowRequestNotSavedException(FollowRequestNotSavedException ex){
         ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiError);
+    }
+
+    @ExceptionHandler(FollowerNotSavedException.class)
+    public ResponseEntity<ApiError> handleFollowerNotSavedException(FollowerNotSavedException ex){
+        ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiError);
+    }
+
+    @ExceptionHandler(FollowedIdsDontMatchException.class)
+    public ResponseEntity<ApiError> handleFollowedIdsDontMatchException(FollowedIdsDontMatchException ex){
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
     }
     /**
      * Method that captures all validation errors, so we don't have to do BindingResult result any time
