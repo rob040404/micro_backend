@@ -1,8 +1,7 @@
 .env
-security/logs/*
-security/*.log
-UsersMicroservice/*.log
-UsersMicroservice/logs/*
-BookMicroservice/*.log
-BookMicroservice/logs/**.log
-logs/
+
+# Ignorar cualquier archivo .log en cualquier parte del proyecto
+**/*.log
+
+# Ignorar carpetas de logs completas (incluso si contienen otros tipos de archivos)
+**/logs/
