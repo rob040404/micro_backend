@@ -9,8 +9,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.listener.DeadLetterPublishingRecoverer;
+import org.springframework.kafka.listener.DefaultErrorHandler;
 import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
+import org.springframework.util.backoff.FixedBackOff;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,6 +24,14 @@ public class KafkaConsumerConfig {
 
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServers;
+
+
+    // Inyecta tu KafkaTemplate (debe estar definido como @Bean en otra config)
+    private final KafkaTemplate<String, Object> kafkaTemplate;
+
+    public KafkaConsumerConfig(KafkaTemplate<String, Object> kafkaTemplate) {
+        this.kafkaTemplate = kafkaTemplate;
+    }
 
     @Bean
     public ConsumerFactory<String, Object> consumerFactory() {
@@ -48,19 +60,6 @@ public class KafkaConsumerConfig {
         config.put(ErrorHandlingDeserializer.KEY_DESERIALIZER_CLASS, StringDeserializer.class);
         config.put(ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS, JsonDeserializer.class);
 
-        /*
-         * Defines that if there is no type information in the message, the value will be assumed to be of type
-         * FollowRequestEvent. This is crucial when the producer does not include
-         * type metadata (for example, because USE_TYPE_INFO_HEADERS is disabled).
-         */
-        //config.put(JsonDeserializer.VALUE_DEFAULT_TYPE, FollowRequestEvent.class.getName());
-
-        /*
-         * It allows the deserializer to accept classes from any package (instead of being restricted to a safe set).
-         * This is useful in development, but in production it's better to specify only trusted packages.
-         */
-        //config.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
-
 
         // ✅ HABILITA el uso de los headers de tipo (enviados por el productor)
         config.put(JsonDeserializer.USE_TYPE_INFO_HEADERS, true);
@@ -73,14 +72,6 @@ public class KafkaConsumerConfig {
         // ✅ Limita los paquetes confiables (mejor que "*")
         config.put(JsonDeserializer.TRUSTED_PACKAGES,
                 "com.users.UsersMicroservice.kafka.dto");
-
-
-        /*
-         * It indicates that type headers (such as __TypeId__) that the producer might have included should not be
-         * relied upon. Instead, the configured default type (FollowRequestEvent) will be used, which prevents errors
-         * if the headers do not match or are missing.
-         */
-        //config.put(JsonDeserializer.USE_TYPE_INFO_HEADERS, false); // ✅ Ignora los headers de tipo del producer
 
         /*
          * No specified type, it gets resolved by headers
@@ -100,6 +91,14 @@ public class KafkaConsumerConfig {
         ConcurrentKafkaListenerContainerFactory<String, Object> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
+
+
+        // ✅ Manages errors so the service doesn't fall
+        factory.setCommonErrorHandler(new DefaultErrorHandler(
+                new DeadLetterPublishingRecoverer(kafkaTemplate),
+                new FixedBackOff(2000L, 3) // 3 reintentos, 2s entre ellos
+        ));
+
         return factory;
     }
 }
