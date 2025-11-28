@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -26,11 +27,12 @@ public class FollowersService {
     private final FollowEventProducer followEventProducer;
     private final FollowersRepository followersRepository;
 
+    @Transactional
     public boolean followRequest(UsernameRequestDTO usernameRequestDTO, Authentication authentication){
 
-        //Comprobar que no existe ya la solicitud
-        String followedUsername = usernameRequestDTO.getUsername();
+        //Comprobar que no existe ya la solicitud (Por hacer)
 
+        String followedUsername = usernameRequestDTO.getUsername();
         if (followedUsername==null || followedUsername.isBlank()){
             throw new RuntimeException("Invalid username");
         }
@@ -38,7 +40,19 @@ public class FollowersService {
         CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
         UUID followerId = details.getId();
 
+
         UUID followedUserId = userServiceClient.getUserId(followedUsername);
+        if (followerId.equals(followedUserId)) {
+            throw new IllegalArgumentException("Cannot follow yourself");
+        }
+
+        // Comprobar duplicados - usar constraint unique en BD + manejo de excepción
+        boolean alreadyExists = followRequestRepository
+                .existsByFollowerIdAndFollowedId(followerId, followedUserId);
+
+        if (alreadyExists) {
+            return false; // O lanzar excepción según tu lógica
+        }
 
         FollowRequest followRequest = FollowRequest.builder()
                                 .followerId(followerId)
