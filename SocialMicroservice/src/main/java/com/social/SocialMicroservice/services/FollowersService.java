@@ -1,17 +1,20 @@
 package com.social.SocialMicroservice.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.social.SocialMicroservice.client.UserServiceClient;
 import com.social.SocialMicroservice.dto.AnswerFollowRequestsDTO;
 import com.social.SocialMicroservice.dto.UsernameRequestDTO;
-import com.social.SocialMicroservice.entities.FollowRequest;
-import com.social.SocialMicroservice.entities.FollowStatus;
-import com.social.SocialMicroservice.entities.Followers;
+import com.social.SocialMicroservice.entities.*;
 import com.social.SocialMicroservice.exceptions.*;
+import com.social.SocialMicroservice.kafka.dto.FollowRequestEvent;
 import com.social.SocialMicroservice.kafka.producer.FollowEventProducer;
 import com.social.SocialMicroservice.repositories.FollowRequestRepository;
 import com.social.SocialMicroservice.repositories.FollowersRepository;
+import com.social.SocialMicroservice.repositories.OutboxEventRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +29,8 @@ public class FollowersService {
     private final UserServiceClient userServiceClient;
     private final FollowEventProducer followEventProducer;
     private final FollowersRepository followersRepository;
+    private final ApplicationEventPublisher eventPublisher;
+    private final OutboxEventRepository outboxEventRepository;
 
     @Transactional
     public boolean followRequest(UsernameRequestDTO usernameRequestDTO, Authentication authentication){
@@ -61,13 +66,22 @@ public class FollowersService {
                                 .build();
 
         followRequestRepository.save(followRequest);
-        // Kafka event publication
-        followEventProducer.publishFollowRequestEvent(followRequest);
+
+
+        // We save the entityFollowRequest into the OutboxEvent table so the event can be processed by OutboxProcessor
+        OutboxEvent outboxEvent = new OutboxEvent();
+        outboxEvent.setId(UUID.randomUUID());
+        outboxEvent.setAggregateId(followRequest.getId());
+        outboxEvent.setEventType("FOLLOW_REQUEST_CREATED");
+        outboxEvent.setPayload(toJson(followRequest));
+        outboxEvent.setStatus(EventStatus.PENDING);
+
+        outboxEventRepository.save(outboxEvent);
 
         return true;
     }
 
-    //Comprobar
+    @Transactional
     public String answerRequest(AnswerFollowRequestsDTO answer, Authentication authentication){
         //Que la solicitud sea borrada tras ser aceptada
 
@@ -98,13 +112,31 @@ public class FollowersService {
                     .build();
 
             Followers savedFollower = followersRepository.save(newFollower);
-            followEventProducer.publisFollowAnswerEvent(savedFollower);
+
+            // We save the entityFollowRequest into the OutboxEvent table so the event can be processed by OutboxProcessor
+            OutboxEvent outboxEvent = new OutboxEvent();
+            outboxEvent.setId(UUID.randomUUID());
+            outboxEvent.setAggregateId(newFollower.getId());
+            outboxEvent.setEventType("FOLLOW_ANSWERED");
+            outboxEvent.setPayload(toJson(newFollower));
+            outboxEvent.setStatus(EventStatus.PENDING);
+
+            outboxEventRepository.save(outboxEvent);
 
         }else if (!answer.isAnswer()){
             followRequest.setStatus(FollowStatus.REJECTED);
+            followRequestRepository.save(followRequest);
         }
 
         return "The follow request has been " + followRequest.getStatus();
+    }
+
+    private String toJson(Object obj) {
+        try {
+            return new ObjectMapper().writeValueAsString(obj);
+        } catch (Exception e) {
+            throw new RuntimeException("Error serializando a JSON: " + e.getMessage(), e);
+        }
     }
 
 }
