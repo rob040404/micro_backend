@@ -31,6 +31,7 @@ public class FollowersService {
     private final FollowersRepository followersRepository;
     private final ApplicationEventPublisher eventPublisher;
     private final OutboxEventRepository outboxEventRepository;
+    private final UsersCacheService usersCacheService;
 
     @Transactional
     public boolean followRequest(UsernameRequestDTO usernameRequestDTO, Authentication authentication){
@@ -46,7 +47,9 @@ public class FollowersService {
         UUID followerId = details.getId();
 
 
-        UUID followedUserId = userServiceClient.getUserId(followedUsername);
+        // We call the consumer through this service so we can use cached functionalities.
+        UUID followedUserId = usersCacheService.getUserIdByUsername(followedUsername);
+
         if (followerId.equals(followedUserId)) {
             throw new IllegalArgumentException("Cannot follow yourself");
         }
