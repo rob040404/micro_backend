@@ -15,6 +15,7 @@ import com.users.UsersMicroservice.repositories.UserListRepository;
 import com.users.UsersMicroservice.security.PasswordEncoderConfig;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -121,10 +122,12 @@ public class UserEntityService extends BaseService<UserEntity, UUID, UserEntityR
         return userLoginDTO;
     }
 
+    @Cacheable(value = "userIds", key = "#username")
     public UUID sendUserId(String username){
         UserEntity user = userEntityRepository.findByUsername(username).
                 orElseThrow(()-> new UserNotFoundException("Did not find user with username " + username));
-        log.trace("User id: {}", user.getId());
+        log.trace("User id: {} retrieved form database", user.getId());
+        log.info("Cache MISS - Fetching user ID for username: {}", username);
         return user.getId();
     }
 
