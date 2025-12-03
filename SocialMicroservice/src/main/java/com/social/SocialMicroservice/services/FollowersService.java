@@ -14,6 +14,7 @@ import com.social.SocialMicroservice.repositories.FollowersRepository;
 import com.social.SocialMicroservice.repositories.OutboxEventRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.UUID;
 
 @Service
-@AllArgsConstructor @Getter
+@AllArgsConstructor @Getter @Log4j2
 public class FollowersService {
 
     private final FollowRequestRepository followRequestRepository;
@@ -31,6 +32,7 @@ public class FollowersService {
     private final FollowersRepository followersRepository;
     private final ApplicationEventPublisher eventPublisher;
     private final OutboxEventRepository outboxEventRepository;
+    private final UsersCacheService usersCacheService;
 
     @Transactional
     public boolean followRequest(UsernameRequestDTO usernameRequestDTO, Authentication authentication){
@@ -46,7 +48,9 @@ public class FollowersService {
         UUID followerId = details.getId();
 
 
-        UUID followedUserId = userServiceClient.getUserId(followedUsername);
+        // We call the consumer through this service so we can use cached functionalities.
+        UUID followedUserId = getUserIdByUsername(followedUsername);
+
         if (followerId.equals(followedUserId)) {
             throw new IllegalArgumentException("Cannot follow yourself");
         }
@@ -139,4 +143,14 @@ public class FollowersService {
         }
     }
 
+    /**
+     * We cannot call directly the consumer of UsersMicroservice if we want to do the caching
+     * @param username
+     * @return
+     */
+    public UUID getUserIdByUsername(String username) {
+        //We need the method below to ensure UUID or null is retuned, but never String
+        String uuidStr = usersCacheService.getUserIdByUsernameAsString(username);
+        return uuidStr != null ? UUID.fromString(uuidStr) : null;
+    }
 }

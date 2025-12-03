@@ -47,4 +47,6 @@ public class UserServiceClient {
             throw new NoUserWithSuchUserNameException(username);
         }
     }
+
+
 }
