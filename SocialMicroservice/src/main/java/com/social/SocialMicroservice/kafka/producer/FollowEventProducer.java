@@ -7,6 +7,7 @@ import com.social.SocialMicroservice.kafka.dto.FollowRequestEvent;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
+import lombok.extern.log4j.Log4j2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,10 +18,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.concurrent.CompletableFuture;
 
-@Service
+@Service @Log4j2
 public class FollowEventProducer {
 
-    private static final Logger log = LoggerFactory.getLogger(FollowEventProducer.class);
     private static final String KAFKA_PRODUCER = "kafkaProducer";
 
     //The KafkaTemplate created in configuration to send messages to topics using the configured fabric
