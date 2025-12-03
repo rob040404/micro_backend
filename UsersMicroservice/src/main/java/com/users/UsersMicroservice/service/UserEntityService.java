@@ -15,6 +15,7 @@ import com.users.UsersMicroservice.repositories.UserListRepository;
 import com.users.UsersMicroservice.security.PasswordEncoderConfig;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.modelmapper.internal.bytebuddy.implementation.bytecode.assign.TypeCasting;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -45,6 +46,7 @@ public class UserEntityService extends BaseService<UserEntity, UUID, UserEntityR
     private UserEntityRepository userEntityRepository;
     private UserListRepository userListRepository;
     private BookListRepository bookListRepository;
+    private final CacheService cacheService;
 
 	/**
 	 * Nos permite buscar un usuario por su nombre de usuario. LLama al método de BaseService
@@ -122,15 +124,18 @@ public class UserEntityService extends BaseService<UserEntity, UUID, UserEntityR
         return userLoginDTO;
     }
 
-    @Cacheable(value = "userIds", key = "#username")
-    public UUID sendUserId(String username){
-        UserEntity user = userEntityRepository.findByUsername(username).
-                orElseThrow(()-> new UserNotFoundException("Did not find user with username " + username));
-        log.trace("User id: {} retrieved form database", user.getId());
-        log.info("Cache MISS - Fetching user ID for username: {}", username);
-        return user.getId();
-    }
 
+    public UUID sendUserId(String username){
+        String uuidStr = cacheService.sendUserIdByUsernameAsString(username);
+
+        if(uuidStr != null){
+            return UUID.fromString(uuidStr);
+        }else{
+            throw new RuntimeException("Response from redis is null");
+        }
+
+
+    }
 
     public String createList(CreateListRequestDTO newList, Authentication authentication){
 

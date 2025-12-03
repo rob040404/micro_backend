@@ -19,12 +19,23 @@ public class UsersCacheService {
 
     private final UserServiceClient userServiceClient;
 
+    /**
+     * We implement this intermedium method because when the answer comes from Redis it returns String and when it doesn't
+     * returns UUID. So we need to ensure it returns UUID or null, but never String
+     * @param username
+     * @return
+     */
     @Cacheable(value = "userIds", key = "#username", unless = "#result == null")
-    public UUID getUserIdByUsername(String username) {
+    public String getUserIdByUsernameAsString(String username) {
         log.info("Cache MISS - Fetching user ID from UsersMicroservice for: {}", username);
-        return userServiceClient.getUserId(username);
+        UUID uuid = userServiceClient.getUserId(username);
+        return uuid != null ? uuid.toString() : null;
     }
 
+
+
+
+    //Do the same here
     @CacheEvict(value = "userIds", key = "#username")
     public void evictUserCache(String username) {
         log.info("Evicting cache for username: {}", username);
