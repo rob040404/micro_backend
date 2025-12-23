@@ -110,7 +110,6 @@ Planned and in-progress features:
 ## 📜 License (Proprietary / All Rights Reserved)
 This project is **proprietary** and **all rights are reserved**. No part of this codebase may be used, copied, modified, merged, published, distributed, sublicensed, or sold without explicit written permission from the author.
 
-```
 Copyright (c) 2025 Robert Kovachev
 All Rights Reserved.
 
