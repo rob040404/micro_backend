@@ -3,7 +3,21 @@
 A social platform where users can rate books, search by taste, get recommendations, create lists, and interact socially — built with a modern microservices architecture using Java, Spring Boot, and cloud‑ready infrastructure.
 
 ---
+## 📌 Purpose of this repository
 
+This project is published as a **portfolio showcase**.
+
+It demonstrates:
+- Backend architecture with Spring Boot (JWT, Security, REST APIs)
+- Frontend with Angular
+- Database design with MySQL
+- Authentication & authorization flows
+- Clean code and layered architecture
+
+⚠️ This is **proprietary software**.
+The code is provided for **review purposes only**.
+
+---
 ## 🌟 Overview
 BPlot is the backend of a full social reading platform. It provides secure authentication, book management, user profiles, social features, ratings, and scalable microservices prepared for cloud deployment. This backend is written entirely in **Java 17**, using **Spring Boot 3** and modern distributed‑systems patterns.
 
