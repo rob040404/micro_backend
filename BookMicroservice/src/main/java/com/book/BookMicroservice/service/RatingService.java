@@ -88,7 +88,9 @@ public class RatingService {
         book.setNumVotes(numVotes);
         bookRepository.save(book);
 
-        return ratingDTOConverter.fromRatingToResponseDTO(savedRating);
+        RatingResponseDTO responseDTO = ratingDTOConverter.fromRatingToResponseDTO(savedRating);
+
+        return  responseDTO;
     }
 
     /**
