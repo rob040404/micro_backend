@@ -61,8 +61,8 @@ class RatingServiceTest {
                 ratingRepository,
                 bookRepository,
                 reviewDTOConverter,
-                ratingDTOConverter,
-                userDetails
+                ratingDTOConverter
+
         );
 
     }
@@ -85,39 +85,37 @@ class RatingServiceTest {
         Book book = new Book(
                 1L, "Los Miserables", "Victor Hugo", "es", "desc",
                 1200, 1862, "Novela", "Drama", "img.png",
-                0.0, 0, LocalDateTime.now()
+                8.0, 1, LocalDateTime.now()
         );
 
-        Rating existingRating = new Rating(ratingId, userId, "Roy", book, 5, "Great book", 0, LocalDateTime.now());
-        Rating updatedRating = new Rating(ratingId, userId, "Roy", book, 8, "Great book", 0, LocalDateTime.now());
+        Rating existingRating = new Rating(ratingId, userId, "Roy", book, 8, "Great book", 0, LocalDateTime.now());
+        Rating updatedRating = new Rating(ratingId, userId, "Roy", book, 9, "Great book", 0, LocalDateTime.now());
 
         RatingResponseDTO expectedResponse = new RatingResponseDTO();
         expectedResponse.setRatingDTO(8);
         expectedResponse.setBookIdDTO(bookId);
 
         // ---------- Authentication Mock----------
-        Mockito.when(authentication.getPrincipal()).thenReturn(userDetails);
+        Mockito.when(authentication.getDetails()).thenReturn(userDetails);
         Mockito.when(userDetails.getId()).thenReturn(userId);
-        Mockito.when(userDetails.getUsername()).thenReturn("pepe");
+        Mockito.when(userDetails.getUsername()).thenReturn("roy");
 
         // ---------- Repository Mock ----------
         Mockito.when(bookRepository.findById(bookId)).thenReturn(Optional.of(book));
-        Mockito.when(bookRepository.findById(any(Long.class))).thenReturn(Optional.of(book)); //For any Long (id)
         Mockito.when(ratingRepository.findByUserIdAndBook(userId, book)).thenReturn(Optional.of(existingRating));
-        Mockito.when(ratingRepository.findByUserIdAndBook(userId, book)).thenReturn(Optional.empty());
         Mockito.when(ratingRepository.save(existingRating)).thenReturn(updatedRating);
 
         // ---------- Mock of votes in order to do the calculation of the avg anf num of votes ----------
         // Mock data
-        Double expectedAvg = 8.5;
-        Long expectedCount = 2L;
-        // Mock of the result
-        Object[] mockResult = new Object[]{ expectedAvg, expectedCount };
-        Mockito.when(ratingRepository.findAverageAndCountByBookId(book.getId())).thenReturn(mockResult);
+        Double expectedAvg = 9.0;
+        Long expectedCount = 1L;
+        Mockito.when(ratingRepository.findAverageRatingByBookId(book.getId())).thenReturn(expectedAvg);
+        Mockito.when(ratingRepository.countRatingsByBookId(book.getId())).thenReturn(expectedCount);
 
         // ---------- Mock of DTO Conversion----------
         RatingResponseDTO expectedDTO = new RatingResponseDTO();
         expectedDTO.setRatingDTO(8);
+        expectedDTO.setBookIdDTO(1L);
         Mockito.when(ratingDTOConverter.fromRatingToResponseDTO(updatedRating)).thenReturn(expectedDTO);
 
         // Just for development: ResponseEntity<?> response = ratingService.vote(voteDTO, authentication);
@@ -137,25 +135,15 @@ class RatingServiceTest {
         System.out.println("Direct mock call result: " + testCall);
 
         // ---------- Act ----------
-        RatingResponseDTO response = ratingService.vote(voteDTO, authentication);
-        //int numVotes = ratingService.calculateNumVotes(book);
-        //double avgRating = ratingService.calculateAverageRating(book);
-        Object[] result = ratingRepository.findAverageAndCountByBookId(book.getId());
-        Double avgRating = (Double) result[0];
-        Long numVotesLong = (Long) result[1];
-        Integer numVotes = numVotesLong != null ? numVotesLong.intValue() : null;
-
-        RatingResponseDTO ratingResponseDTO = ratingDTOConverter.fromRatingToResponseDTO(updatedRating);
-
-        // ---------- Verifications ----------
-
         // When
         RatingResponseDTO finalResult = ratingService.vote(voteDTO, authentication);
 
         // Then
-        assertThat(finalResult).isEqualTo(expectedResponse);
+        assertThat(finalResult.getRatingDTO()).isEqualTo(expectedResponse.getRatingDTO());
+        assertThat(finalResult.getBookIdDTO()).isEqualTo(expectedResponse.getBookIdDTO());
 
 
+        // ---------- Verifications ----------
         Mockito.verify(ratingRepository, Mockito.times(1)).findByUserIdAndBook(userId, book);
         Mockito.verify(ratingRepository, Mockito.times(1)).save(existingRating);
         Mockito.verify(bookRepository, Mockito.times(1)).save(book);

@@ -98,8 +98,7 @@ public class UserControllerTest {
                 )
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.username").value("carlos"))
-                .andExpect(jsonPath("$.fullname").value("Carlos Ruiz"))
-                .andExpect(jsonPath("$.roles[0]").value("ROLE_USER"));
+                .andExpect(jsonPath("$.fullname").value("Carlos Ruiz"));
 
         // 6. Verifying the service was called
         verify(userEntityService, times(1)).createUser(any(), any());

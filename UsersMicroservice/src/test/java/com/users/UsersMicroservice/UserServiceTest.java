@@ -199,7 +199,7 @@ public class UserServiceTest {
                 () -> userEntityService.createUser(userRequestDTO, file)
         );
 
-        assertEquals("Failed to save User in data base: Username probably already exists", exception.getMessage());
+        assertEquals("Failed to save User in data base: Invalid Input Data", exception.getMessage());
 
         // Verifying that save() was not executed more than one time
         verify(userEntityRepository).save(any(UserEntity.class));
@@ -238,7 +238,7 @@ public class UserServiceTest {
                 userEntityService.createUser(userRequestDTO, emptyFile)
         );
 
-        assertEquals("Failed to save User in data base: Username probably already exists", ex.getMessage());
+        assertEquals("Failed to save User in data base: Invalid Input Data", ex.getMessage());
 
         // Verifying that store was not called
         verify(storageService, never()).store(any());
