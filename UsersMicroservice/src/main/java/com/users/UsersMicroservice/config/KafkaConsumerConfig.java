@@ -1,6 +1,5 @@
 package com.users.UsersMicroservice.config;
 
-import com.users.UsersMicroservice.kafka.dto.FollowRequestEvent;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,12 +18,14 @@ import org.springframework.util.backoff.FixedBackOff;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Configuration class for kafka's consumer
+ */
 @Configuration
 public class KafkaConsumerConfig {
 
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServers;
-
 
     // Inyecta tu KafkaTemplate (debe estar definido como @Bean en otra config)
     private final KafkaTemplate<String, Object> kafkaTemplate;
@@ -61,24 +62,28 @@ public class KafkaConsumerConfig {
         config.put(ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS, JsonDeserializer.class);
 
 
-        // ✅ HABILITA el uso de los headers de tipo (enviados por el productor)
+        // Enable type of info from headers (sent by producer)
         config.put(JsonDeserializer.USE_TYPE_INFO_HEADERS, true);
 
-        // ✅ Mapea el alias "followRequest" al tipo LOCAL en este microservicio
+        // Map alias "followRequest" to concrete event classes
         config.put(JsonDeserializer.TYPE_MAPPINGS,
-                "followRequest:com.users.UsersMicroservice.kafka.dto.FollowRequestEvent," +
-                        "followAccepted:com.users.UsersMicroservice.kafka.dto.FollowAnsweredEvent");
+                "followRequest:com.users.UsersMicroservice.kafka.dto.FollowRequestEventRequestDTO," +
+                        "followAccepted:com.users.UsersMicroservice.kafka.dto.FollowAnsweredEventRequestDTO");
 
-        // ✅ Limita los paquetes confiables (mejor que "*")
+        // Restrict trusted packages (security best practice)
         config.put(JsonDeserializer.TRUSTED_PACKAGES,
                 "com.users.UsersMicroservice.kafka.dto");
 
         /*
          * No specified type, it gets resolved by headers
          */
-        return new DefaultKafkaConsumerFactory<>(config,
+        return new DefaultKafkaConsumerFactory<>(config);
+
+        /*return new DefaultKafkaConsumerFactory<>(config,
                 new StringDeserializer(),
                 new JsonDeserializer<>());
+
+         */
     }
 
     /*
@@ -88,15 +93,17 @@ public class KafkaConsumerConfig {
 
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, Object> kafkaListenerContainerFactory() {
+
         ConcurrentKafkaListenerContainerFactory<String, Object> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
+
         factory.setConsumerFactory(consumerFactory());
 
 
-        // ✅ Manages errors so the service doesn't fall
+        // Retry + dead-letter on failure
         factory.setCommonErrorHandler(new DefaultErrorHandler(
                 new DeadLetterPublishingRecoverer(kafkaTemplate),
-                new FixedBackOff(2000L, 3) // 3 reintentos, 2s entre ellos
+                new FixedBackOff(2000L, 3) // 3 retries, 2s between them
         ));
 
         return factory;

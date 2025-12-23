@@ -7,18 +7,24 @@ import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 
+/**
+ * Standard error response structure for REST APIs.
+ * Used by global exception handlers to return consistent error formats.
+ */
 @Setter
 @Getter
-@RequiredArgsConstructor
-@NoArgsConstructor
 public class ApiError {
 
-	
-	@NonNull
-	private HttpStatus status;
-	@JsonFormat(shape = Shape.STRING, pattern = "dd/MM/yyyy hh:mm:ss")
-	private LocalDateTime date = LocalDateTime.now();
-	@NonNull
-	private String message;
-	
+    @NonNull
+    private final HttpStatus status;
+    @JsonFormat(shape = Shape.STRING, pattern = "dd/MM/yyyy hh:mm:ss")
+    private final LocalDateTime timestamp;
+    @NonNull
+    private final String message;
+
+    public ApiError(HttpStatus status, String message) {
+        this.status = status;
+        this.timestamp = LocalDateTime.now(); //Registers the time when the exception is created
+        this.message = message;
+    }
 }

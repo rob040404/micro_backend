@@ -1,17 +1,18 @@
 package com.book.BookMicroservice.dto.response;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Clase para recuperar el email del User para hacer el rating
+ * Class to retrieve the User's email for rating
  */
-
 @Getter
 @Setter
 @AllArgsConstructor
-public class ResponseUserDTO {
+public class UserResponseDTO {
 
+    @NotBlank
     private String username;
 }

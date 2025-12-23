@@ -1,26 +1,38 @@
 package com.users.UsersMicroservice.kafka.consumer;
 
-import com.users.UsersMicroservice.kafka.dto.FollowAnsweredEvent;
-import com.users.UsersMicroservice.kafka.dto.FollowRequestEvent;
+import com.users.UsersMicroservice.kafka.dto.FollowAnsweredEventRequestDTO;
+import com.users.UsersMicroservice.kafka.dto.FollowRequestEventRequestDTO;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
-
+/**
+ * Kafka consumer class. Receives the messages sent fron producers of other microservices
+ * Still in development
+ */
 @Service
+@Log4j2
 public class FollowEventConsumer {
 
-    @KafkaListener(topics = "${topic.follow-requests}", groupId = "follow-users-group")
-    public void onFollowRequest(FollowRequestEvent event) {  // ✅ Ahora recibe el objeto tipado
-        System.out.println("Follow request from " + event.followerId() + " to " + event.followedId());
-        System.out.println("Status: " + event.status());
-        System.out.println("Created at: " + event.createdAt());
-
-        // Aquí puedes procesar la notificación
+    /**
+     * Method that detects follow request messages
+     * @param event
+     */
+    @KafkaListener(topics = "${topic.follow-requests}", groupId = "${group.users}")
+    public void onFollowRequest(FollowRequestEventRequestDTO event) {
+        log.info("Follow request: followerId={}, followedId={}, status={}, createdAt={}",
+                event.followerId(), event.followedId(), event.status(), event.createdAt());
+        //In development: here we must call a service to process the business logic.
+        //followService.processFollowRequest(event);
     }
 
-    @KafkaListener(topics = "${topic.follow-answers}", groupId = "follow-users-group")
-    public void onFollowAnswer(FollowAnsweredEvent event){
-        System.out.println(event.followedId() +" has accepted "+ event.followerId() + " since: " + event.followedSince());
+    /**
+     * A method thar detects answers to follow request messages
+     * @param event
+     */
+    @KafkaListener(topics = "${topic.follow-answers}", groupId = "${group.users}")
+    public void onFollowAnswer(FollowAnsweredEventRequestDTO event){
+        log.info("{} has accepted {} since {}", event.followedId(), event.followerId(), event.followedSince());
+        //followService.processAnswerRequest(event);
     }
 }

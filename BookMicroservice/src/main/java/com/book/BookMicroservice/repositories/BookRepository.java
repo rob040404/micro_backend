@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import java.awt.print.Pageable;
 import java.util.List;
 
+
 public interface BookRepository extends JpaRepository<Book, Long> {
 
 	//Poner métodos de búsqueda útiles según hagan falta

@@ -7,6 +7,8 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,12 +25,18 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-//Lo mismo que JWTFilter en el micro security
+/**
+ * This class filters the api key provided in the header if the petition is coming from other microservice or the JWT
+ * token if it's coming from the frontend and user identification is needed.
+ *
+ * If it is correct and is coming from the right header the request will pass the filter.
+ */
 @Component
+@Log4j2 @RequiredArgsConstructor
 public class ApiFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private JWTUtil jwtUtil;
+    private final AuthenticationService authenticationService;
+    private final JWTUtil jwtUtil;
 
     //list of paths that don't need api key identification
     private static final List<String> PUBLIC_PATHS = List.of(
@@ -51,66 +59,76 @@ public class ApiFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain
     ) throws ServletException, IOException {
-        //Comprobar por si acaso, pero debería funcionar
+
+
         String path = request.getRequestURI();
         String authHeader = request.getHeader("Authorization");
         String apiKeyHeader = request.getHeader("users_apikey");
         String token = null;
 
-        // 🔹 Dejar pasar preflight OPTIONS
+        //Allowing preflight OPTIONS
         if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
             response.setStatus(HttpServletResponse.SC_OK);
             return;
         }
 
-        // ✅ Excluir rutas públicas (correctamente)
+        // Excluding all public paths
         if (PUBLIC_PATHS.stream().anyMatch(pattern -> pathMatcher.match(pattern, path))) {
             filterChain.doFilter(request, response);
             return;
         }
 
         try{
-
             if(authHeader!=null && authHeader.startsWith("Bearer ")){
                 token = authHeader.substring(7);
-                if(jwtUtil.isTokenValid(token) ){
-                    String email = jwtUtil.extractEmail(token);
-                    UUID userId = UUID.fromString(jwtUtil.extractId(token)) ;
-                    String username = jwtUtil.extractUsername(token);
-                    List<String> roles = jwtUtil.extractRoles(token); // nueva función
-
-                    // Convertir roles a GrantedAuthority
-                    List<GrantedAuthority> authorities = roles.stream()
-                            .map(role -> new SimpleGrantedAuthority("ROLE_" + role)) // Spring espera "ROLE_XXX"
-                            .collect(Collectors.toList());
-
-                    // Creamos un Authentication "ficticio" (sin password, solo para contexto)
-                    UsernamePasswordAuthenticationToken authentication =
-                            new UsernamePasswordAuthenticationToken(
-                                    email, null, authorities);
-
-                    // Guardar userId en detalles. Luego lo extraemos (Long) details.get("userId")
-                    authentication.setDetails(new CustomUserDetails(userId, username, email, authorities));
-
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
-                }
+                authenticateWithJwt(token, request);
             }else if (apiKeyHeader != null){
-                APIKeyAuthentication authentication = AuthenticationService.getAuthentication((HttpServletRequest) request); //redundante
+                APIKeyAuthentication authentication = authenticationService.getAuthentication(request);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }else{
+                log.warn("Token or ApiKey Validation validation ware unsuccessful");
+                log.warn("No authentication provided for path: {}", path);
                 throw new NoApiKeyOrJwtException();
             }
-        } catch (Exception e) {
-            HttpServletResponse httpServletResponse = (HttpServletResponse) response; //redundante
-            httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            httpServletResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            PrintWriter writer = httpServletResponse.getWriter();
-            writer.print(e.getMessage());
-            writer.flush();
-            writer.close();
+        } catch (Exception e) { //We use PrintWritter and not personalized exceptions because ControllerAdvise would not get it
+            log.warn("Authentication failed for path: {}", path, e);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            try (PrintWriter writer = response.getWriter()) {
+                writer.print("{\"error\": \"Invalid or missing authentication credentials\"}");
+                writer.flush();
+            }
+            return ;
         }
 
         filterChain.doFilter(request, response);
 
     }
+
+    private void authenticateWithJwt(String token, HttpServletRequest request){
+        if(jwtUtil.isTokenValid(token) ){
+            String email = jwtUtil.extractEmail(token);
+            UUID userId = UUID.fromString(jwtUtil.extractId(token)) ;
+            String username = jwtUtil.extractUsername(token);
+            List<String> roles = jwtUtil.extractRoles(token); // nueva función
+
+            // Convert roles into GrantedAuthority
+            List<GrantedAuthority> authorities = roles.stream()
+                    .map(role -> new SimpleGrantedAuthority("ROLE_" + role)) // Spring espera "ROLE_XXX"
+                    .collect(Collectors.toList());
+
+            // We create a "ficticios" Authentication (Without password, only for contxt)
+            UsernamePasswordAuthenticationToken authentication =
+                    new UsernamePasswordAuthenticationToken(
+                            email, null, authorities);
+
+            // We save userId into Details. After that we extract it with details.get("userId").
+            authentication.setDetails(new CustomUserDetails(userId, username, email, authorities));
+
+            //We set the authentication into the context
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
+    }
+
+
 }

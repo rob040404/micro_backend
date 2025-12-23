@@ -4,11 +4,19 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Entity @Table(name = "followers") @Builder @Getter @Setter @AllArgsConstructor @NoArgsConstructor
+/**
+ * Followers entity. In this table we store the following relationships. Who follows who.
+ */
+@Entity
+@Table(name = "followers")
+@EntityListeners(AuditingEntityListener.class)
+@Builder @Getter @Setter @AllArgsConstructor @NoArgsConstructor
 public class Followers {
 
     @Id
@@ -22,9 +30,9 @@ public class Followers {
     @Column(name = "followed_id", nullable = false)
     private UUID followedId;
 
-    @CreationTimestamp
+    @CreatedDate
     @Column(name = "followed_since")
-    private LocalDateTime followedSince;
+    private Instant followedSince;
 
 
 }

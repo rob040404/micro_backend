@@ -10,6 +10,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Configuration class where we implement the CORS so the APIs can receive requests from the defined frontend sources
+ */
 @Configuration
 public class Cors {
 
@@ -18,12 +21,12 @@ public class Cors {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("*")); // o especifica "bplot_apikey", "Content-Type"
+        configuration.setAllowedHeaders(Arrays.asList("*")); // or specify "bplot_apikey", "Content-Type"
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/user/auth/**", configuration); // mismo path que en tu WebMvcConfigurer
+        source.registerCorsConfiguration("/user/auth/**", configuration);
         return source;
     }
 

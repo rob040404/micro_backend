@@ -7,26 +7,27 @@ import org.springframework.security.core.GrantedAuthority;
 import java.util.Collection;
 
 /**
- * AbstractAuthenticationToken es una clase base de Spring Security para representar objetos de autenticación.
- * Sus implementaciones se guardan en el SecurityContext una vez que el usuario ha sido autenticado.
+ * Class that sets the authentication in the SecurityContext.
+ * AbstractAuthenticationToken is a Spring Security base class for representing authentication objects.
+ * Its implementations are stored in the SecurityContext once the user has been authenticated.
+ *
+ * This token is created only after the provided API key has been validated
+ * against the expected secret, and is then stored in the SecurityContext
+ * to authorize subsequent requests.
  */
 public class APIKeyAuthentication extends AbstractAuthenticationToken {
 
-    //Guarda la API Key con la que se autenticó el cliente. Ese valor será el “principal” (es decir, la identidad).
-    //"dslndksajdkl"
-    //private String apiKey= "AjskNKlnklnNLnL3234kn07283ANhsbe092d3mksmknNNHHJ3ja81m323nnzaZAAL21dmsk";
 
-    @Value("${app.security.blot.apikey}")
-    private final String apiKey;
+    private final String clientProvidedApiKey;
 
-    //Cuando el token está validado entra aquí. El grand auth puede generar errores, etc.
-    public APIKeyAuthentication(String apiKey, Collection <? extends GrantedAuthority> authorities){
+    //When the api key in ApiKeyFilter is validated authentication is set (true). GrantedAuthority can generate errors, etc.
+    public APIKeyAuthentication(String clientProvidedApiKey, Collection <? extends GrantedAuthority> authorities){
 
         super (authorities);
 
-        this.apiKey=apiKey;
+        this.clientProvidedApiKey = clientProvidedApiKey;
 
-        setAuthenticated(true);
+        setAuthenticated(true); //Only true if validation success
     }
 
     @Override
@@ -37,6 +38,6 @@ public class APIKeyAuthentication extends AbstractAuthenticationToken {
     //Nos da la autenticación a la API
     @Override
     public Object getPrincipal(){
-        return apiKey;
+        return clientProvidedApiKey;
     }
 }

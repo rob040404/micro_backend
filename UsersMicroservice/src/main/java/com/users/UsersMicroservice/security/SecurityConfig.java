@@ -2,6 +2,7 @@ package com.users.UsersMicroservice.security;
 
 import com.users.UsersMicroservice.erroconfig.ApiError;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -18,18 +19,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfigurationSource;
 
 
+/**
+ * Security Configuration Class
+ */
 @Configuration
 @EnableWebSecurity
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SecurityConfig {
 
-    @Autowired
     private final CorsConfigurationSource corsConfigurationSource;
-
-    @Autowired
-    private final JwtRequestFilter jwtRequestFilter;
-
-    @Autowired
     private  final ApiFilter apiFilter;
 
     @Bean
@@ -49,21 +47,21 @@ public class SecurityConfig {
                             "/swagger-resources/**",
                             "/v2/api-docs/**"
                         ).permitAll()
-                        .requestMatchers(HttpMethod.OPTIONS, "/user/**").permitAll()  // <-- esto es clave
-                        //.requestMatchers(HttpMethod.POST, "/user/auth/login").permitAll()
+                        // Public endpoints
+                        .requestMatchers(HttpMethod.OPTIONS, "/user/**").permitAll()
                         .requestMatchers(HttpMethod.POST,"/user/register").permitAll()
                         .requestMatchers(HttpMethod.GET, "/files/**" ).permitAll()
+                        // Protected endpoints (require authentication + roles)
                         .requestMatchers(HttpMethod.POST, "/user/auth/newlist").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.POST, "/user/auth/addBookToList").hasAnyRole("USER", "ADMIN")
+                        // Everything else requires authentication
                         .anyRequest().authenticated()
 
                 )
                 .addFilterBefore(apiFilter, UsernamePasswordAuthenticationFilter.class)
-                //.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-
                 .httpBasic(httpBasic -> httpBasic.disable())
                 .formLogin(form -> form.disable());
 
@@ -71,7 +69,7 @@ public class SecurityConfig {
     }
 
 
-    // Desactiva la autenticación por defecto (no hay login aquí)
+    // Disables authentication by default. We don't have login in this microservice
     @Bean
     public AuthenticationManager authenticationManager(
             AuthenticationConfiguration config) throws Exception {

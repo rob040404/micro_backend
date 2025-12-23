@@ -2,10 +2,7 @@ package com.users.UsersMicroservice.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,28 +12,25 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Entity
 @Table(name="users")
-@EntityListeners(AuditingEntityListener.class) //Eso sirve para que funcione createdAt, con la fecha de la creación
-@Data
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Builder @Getter @Setter
 public class UserEntity implements UserDetails {
 
-	//Hacemos esta entidad que es como la de User, pero que usaremos para UserDetails
 	private static final long serialVersionUID = 6189678452627071360L;
 
-	//Columnas del useEntity
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false)
 	private UUID id;
-    //private Long id;
 
 	@NotBlank
 	@Column(name = "username", unique = true, nullable = false)
@@ -63,44 +57,35 @@ public class UserEntity implements UserDetails {
 
     @Column(name = "birthday")
 	private LocalDate birthday;
-	
-	/**
-	 * @ElementCollection: Indica que el atributo de la clase representa una colección de elementos no entidades, como listas de valores básicos 
-	 * (por ejemplo, Strings o números) o tipos embebidos. 
-	 * fetch = FetchType.EAGER: Especifica que la colección debe cargarse inmediatamente junto con la entidad principal (en lugar de hacerlo de forma diferida,
-	 *  como con LAZY).
-	 *  
-	 *  No se podrá eliminar un user directamante desde mysql debido a la relación con la tabla roles, pero sí con userRepository.deleteById(userId);
-	 */
 
-	@ElementCollection(fetch = FetchType.EAGER) //Como es una colección
-	@Enumerated(EnumType.STRING)	//Almacena la enumereción de la clase enum UserRole como un String
-    @NotEmpty
-	private Set<UserRole> roles;
+
+	@ElementCollection(fetch = FetchType.EAGER)
+	@Enumerated(EnumType.STRING)
+    @Builder.Default //We make roles NotNull by default, it avoids NullPointException
+	private Set<UserRole> roles = EnumSet.noneOf(UserRole.class);
 
 	@CreatedDate
     @Column(name = "createdAt")
 	private LocalDateTime createdAt;
 
-	@Builder.Default
 	private LocalDateTime lastPasswordChangeAt = LocalDateTime.now();
 
+
 	/**
-	 * Método que proporciona las autirities de este usuario. Transformamos con map el atributo roles(que está en String) a un objeto SimpleGrantedAuthority()
-	 * que es el idoneo para pasar las autorites, por lo visto. El resultados será tipo ROLE_ADMIN o ROLE_USER
-	 * Usamos .collect() porque hemos planteado que un usuario pueda tener más de un rol
+     * This method provides the user's authority. We transform the `roles` attribute (which is a String)
+     * into a `SimpleGrantedAuthority()` object using `map`, which is the appropriate object for
+     * passing authority. The result will be of type `ROLE_ADMIN` or `ROLE_USER`. We use `.collect()`
+     * because we've specified that a user can have more than one role.
 	 */
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return roles.stream().map(ur -> new SimpleGrantedAuthority("ROLE_" + ur.name())).collect(Collectors.toList());
+		return roles.stream()
+                .map(ur -> new SimpleGrantedAuthority("ROLE_" + ur.name()))
+                .collect(Collectors.toList());
 	}
-	
-	
-	
 
 	/**
-	 * No vamos a gestionar la expiración de cuentas. De hacerse, se tendría que dar
-	 * cuerpo a este método
+	 * Method that manages non-expired accounts
 	 */
 	@Override
 	public boolean isAccountNonExpired() {
@@ -108,8 +93,7 @@ public class UserEntity implements UserDetails {
 	}
 
 	/**
-	 * No vamos a gestionar el bloqueo de cuentas. De hacerse, se tendría que dar
-	 * cuerpo a este método
+	 * Method for managing blocked accounts
 	 */
 	@Override
 	public boolean isAccountNonLocked() {
@@ -117,8 +101,7 @@ public class UserEntity implements UserDetails {
 	}
 
 	/**
-	 * No vamos a gestionar la expiración de cuentas. De hacerse, se tendría que dar
-	 * cuerpo a este método
+	 * Method that manages expired accounts
 	 */
 
 	@Override
@@ -128,14 +111,22 @@ public class UserEntity implements UserDetails {
 
 	
 	/**
-	 * No vamos a gestionar el bloqueo de cuentas. De hacerse, se tendría que dar
-	 * cuerpo a este método
+	 * Method for managing enabled accounts
 	 */	
 	@Override
 	public boolean isEnabled() {
 		return true;
 	}
 
+    /**
+     * Initializes lastPasswordChangedAt before persistence. If it has to be updated do it from the service
+     */
+    @PrePersist
+    protected void onCreate() {
+        if (lastPasswordChangeAt == null) {
+            lastPasswordChangeAt = LocalDateTime.now();
+        }
+    }
 }
 
 

@@ -15,18 +15,15 @@ import com.users.UsersMicroservice.repositories.UserListRepository;
 import com.users.UsersMicroservice.security.PasswordEncoderConfig;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.modelmapper.internal.bytebuddy.implementation.bytecode.assign.TypeCasting;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -48,41 +45,31 @@ public class UserEntityService extends BaseService<UserEntity, UUID, UserEntityR
     private BookListRepository bookListRepository;
     private final CacheService cacheService;
 
-	/**
-	 * Nos permite buscar un usuario por su nombre de usuario. LLama al método de BaseService
-	 * @param username
-	 * @return
-	 */
-	public Optional<UserEntity> findUserByUsername(String username) {
-		return this.repositorio.findByUsername(username);
-	}
-	
-	public Optional<UserEntity> findUserByEmail(String email){
-		return this.repositorio.findByEmail(email);
-	}
+    /**
+     * Method for user creation that is called from the controller
+     * @param newUser UserRegistrationRequestDTO with the new user's information
+     * @param file profile picture
+     * @return UserRegistrationResponseDTO with some no sensible data that is returned to the frontend
+     */
+    public UserRegistrationResponseDTO createUser(UserRegistrationRequestDTO newUser, MultipartFile file) {
 
-
-
-    public ResponseUserDTO createUser(RequestUserRegisterDTO newUser, MultipartFile file) {
-
-        log.trace("UserEntityService - createUser - Entrando en método");
+        log.trace("UserEntityService - createUser - Accessing method");
         String urlImage = null;
         UserEntity savedUser;
 
-        if (newUser.getPassword().contentEquals(newUser.getPassword2())) {    //Si coinciden contraseña 1 con contraseña 2 (de confirmación)
+        if (Objects.equals(newUser.getPassword(), newUser.getPassword2())) {    //Both passwords should be equal
 
             if(!file.isEmpty()) {
-                log.trace("UserEntityService - createUser - Entrando en if ...");
                 String image = storageService.store(file); //It returns the name of the stored file name
-                urlImage = MvcUriComponentsBuilder            //Construimos la uri completa que vamos a almacenar en la bd
-                        .fromMethodName(FileController.class, "serveFile", image, null) //Coge la info del metodo serveFile del FileController
+                urlImage = MvcUriComponentsBuilder            //We construct the uri we will use for the database
+                        .fromMethodName(FileController.class, "serveFile", image, null) //It takes the information from method serveFile of FileController
                         .build().toString();								//We construct all the uri path of the file to String
             }
 
-            //Construimos el objeto userEntity simplemente con el builder
+            //We build the UserEntity with builder
             UserEntity userEntity = UserEntity.builder()
                     .username(newUser.getUsername())
-                    .password(passwordEncoder.encode(newUser.getPassword())) //Revisar esto si no funciona, está cambiado del original
+                    .password(passwordEncoder.encode(newUser.getPassword()))
                     .profileImage(urlImage)
                     .fullname(newUser.getFullname())
                     .email(newUser.getEmail())
@@ -90,112 +77,106 @@ public class UserEntityService extends BaseService<UserEntity, UUID, UserEntityR
                     .gender(newUser.getGender())
                     .roles(Set.of(UserRole.USER))
                     .build();
-            //En Java 9 podría ser Set.of(UserRole.USER)
-            try { //Ver qué ocurre si se trata de register un usuario con email o username existente
-                savedUser =  save(userEntity); //Metodo extendido de BaseService que tiene métodos Jpa
-                log.info("USER SAVED with id {}", userEntity.getId());
+
+            try {
+                savedUser =  save(userEntity);
+                log.info("USER SAVED with id {}", savedUser.getId());
                 return userDTOConverter.convertUserEntityToGetUserDTO(savedUser);
 
-            } catch (DataIntegrityViolationException ex) { //Capturamos si se viola la integridad (si se repite el username o email)
-                log.warn("Data Integrity Violation Exception");
-                throw new DataIntegrityException("Username probably already exists");
+            } catch (DataIntegrityViolationException ex) {
+                log.warn("Data Integrity Violation Exception: Username or email probably already exists or something else failed, but user was not saved ");
+                throw new DataIntegrityException("Invalid Input Data");
             }
 
-        } else {    //Si no coinciden las contraseñas, lanzamos excepción
+        } else {
             log.warn("User's passwords are different");
             throw new NewUserWithDifferentPasswordsException();
         }
     }
 
-    //Prueba de llamadas ente apis, no se usa
-    public ResponseUserDTO sendUser(UUID id){
+    /**
+     * Method that is called from the Login controller that is called from the SecurityMicroservice.
+     * Checks if user exists delivers the information to the Security microservice
+     * @param email Receives the email sent by the Security microservice so the user could be found
+     * @return UserLoginResponseDTO, delivers the information to the Security microservice
+     */
+    public UserLoginResponseDTO userLogin(String email){
 
-        UserEntity user = userEntityRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException(" "));
-
-        return userDTOConverter.convertUserEntityToGetUserDTO(user);
+        UserEntity user = userEntityRepository.findByEmail(email).orElseThrow(()-> new UserNotFoundException());
+        log.trace("Entering userLogin");
+        log.trace("User id: {}", user.getId());
+        return new UserLoginResponseDTO(user.getId(), user.getUsername(), user.getFullname(), user.getEmail(), user.getPassword(), user.getProfileImage(), user.getRoles());
     }
 
-    public UserLoginDTO userLogin(String email){
-
-        UserEntity user = userEntityRepository.getByEmail(email).orElseThrow(()-> new UsernameNotFoundException(email));
-        log.trace("Entrando en userLogin");
-        log.trace("Id del usuario: {}", user.getId());
-        UserLoginDTO userLoginDTO= new UserLoginDTO(user.getId(), user.getUsername(), user.getFullname(), user.getEmail(), user.getPassword(), user.getProfileImage(), user.getRoles());
-        return userLoginDTO;
-    }
-
-
+    /**
+     * Called from the sendUserId controller which can be called from other microservices that need the user's id
+     * @param username The username must be sent as a param in this case.
+     * @return User's id
+     */
     public UUID sendUserId(String username){
-        String uuidStr = cacheService.sendUserIdByUsernameAsString(username);
-
-        if(uuidStr != null){
-            return UUID.fromString(uuidStr);
-        }else{
-            throw new RuntimeException("Response from redis is null");
+        if (username == null || username.trim().isEmpty()) {
+            throw new IllegalArgumentException("Username must not be null or empty");
         }
 
-
+        String uuidStr = cacheService.sendUserIdByUsernameAsString(username);
+        if (uuidStr == null) {
+            throw new UserNotFoundException();
+        }
+        return UUID.fromString(uuidStr);
     }
 
+    /**
+     * Called from the createList controller. It creates a new list for the user, like Favorites or Must Read
+     * @param newList Name of the list thar should be created
+     * @param authentication The authentication object to extract the user's details
+     * @return The name of the created list
+     */
     public String createList(CreateListRequestDTO newList, Authentication authentication){
 
-        if (newList.getListName()!=null){
+        String email= (String) authentication.getPrincipal();
+        UserEntity user = userEntityRepository.findByEmail(email)
+                .orElseThrow(UserNotFoundException::new);
 
-            UUID userId;
-            CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
+        UserList list = new UserList();
+        list.setUser(user);
+        list.setListName(newList.getListName());
 
-            if (details!=null){
-                userId = details.getId();
-                UserEntity user = userEntityRepository.findById(userId).orElseThrow(()-> new UserNotFoundException(" "));
-                UserList list  = UserList.builder().user(user).listName(newList.getListName()).build();
-                UserList savedList = userListRepository.save(list);
+        UserList savedList = userListRepository.save(list);
+        log.info("New list saved for user {}", user.getId());
 
-                if (savedList.getIdUserList() != null) {
-                    log.info("New SAVED LIST for user {}", user.getId());
-                    return savedList.getListName();
-                } else {
-                    log.warn("LIST NOT Saved");
-                    throw new ListNotSavedException(newList.getListName());
-                }
-            }else {
-                log.warn("NO Users Datails found in method createList()");
-                throw new UserNotFoundException("No User Details found.");
-            }
-        }else{
-            log.warn("Wrong data for new list");
-            throw new BadNewListRequestException();
-        }
+        return savedList.getListName();
 
     }
 
-    public String saveBookToList(SaveBookDTO newBook, Authentication authentication){
+    /**
+     * Called from the addBook controller, so the user can add a book to one of his/her lists
+     * @param newBook The book that should be saved.
+     * @param authentication The authentication object to extract the user's details
+     * @return String with the information of the saved book and the list it fas saved into
+     */
+    public String saveBookToList(SaveBookRequestDTO newBook, Authentication authentication){
 
+        String email= (String) authentication.getPrincipal();
+        UserEntity user = userEntityRepository.findByEmail(email)
+                .orElseThrow(UserNotFoundException::new);
 
-        if(newBook.getBookId() != null && newBook.getUserListId() != null){
-            UUID userId;
-            CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
+        // We verify that the list belongs to the user
+        UserList list = userListRepository.findById(newBook.getUserListId())
+                .orElseThrow(()-> new UserListNotFoundException(" List was not found"));
 
-            if (details!=null) {
-
-                UserList list = userListRepository.findById(UUID.fromString(newBook.getUserListId())).orElseThrow(()-> new UserListNotFoundException(" "));
-
-                userId = details.getId();
-                UserEntity user = userEntityRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(" "));
-                BookList book = BookList.builder().bookId(newBook.getBookId()).list(list).build();
-                BookList savedBook =bookListRepository.save(book);
-
-                if (savedBook.getIdListBook() != null) {
-                    log.info("BOOK SAVED in LIST with bookId {} and listID {}", newBook.getBookId(), savedBook.getIdListBook());
-                    return "Book with id"+ newBook.getBookId() + "has been saved in list " +newBook.getUserListId();
-                } else {
-                    throw new ListNotSavedException("");
-                }
-            }else {
-                throw new UserNotFoundException("No User Details found.");
-            }
-        }else{
-            throw new BadNewListRequestException();
+        if (!list.getUser().getId().equals(user.getId())) {
+            throw new AccessDeniedException("You can only add books to your own lists");
         }
+
+        BookList book = new BookList();
+        book.setBookId(newBook.getBookId());
+        book.setList(list);
+        BookList savedBook =bookListRepository.save(book);
+
+        log.info("Book {} saved in list {} for user {}",
+                newBook.getBookId(), newBook.getUserListId(), user.getId());
+
+        return "Book with id"+ savedBook.getBookId() + "has been saved in list " +savedBook.getList();
     }
 
 

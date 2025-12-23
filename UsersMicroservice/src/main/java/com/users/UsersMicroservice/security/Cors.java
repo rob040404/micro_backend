@@ -8,9 +8,46 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
+/**
+ * Configuration class where we implement the CORS so the APIs can receive requests from the defined frontend sources
+ */
 @Configuration
 public class Cors {
 
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        // Only allow your trusted frontend(s)
+        configuration.setAllowedOrigins(List.of("http://localhost:4200"));
+
+        // Allow credentials (cookies, auth headers) – requires explicit origins and headers
+        configuration.setAllowCredentials(true);
+
+        // Explicitly list allowed headers (no wildcards when credentials are enabled)
+        configuration.setAllowedHeaders(List.of(
+                "Content-Type",
+                "Authorization",
+                "users_apikey",
+                "X-Requested-With",
+                "Accept",
+                "Origin"
+        ));
+
+        // Allow common HTTP methods
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+
+        // Cache preflight responses for 1 hour
+        configuration.setMaxAge(3600L);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration); // Applied to all routes
+        return source;
+    }
+
+
+    /*
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         var source = new UrlBasedCorsConfigurationSource();
@@ -71,4 +108,6 @@ public class Cors {
         source.registerCorsConfiguration("/user/auth/addBookToList", bookListCors);
         return source;
     }
+    */
+
 }

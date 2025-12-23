@@ -32,9 +32,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Autowired
     private JWTUtil jwtUtil;
 
-    private final CustomUserDetails customUserDetails;
-
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
     throws ServletException, IOException {

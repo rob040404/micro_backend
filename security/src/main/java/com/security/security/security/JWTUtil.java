@@ -17,10 +17,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Class with methods that help manage all related to JWT tokens
+ */
 @Component
 public class JWTUtil {
 
-    //private final String apiKey = "AjskNKlnklnNLnL3234kn07283ANhsbe092d3mksmknNNHHJ3ja81m323nnzaZAAL21dmskv";  //todos los micros lo deben tener para desserializar el token
     private final String apiKey;
     private final SecretKey secretKey;
 
@@ -29,41 +31,30 @@ public class JWTUtil {
         this.secretKey = Keys.hmacShaKeyFor(
                 apiKey.getBytes(StandardCharsets.UTF_8)
         );
-
     }
 
+    /**
+     * This method generates a new JWT authentication token that will be sent to the frontend
+     * @param email We use the email to include it in the token. In this case as subject. But maybe someday the id can be
+     *              used. Because if the user changes the email this would be inconsistent.
+     *              For now users cannot change their email. We would need to do that whn we star using Google or Amazon
+     *              authentication.
+     * @param userId It is included in the token as a claim
+     * @param roles It is included in the token as a claim
+     * @param username It is included in the token as a claim
+     * @return The JWT token is returned as a String
+     */
     public String generateToken(String email, UUID userId, List<String> roles, String username){
 
-        //generación del token
-        return Jwts.builder().setSubject(email) //cambiar subjet a id ya que algún día el email se puede cambiar? Sobre to si se usa luego identificación con Apple, Google, etc.
+        //Token generation
+        return Jwts.builder().setSubject(email)
                 .claim("userId", userId)
                 .claim("username", username)
-                .claim("roles", roles) // ← Añadimos los roles aquí
-                .setIssuedAt(new Date(System.currentTimeMillis())) //momento de cración
-                .setExpiration(new Date(System.currentTimeMillis() +1000*60*60)) //expiracion
-                //.signWith(SignatureAlgorithm.HS256, apiKey)  //Firma con encriptación y apiKey
-                .signWith(secretKey, SignatureAlgorithm.HS256)
-                .compact();  //firma del token
+                .claim("roles", roles)
+                .setIssuedAt(new Date(System.currentTimeMillis())) //Moment of creation
+                .setExpiration(new Date(System.currentTimeMillis() +3000*60*60)) //Expiration
+                .signWith(secretKey, SignatureAlgorithm.HS256) //We sign the token with the signature tha carries a secret key
+                .compact();  //Signing the token
     }
 
-    //Cambiar los métodos de abajo
-    //No devuelva el email en concreto, sino toda la info que está en sub (email, etc.). es lo que hace .getSubject
-    public String extractEmail(String token){
-
-        return Jwts.parser()
-                .setSigningKey(apiKey) //desserializa
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
-    }
-
-    public boolean validateToken(String token){
-        try{
-            Jwts.parser().setSigningKey(apiKey)
-                    .parseClaimsJws(token);
-            return true;
-        }catch (Exception e){
-            return false;
-        }
-    }
 }

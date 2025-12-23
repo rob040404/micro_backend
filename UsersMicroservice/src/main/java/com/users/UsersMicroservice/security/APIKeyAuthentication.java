@@ -7,20 +7,27 @@ import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
 
+/**
+ * Class that sets the authentication in the SecurityContext.
+ * AbstractAuthenticationToken is a Spring Security base class for representing authentication objects.
+ * Its implementations are stored in the SecurityContext once the user has been authenticated.
+ *
+ * This token is created only after the provided API key has been validated
+ * against the expected secret, and is then stored in the SecurityContext
+ * to authorize subsequent requests.
+ */
 public class APIKeyAuthentication extends AbstractAuthenticationToken {
 
-   // private String apiKey = "lasdnskalda2323";//Luego cambia de valor creo, poner a ""
+    private final String clientProvidedApiKey;
 
-    @Value("${app.users.users.apikey}")
-    private static String apiKey;
-
-    public APIKeyAuthentication(String apiKey, Collection<? extends GrantedAuthority> authorities){
+    //When the api key in ApiKeyFilter is validated authentication is set (true). GrantedAuthority can generate errors, etc.
+    public APIKeyAuthentication(String clientProvidedApiKey, Collection <? extends GrantedAuthority> authorities){
 
         super (authorities);
 
-        this.apiKey = apiKey;
+        this.clientProvidedApiKey = clientProvidedApiKey;
 
-        setAuthenticated(true);
+        setAuthenticated(true); //Only true if validation success
     }
 
     @Override
@@ -28,8 +35,10 @@ public class APIKeyAuthentication extends AbstractAuthenticationToken {
         return null;
     }
 
+    //Nos da la autenticación a la API
     @Override
     public Object getPrincipal(){
-        return apiKey;
+        return clientProvidedApiKey;
     }
 }
+

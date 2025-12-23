@@ -11,40 +11,38 @@ import org.springframework.web.client.RestClientException;
 
 import java.util.UUID;
 
-
+/**
+ * Consumer class where we define the requests to other microservice
+ */
 @Component
-@Getter @Log4j2
+@Log4j2
 public class UserServiceClient {
 
     private final RestClient userRestClient;
-    private static final String api_url = "http://localhost:9001";
+    private final String usersApikey;
 
-    private String users_apikey;
-
-    /**
-     * Injection of the uesers apikey with @Value.
-     * Important: Did not use Lonbock constructor in this case beacouse it does not inject it
-     * @param userRestClient
-     * @param usersApikey
-     */
     public UserServiceClient(RestClient userRestClient, @Value("${app.users.users.apikey}")String usersApikey) {
         this.userRestClient = userRestClient;
-        users_apikey = usersApikey;
+        this.usersApikey = usersApikey;
     }
 
-
+    /**
+     * Calls UsersMicroservice to get the user's id
+     */
     public UUID getUserId(String username){
+        if (username == null || username.trim().isEmpty()) {
+            throw new IllegalArgumentException("Username cannot be null or empty");
+        }
         try {
             return userRestClient
                     .get()
                     .uri("/user/auth/userId/{username}", username) // relative route
-                    .header("users_apikey", this.users_apikey)
+                    .header("users_apikey", this.usersApikey)
                     .retrieve()
                     .body(UUID.class);
         } catch (RestClientException e) {
-            // Manejo de errores: 404, 500, timeout, etc.
-            log.warn("User id not obtained form UsersMicroservice in function getUser()");
-            throw new NoUserWithSuchUserNameException(username);
+            log.warn("Failed to fetch user ID for username: {}", username, e);
+            throw new NoUserWithSuchUserNameException();
         }
     }
 

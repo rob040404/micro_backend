@@ -9,7 +9,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
+/**
+ * Centralized exception handler that converts application exceptions
+ * into standardized REST API error responses (via {@link ApiError}).
+ * Ensures consistent 4xx/5xx responses without exposing internal details.
+ */
 @RestControllerAdvice
 public class GlobalControllerAdvice /*extends ResponseEntityExceptionHandler*/{
 
@@ -31,23 +35,30 @@ public class GlobalControllerAdvice /*extends ResponseEntityExceptionHandler*/{
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(apiError);
     }
 
-    @ExceptionHandler(FollowRequestNotSavedException.class)
-    public ResponseEntity<ApiError> handleFollowRequestNotSavedException(FollowRequestNotSavedException ex){
-        ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiError);
-    }
-
-    @ExceptionHandler(FollowerNotSavedException.class)
-    public ResponseEntity<ApiError> handleFollowerNotSavedException(FollowerNotSavedException ex){
-        ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiError);
-    }
-
     @ExceptionHandler(FollowedIdsDontMatchException.class)
     public ResponseEntity<ApiError> handleFollowedIdsDontMatchException(FollowedIdsDontMatchException ex){
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
     }
+
+    @ExceptionHandler(InvalidUsernameException.class)
+    public ResponseEntity<ApiError> handleInvalidUsernameException(InvalidUsernameException ex){
+        ApiError apiError = new ApiError((HttpStatus.BAD_REQUEST), ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ApiError> handleUserNotFoundException(UserNotFoundException ex){
+        ApiError apiError = new ApiError((HttpStatus.NOT_FOUND), ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiError);
+    }
+
+    @ExceptionHandler(FollowRequestAlreadyExistsExeption.class)
+    public ResponseEntity<ApiError> handleFollowRequestAlreadyExistsExeption(FollowRequestAlreadyExistsExeption ex){
+        ApiError apiError = new ApiError((HttpStatus.NOT_FOUND), ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiError);
+    }
+
     /**
      * Method that captures all validation errors, so we don't have to do BindingResult result any time
      * @param ex

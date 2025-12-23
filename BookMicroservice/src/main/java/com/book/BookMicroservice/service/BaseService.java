@@ -9,13 +9,11 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Clase abstracta. Es OPCIONAL, pero la hacemos para no tener que usar los repositorios en los controladores, sino solo a través de servicios.
- * 
- * Cuando la usemos hay que imlementar el tipo de entidad, el tipo de id y el repositorio que estamos utilizando
- * 
- * Tenemos los métodos básicos de jpaRepository y podemos echar mano de ellos cuando lo necesitemos
- * 
- * Tendremos que crear los diferentes servicios y extender estos métodos
+ * Abstract class. It's OPTIONAL, but we're using it to avoid having to use repositories in controllers,
+ * instead relying solely on services.
+ * When using it, we need to implement the entity type, the ID type, and the repository we're using.
+ * We have the basic methods of jpaRepository and can use them as needed. We'll need to create the different
+ * services and extend these methods.
  */
 
 public abstract class BaseService<T, ID, R extends JpaRepository<T, ID>> {

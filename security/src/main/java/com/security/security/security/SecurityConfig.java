@@ -2,6 +2,7 @@ package com.security.security.security;
 
 
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,15 +15,16 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfigurationSource;
 
-
-
+/**
+ * Security Configuration Class
+ */
 @Configuration
 @EnableWebSecurity
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SecurityConfig {
 
-    @Autowired
     private final CorsConfigurationSource corsConfigurationSource;
+    private final ApiKeyFilter apiKeyFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -40,11 +42,10 @@ public class SecurityConfig {
                                 "/swagger-ui/**",
                                 "/swagger-resources/**",
                                 "/v2/api-docs/**",
-                                "/user/auth/login" // 👈 Asegúrate de permitir el login sin autenticación
+                                "/user/auth/login" // Allowing login without authentication
 
                         )
                         .permitAll()
-                        //Todos los requestMatchers indican que no se requier identificación de usuario, pero sí Api Key
                         .requestMatchers(HttpMethod.GET, "/files/**" ).permitAll()
                         .anyRequest().authenticated()
                 )
@@ -52,7 +53,7 @@ public class SecurityConfig {
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                .addFilterBefore(new JWTFilter(), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(apiKeyFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
 
