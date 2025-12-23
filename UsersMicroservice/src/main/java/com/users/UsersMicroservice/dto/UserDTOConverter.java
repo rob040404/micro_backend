@@ -9,45 +9,49 @@ import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
 
+/**
+ * A class for User DTO conversion
+ */
 @Component
 @RequiredArgsConstructor
 public class UserDTOConverter {
-
-	/**
-	 * Esta es la clase donde hacemos en Conversor. Aquí es donde se convierten los datos en DTO
-	 */
 	
 	private final ModelMapper modelMapper;
 	
 	/**
 	 * Method to convert the UserDTO object  that we receive form the API to User object
-	 * @param userDto
-	 * @return
+	 * @param userDto Is an UserRegistrationRequestDTO
+	 * @return returns a UserEntity object
 	 */
-	public UserEntity convertToUserReg(RequestUserRegisterDTO userDto){
+	public UserEntity convertToUserReg(UserRegistrationRequestDTO userDto){
 		
 		return modelMapper.map(userDto, UserEntity.class);
 	}
-	
-	public UserEntity convertToUser(UserLoginDTO userDto) {
+
+    /**
+     * Method to convert the UserResponseDTO object that we receive
+     * @param userDto Is an UserLoginResponseDTO
+     * @return returns a UserEntity object
+     */
+	public UserEntity convertToUser(UserLoginResponseDTO userDto) {
 		
 		return modelMapper.map(userDto, UserEntity.class);
 	}
-	
-	public ResponseUserDTO convertUserEntityToGetUserDTO(UserEntity userEntity) {
-		
-		//Esta es otra forma de hacerlo, simplmente construimos un objeto GetUserDTO de userEntity
-		return ResponseUserDTO.builder()
+
+    /**
+     * Here we convert UserEntity object into UserRegistrationResponseDTO.
+     * We do it via builder.
+     * @param userEntity A UserEntity object
+     * @return UserRegistrationResponseDTO
+     */
+	public UserRegistrationResponseDTO convertUserEntityToGetUserDTO(UserEntity userEntity) {
+
+		return UserRegistrationResponseDTO.builder()
 				.username(userEntity.getUsername())
 				.fullname(userEntity.getFullname())
-				.email(userEntity.getFullname())
 				.gender(userEntity.getGender())
 				.birthday(userEntity.getBirthday())
 				.profileImage(userEntity.getProfileImage())
-				.roles(userEntity.getRoles().stream()
-						.map(UserRole::name)
-						.collect(Collectors.toSet())
-						)
 				.build();
 				
 	}

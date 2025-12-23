@@ -13,7 +13,7 @@ public class InvalidBookSearchException extends RuntimeException{
 	
 	public InvalidBookSearchException() {
 		
-		super("Invalid petition. At least one search parameter ('title' or 'authors') is required.");
+		super("Invalid petition. Parameters not provided.");
 	}
 
 }

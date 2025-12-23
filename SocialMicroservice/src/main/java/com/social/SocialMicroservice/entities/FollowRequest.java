@@ -4,11 +4,21 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Entity @Table(name = "follow_requests") @Builder @AllArgsConstructor @NoArgsConstructor @Getter @Setter
+/**
+ * This entity is for follow requests. When one user requests to follow another. Here we manage the tatus of the petition
+ */
+@Entity
+@Table(name = "follow_requests")
+@EntityListeners(AuditingEntityListener.class)
+@Builder @AllArgsConstructor @NoArgsConstructor @Getter @Setter
 public class FollowRequest {
 
     @Id
@@ -26,13 +36,13 @@ public class FollowRequest {
     @Column(name = "status", nullable = false)
     private FollowStatus status; //ACCEPTED, PENDING, REJECTED, CANCELED
 
-    @CreationTimestamp
-    @Column(name = "createdAt")
-    private LocalDateTime createdAt;
+    @CreatedDate
+    @Column(name = "createdAt", nullable = false, updatable = false)
+    private Instant createdAt;
 
-    @UpdateTimestamp
-    @Column(name = "updatedAt")
-    private LocalDateTime updatedAt;
+    @LastModifiedDate
+    @Column(name = "updatedAt", nullable = false)
+    private Instant updatedAt;
 
 
 }

@@ -10,6 +10,14 @@ import org.springframework.stereotype.Service;
 import java.util.Collection;
 import java.util.UUID;
 
+/**
+ * Security user details implementation for JWT-based authentication.
+ * Holds authenticated user information (ID, email, username, roles)
+ * without sensitive data like passwords.
+ * <p>
+ * Immutable and used solely to represent principal identity
+ * in Spring Security context after JWT validation.
+ */
 @Service("userDeatailsService")
 @RequiredArgsConstructor
 @Getter @Setter

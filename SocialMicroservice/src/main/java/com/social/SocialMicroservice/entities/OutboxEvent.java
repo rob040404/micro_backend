@@ -5,12 +5,20 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
 import java.util.UUID;
 
+/**
+ * Outbox to save Kafka events that were not sent at the moment. When kafka is back functioning right, the PENDING
+ * events will be sent.
+ */
 @Entity
-@Table(name = "outbox_event") @AllArgsConstructor @NoArgsConstructor @Getter @Setter
+@Table(name = "outbox_event")
+@EntityListeners(AuditingEntityListener.class)
+@AllArgsConstructor @NoArgsConstructor @Getter @Setter
 public class OutboxEvent {
 
     @Id
@@ -23,7 +31,7 @@ public class OutboxEvent {
     private String eventType;
 
     @Lob
-    @Column(name = "payload", nullable = false)
+    @Column(name = "payload", columnDefinition = "TEXT", nullable = false)
     private String payload; // JSON string
 
     @Enumerated(EnumType.STRING)
@@ -33,8 +41,9 @@ public class OutboxEvent {
     @Column(name = "attempts", nullable = false)
     private int attempts = 0;
 
-    @Column(name = "created_at", nullable = false)
-    private Instant createdAt = Instant.now();
+    @CreatedDate
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private Instant createdAt;
 
     @Column(name = "sent_at")
     private Instant sentAt;
@@ -43,6 +52,9 @@ public class OutboxEvent {
     @Column(name = "last_error")
     private String lastError;
 
-    // Constructors, getters, setters, builder...
+    @Column(name = "next_retry_at")
+    private Instant nextRetryAt;
+
+
 }
 

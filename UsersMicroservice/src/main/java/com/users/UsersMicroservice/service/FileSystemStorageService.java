@@ -22,17 +22,8 @@ import java.util.stream.Stream;
 
 
 /**
- * Implementación de un {@link StorageService} que almacena
- * los ficheros subidos dentro del servidor donde se ha desplegado
- * la apliacación.
- * 
- * ESTO SE REALIZA ASÍ PARA NO HACER MÁS COMPLEJO EL EJEMPLO.
- * EN UNA APLICACIÓN EN PRODUCCIÓN POSIBLEMENTE SE UTILICE
- * UN ALMACÉN REMOTO.
- * 
- * 
- * @author Equipo de desarrollo de Spring
- *
+ * Implementation of a {@link StorageService} that stores
+ * the uploaded files within the server where the application has been deployed.
  */
 @Service
 public class FileSystemStorageService implements StorageService {
@@ -43,8 +34,6 @@ public class FileSystemStorageService implements StorageService {
 	public FileSystemStorageService(@Value("${upload.root-location}") String path) {
 		this.rootLocation = Paths.get(path);
 	}
-	
-	
 
 	/**
      * Método que inicializa el almacenamiento secundario del proyecto
@@ -61,13 +50,8 @@ public class FileSystemStorageService implements StorageService {
 	}
 
 	/**
-     * Método que almacena un fichero en el almacenamiento secundario
-     * desde un objeto de tipo {@link org.springframework.web.multipart#MultipartFile} MultipartFile
-     * 
-     * Modificamos el original del ejemplo de Spring para cambiar el nombre
-     * del fichero a almacenar. Como lo asociamos al User que se ha
-     * dado de alta, usaremos el ID de User como nombre de fichero.
-     * 
+     * Method that stores a file in secondary storage from a MultipartFile object.
+     * Since we associate it with the registered user, we will use the user ID as the filename.
      */
 	@Override
 	public String store(MultipartFile file) {
@@ -90,7 +74,6 @@ public class FileSystemStorageService implements StorageService {
 				Files.copy(inputStream, this.rootLocation.resolve(storedFilename), StandardCopyOption.REPLACE_EXISTING);
 				return storedFilename;
 			}
-			
 		}
 		catch(IOException e) {
 			throw new StorageException("Failed to store file " + filename, e);
@@ -99,10 +82,8 @@ public class FileSystemStorageService implements StorageService {
 		
 	}
 
-
     /**
-     * Método que devuelve la ruta de todos los ficheros que hay
-     * en el almacenamiento secundario del proyecto.
+     * Method that returns the path of all files in the project's secondary storage.
      */
 	@Override
 	public Stream<Path> loadAll() {
@@ -118,8 +99,8 @@ public class FileSystemStorageService implements StorageService {
 	}
 
 	/**
-     * Método que es capaz de cargar un fichero a partir de su nombre
-     * Devuelve un objeto de tipo Path
+     * A method that can load a file based on its name.
+     * Returns a Path object.
      */
 	@Override
 	public Path load(String filename) {
@@ -129,8 +110,7 @@ public class FileSystemStorageService implements StorageService {
 
 
     /**
-     * Método que es capaz de cargar un fichero a partir de su nombre
-     * Devuelve un objeto de tipo Resource
+     * A method that can load a file based on its name. Returns a Resource object.
      */
 	@Override
 	public Resource loadAsResource(String filename) {
@@ -150,7 +130,6 @@ public class FileSystemStorageService implements StorageService {
 		}
 	}
 
-	
 	@Override
 	public void delete(String filename) {
 		String justFilename = StringUtils.getFilename(filename);
@@ -164,16 +143,11 @@ public class FileSystemStorageService implements StorageService {
 	}
 
 	/**
-     * Método que elimina todos los ficheros del almacenamiento
-     * secundario del proyecto.
+     * Method that deletes all files from the project's secondary storage.
      */
 	@Override
 	public void deleteAll() {
 		FileSystemUtils.deleteRecursively(rootLocation.toFile());
 	}
-	
-	
-	
-	
 	
 }

@@ -11,6 +11,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+/**
+ * Centralized exception handler that converts application exceptions
+ * into standardized REST API error responses (via {@link ApiError}).
+ * Ensures consistent 4xx/5xx responses without exposing internal details.
+ */
 @RestControllerAdvice
 public class GlobalControllerAdvice extends ResponseEntityExceptionHandler{
 
@@ -37,29 +42,22 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler{
 		ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
 	}
-	
-	@ExceptionHandler(VoteConversionException.class)
-	public ResponseEntity<ApiError> hadleVoteConversionException(VoteConversionException ex){
-		ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
-		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiError);
-	}
-	
-	@ExceptionHandler(VoteAlreadyExistsException.class)
-	public ResponseEntity<ApiError> hadleVoteAlreadyExistsException(VoteAlreadyExistsException ex){
-		ApiError apiError = new ApiError(HttpStatus.CONFLICT, ex.getMessage());
-		return ResponseEntity.status(HttpStatus.CONFLICT).body(apiError);
-	}
 
     @ExceptionHandler(NoApiKeyOrJwtException.class)
     public ResponseEntity<ApiError> handleNoApiKeyOrJwtException(NoApiKeyOrJwtException ex){
-        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
+        ApiError apiError = new ApiError(HttpStatus.UNAUTHORIZED, ex.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(apiError);
     }
-	
+
+    @ExceptionHandler(UserNotObtainedException.class)
+    public ResponseEntity<ApiError> handleUserNotObtainedException(UserNotObtainedException ex){
+        ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiError);
+    }
+
 	@Override
 	protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers,
 			HttpStatusCode statusCode, WebRequest request) {
-		 // Convertimos el HttpStatusCode a HttpStatus para usarlo en ApiError
 	    HttpStatus status = HttpStatus.resolve(statusCode.value());
 	    ApiError apiError = new ApiError(status != null ? status : HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
 	    

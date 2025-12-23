@@ -16,17 +16,19 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * This class defines the User class as in the Users Microservice but we don't have a Data Base in thus case.
+ * It is created to simulate the entity in Users Microservice so we can receive object User when UserServiceClient
+ * asks for the users information.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class User implements UserDetails {
 
-	//Hacemos esta entidad que es como la de User, pero que usaremos para UserDetails
-	
 	private static final long serialVersionUID = 6189678452627071360L;
 
-	//Columnas del useEntity añadir @Columns a todas como en los otros micros
 	private UUID id;
 
 	private String username;

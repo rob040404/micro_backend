@@ -8,16 +8,11 @@ import java.util.stream.Stream;
 
 
 /**
- * Este interfaz nos permite definir una abstracción de lo que debería
- * ser un almacén secundario de información, de forma que podamos usarlo
- * en un controlador.
+ * This interface allows us to define an abstraction of what a secondary information store should be,
+ * so that we can use it in a controller.
  * 
- * De esta forma, vamos a poder utilizar un almacen que acceda a nuestro 
- * sistema de ficheros, o también podríamos implementar otro que estuviera
- * en un sistema remoto, almacenar los ficheros en un sistema GridFS, ...
- * 
- * 
- * @author Equipo de desarrollo de Spring
+ * In this way, we can use a storage device that accesses our file system, or we could also implement one
+ * located on a remote system, store the files in a GridFS system, ...
  *
  */
 

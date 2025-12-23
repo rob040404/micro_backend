@@ -8,18 +8,16 @@ import java.util.Collection;
 
 public class APIKeyAuthentication extends AbstractAuthenticationToken {
 
-   // private String apiKey = "lasdnskalda2323";//Luego cambia de valor creo, poner a ""
+    private final String clientProvidedApiKey;
 
-    @Value("${app.users.users.apikey}")
-    private static String apiKey;
-
-    public APIKeyAuthentication(String apiKey, Collection<? extends GrantedAuthority> authorities){
+    //When the api key in ApiKeyFilter is validated authentication is set (true). GrantedAuthority can generate errors, etc.
+    public APIKeyAuthentication(String clientProvidedApiKey, Collection <? extends GrantedAuthority> authorities){
 
         super (authorities);
 
-        this.apiKey = apiKey;
+        this.clientProvidedApiKey = clientProvidedApiKey;
 
-        setAuthenticated(true);
+        setAuthenticated(true); //Only true if validation success
     }
 
     @Override
@@ -27,8 +25,9 @@ public class APIKeyAuthentication extends AbstractAuthenticationToken {
         return null;
     }
 
+    //It gives us the API authentication
     @Override
     public Object getPrincipal(){
-        return apiKey;
+        return clientProvidedApiKey;
     }
 }

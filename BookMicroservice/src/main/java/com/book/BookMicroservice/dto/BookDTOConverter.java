@@ -1,19 +1,21 @@
 package com.book.BookMicroservice.dto;
 
 
+import com.book.BookMicroservice.dto.response.BookResponseDTO;
 import com.book.BookMicroservice.entity.Book;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
-
+/**
+ * Class with DTO converters for Books
+ */
 @Component
 @RequiredArgsConstructor
 public class BookDTOConverter {
 
-	public GetBookDTO toGetBookDTO(Book book) {
+	public BookResponseDTO toBookResponseDTO(Book book, int userVote, String usersReview) {
 		
-		return GetBookDTO.builder()
+		return BookResponseDTO.builder()
 				.id(book.getId())
 				.title(book.getTitle())
 				.authors(book.getAuthors())
@@ -23,23 +25,23 @@ public class BookDTOConverter {
 				.image(book.getImage())
 				.rating(book.getRating())
 				.numVotes(book.getNumVotes())
+                .userReview(usersReview)
+                .userVote(userVote)
 				.build();
 	}
 	
-	public GetBookDTO toGetOptionalBookDTO(Optional<Book> book, int userVote, String userReview) {
+	public BookResponseDTO toBookResponseListDTO(Book book) {
 		
-		return GetBookDTO.builder()
-				.id(book.get().getId())
-				.title(book.get().getTitle())
-				.authors(book.get().getAuthors())
-				.description(book.get().getDescription())
-				.genres(book.get().getGenres())
-				.lang(book.get().getLang())
-				.image(book.get().getImage())
-				.rating(book.get().getRating())
-				.numVotes(book.get().getNumVotes())
-				.userVote(userVote)
-                .userReview(userReview)
+		return BookResponseDTO.builder()
+				.id(book.getId())
+				.title(book.getTitle())
+				.authors(book.getAuthors())
+				.description(book.getDescription())
+				.genres(book.getGenres())
+				.lang(book.getLang())
+				.image(book.getImage())
+				.rating(book.getRating())
+				.numVotes(book.getNumVotes())
 				.build();
 	}
 

@@ -7,6 +7,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -24,11 +25,12 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 @Log4j2
-@Component
+@Component @RequiredArgsConstructor
 public class ApiFilter  extends OncePerRequestFilter {
 
-    @Autowired
-    private JWTUtil jwtUtil;
+
+    private final JWTUtil jwtUtil;
+    private final AuthenticationService authenticationService;
 
     //list of paths that don't need api key identification
     private static final List<String> PUBLIC_PATHS = List.of(
@@ -53,10 +55,7 @@ public class ApiFilter  extends OncePerRequestFilter {
             FilterChain filterChain
     )throws ServletException, IOException {
 
-
-
         String path = request.getRequestURI();
-
         String authHeader = request.getHeader("Authorization");
         String apiKeyHeader = request.getHeader("books_apikey");
         String token = null;
@@ -74,52 +73,55 @@ public class ApiFilter  extends OncePerRequestFilter {
         }
 
         try{
-
             if(authHeader!=null && authHeader.startsWith("Bearer ")){
                 token = authHeader.substring(7);
-                if(jwtUtil.isTokenValid(token) ){
-                    String email = jwtUtil.extractEmail(token);
-                    UUID userId = UUID.fromString(jwtUtil.extractId(token)) ;
-                    String username = jwtUtil.extractUsername(token);
-                    List<String> roles = jwtUtil.extractRoles(token); // nueva función
-
-                    // Convertir roles a GrantedAuthority
-                    List<GrantedAuthority> authorities = roles.stream()
-                            .map(role -> new SimpleGrantedAuthority("ROLE_" + role)) // Spring espera "ROLE_XXX"
-                            .collect(Collectors.toList());
-
-                    // Creamos un Authentication "ficticio" (sin password, solo para contexto)
-                    UsernamePasswordAuthenticationToken authentication =
-                            new UsernamePasswordAuthenticationToken(
-                                    email, null, authorities);
-
-                    // Guardar userId en detalles. Luego lo extraemos (Long) details.get("userId")
-                    authentication.setDetails(new CustomUserDetails(userId, username, email, authorities));
-
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
-                }
+                authenticateWithJwt(token, request);
             }else if (apiKeyHeader != null){
-                APIKeyAuthentication authentication = AuthenticationService.getAuthentication((HttpServletRequest) request); //redundante
+                APIKeyAuthentication authentication = authenticationService.getAuthentication(request);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }else{
-                log.warn("Invalid API key and JWT token");
+                log.warn("Token or ApiKey Validation validation ware unsuccessful");
+                log.warn("No authentication provided for path: {}", path);
                 throw new NoApiKeyOrJwtException();
             }
-        } catch (Exception e) {
-            log.warn("Invalid API key", e);
-            HttpServletResponse httpServletResponse = (HttpServletResponse) response; //redundante
-            httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            httpServletResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            PrintWriter writer = httpServletResponse.getWriter();
-            writer.print(e.getMessage());
-            writer.flush();
-            writer.close();
+        } catch (Exception e) { //We use PrintWritter and not personalized exceptions because ControllerAdvise would not get it
+            log.warn("Authentication failed for path: {}", path, e);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            try (PrintWriter writer = response.getWriter()) {
+                writer.print("{\"error\": \"Invalid or missing authentication credentials\"}");
+                writer.flush();
+            }
+            return ;
         }
 
         filterChain.doFilter(request, response);
+
     }
 
+    private void authenticateWithJwt(String token, HttpServletRequest request){
+        if(jwtUtil.isTokenValid(token) ){
+            String email = jwtUtil.extractEmail(token);
+            UUID userId = UUID.fromString(jwtUtil.extractId(token)) ;
+            String username = jwtUtil.extractUsername(token);
+            List<String> roles = jwtUtil.extractRoles(token); // nueva función
 
+            // Convert roles into GrantedAuthority
+            List<GrantedAuthority> authorities = roles.stream()
+                    .map(role -> new SimpleGrantedAuthority("ROLE_" + role)) // Spring espera "ROLE_XXX"
+                    .collect(Collectors.toList());
 
+            // We create a "ficticios" Authentication (Without password, only for contxt)
+            UsernamePasswordAuthenticationToken authentication =
+                    new UsernamePasswordAuthenticationToken(
+                            email, null, authorities);
+
+            // We save userId into Details. After that we extract it with details.get("userId").
+            authentication.setDetails(new CustomUserDetails(userId,  username, email, authorities));
+
+            //We set the authentication into the context
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
+    }
 
 }

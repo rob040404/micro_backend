@@ -1,12 +1,14 @@
-package com.book.BookMicroservice.dto;
+package com.book.BookMicroservice.dto.response;
 
 import lombok.*;
 
+/**
+ * DTO used to return the result of a book search
+ */
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor @Builder
-public class GetBookDTO {
+public class BookResponseDTO {
 
-	//Hacer DTO para recibir la info que pasa el usuario y usar este DTO para pasar nosotros la info del libro.
 	private Long id;
 	private String title;
 	private String authors;
@@ -14,7 +16,7 @@ public class GetBookDTO {
 	private String genres;
 	private String lang;
 	private String image;
-	private Float rating;
+	private Double rating;
 	private Integer numVotes;
 	private Integer userVote;
     private String userReview;

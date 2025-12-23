@@ -2,24 +2,25 @@ package com.users.UsersMicroservice.entities;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.UUID;
 
+/**
+ * Represents a book associated with a user's list.
+ * In a microservice architecture, bookId references a book in another service,
+ * so no foreign key constraint is enforced at the database level.
+ */
 @Entity
 @Table(name="list_books")
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Getter @Setter
 public class BookList {
 
 	@Id @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id_list_book")
-	private UUID idListBook;
+	private UUID id;
 	
 	// Relación con UserList (una lista puede tener muchos libros)
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)

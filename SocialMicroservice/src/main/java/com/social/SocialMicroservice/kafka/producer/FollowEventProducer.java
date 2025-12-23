@@ -8,8 +8,6 @@ import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import lombok.extern.log4j.Log4j2;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -18,6 +16,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * REAJUSTAR!! HAY FALLOS
+ *
+ * Kafka Producer: here we produce the messages that are going to be sent
+ * Circuit Breaker is included in case Kafka fails so the Microservice doesn't stop running
+ */
 @Service @Log4j2
 public class FollowEventProducer {
 
@@ -78,7 +82,7 @@ public class FollowEventProducer {
     @CircuitBreaker(name = KAFKA_PRODUCER, fallbackMethod = "followAnswerFallback")
     @Retry(name = KAFKA_PRODUCER)
     @TimeLimiter(name = KAFKA_PRODUCER)
-    public CompletableFuture<SendResult<String, Object>> publisFollowAnswerEvent(Followers fs){
+    public CompletableFuture<SendResult<String, Object>> publishFollowAnswerEvent(Followers fs){
 
         FollowAnsweredEvent event = new FollowAnsweredEvent(
                 fs.getId(),
@@ -109,12 +113,14 @@ public class FollowEventProducer {
         log.error("Circuit Breaker OPENED for FollowRequest. ID: {}, Error: {}",
                 fr.getId(), ex.getMessage());
 
-        // Aquí puedes implementar lógica alternativa:
-        // - Guardar en base de datos para procesamiento posterior
-        // - Enviar a cola de dead letter
-        // - Notificar a un sistema de monitoreo
+        // Right now we manage the outbox mechanism from the service, nut we could implement it here
 
-        // Por ahora, devolvemos un CompletableFuture fallido
+        // Here you can implement alternative logic:
+        // - Save to database for later processing
+        // - Send to dead letter queue
+        // - Notify a monitoring system
+
+        // For now, we're returning a failed CompletableFuture
         CompletableFuture<SendResult<String, Object>> failedFuture = new CompletableFuture<>();
         failedFuture.completeExceptionally(
                 new RuntimeException("Kafka not available. Event not sent: " + fr.getId(), ex)
@@ -126,10 +132,10 @@ public class FollowEventProducer {
      * Fallback when publishFollowAnswerEvent fails
      */
     private CompletableFuture<SendResult<String, Object>> followAnswerFallback(Followers fs, Exception ex) {
-        log.error("Circuit Breaker OPENED para FollowAnswer. ID: {}, Error: {}",
+        log.error("Circuit Breaker OPENED for FollowAnswer. ID: {}, Error: {}",
                 fs.getId(), ex.getMessage());
 
-        // Lógica alternativa similar al anterior
+        // Implement a similar logic as the previous one
         CompletableFuture<SendResult<String, Object>> failedFuture = new CompletableFuture<>();
         failedFuture.completeExceptionally(
                 new RuntimeException("Kafka not available. Event not sent: " + fs.getId(), ex)

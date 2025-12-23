@@ -1,8 +1,8 @@
 package com.users.UsersMicroservice;
 
-import com.users.UsersMicroservice.dto.ResponseUserDTO;
+import com.users.UsersMicroservice.dto.UserRegistrationResponseDTO;
 import com.users.UsersMicroservice.dto.UserDTOConverter;
-import com.users.UsersMicroservice.dto.RequestUserRegisterDTO;
+import com.users.UsersMicroservice.dto.UserRegistrationRequestDTO;
 import com.users.UsersMicroservice.entities.UserEntity;
 import com.users.UsersMicroservice.entities.UserRole;
 import com.users.UsersMicroservice.exception.DataIntegrityException;
@@ -18,7 +18,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.verification.VerificationMode;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockMultipartFile;
@@ -28,7 +27,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.time.LocalDate;
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -36,6 +34,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+/**
+ * Unitary tests for the services
+ */
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
 
@@ -51,23 +52,17 @@ public class UserServiceTest {
     @Mock
     private UserEntityRepository userEntityRepository;
 
-    @Mock
-    private UserListRepository userListRepository;
-
-    @Mock
-    private BookListRepository bookListRepository;
-
-    @Spy  // Cambiamos de @InjectMocks a @Spy
+    @Spy  // We switch from @InjectMocks to @Spy
     @InjectMocks
     private UserEntityService userEntityService;
 
     @BeforeEach
     void setUp() {
-        // Inyectar manualmente el repositorio en BaseService
+        // We manually inject the repository into BaseService
         ReflectionTestUtils.setField(userEntityService, "repositorio", userEntityRepository);
 
 
-        // Simular el contexto HTTP para MvcUriComponentsBuilder
+        // Simulate the HTTP context for MvcUriComponentsBuilder
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.setScheme("http");
         request.setServerName("localhost");
@@ -78,15 +73,18 @@ public class UserServiceTest {
 
     @AfterEach
     void tearDown() {
-        // Limpiar el contexto después de cada test
+        // We clean the context after every test
         RequestContextHolder.resetRequestAttributes();
     }
 
+    /**
+     * Test for creating a new user
+     */
     @Test
     void createsNewUser(){
 
         //User tipo RequestsUserRegisterDTO: formato que se recibe desde el cliente
-        RequestUserRegisterDTO userRequestDTO = new RequestUserRegisterDTO();
+        UserRegistrationRequestDTO userRequestDTO = new UserRegistrationRequestDTO();
         userRequestDTO.setUsername("ted");
         userRequestDTO.setFullname("Ted Lasso");
         userRequestDTO.setEmail("lasso@gmail.com");
@@ -95,18 +93,18 @@ public class UserServiceTest {
         userRequestDTO.setGender("man");
         userRequestDTO.setBirthday(LocalDate.ofYearDay(1977, 1));
 
-        //Contraseña codificada simulada
+        //Simulated and codified password
         String encodedPassword = "encoded_password_123";
 
-        //Los roles que tendrá
+        //The roles the user will have
         Set<UserRole> roles = Set.of(UserRole.USER);
 
-        //Mockeamos un MultipartFile para la inserción de la imagen
+        //We mock a MultipartFile for image insertion
         MockMultipartFile file = new MockMultipartFile("file", "avatar.jpg", "image/jpeg", "fake image content".getBytes());
 
-        // UserEntity que devolverá el repositorio después de guardar
+        // UserEntity that the repository will return after saving
         UserEntity savedUserEntity = UserEntity.builder()
-                .id(UUID.randomUUID())  // El repositorio asigna un ID
+                .id(UUID.randomUUID())  // The repository assigns authomaticallt an ID
                 .username("ted")
                 .fullname("Ted Lasso")
                 .email("lasso@gmail.com")
@@ -117,28 +115,27 @@ public class UserServiceTest {
                 .profileImage("http://localhost:8080/files/avatar.jpg")
                 .build();
 
-        // ResponseUserDTO que devolverá el converter
-        ResponseUserDTO responseUserDTO = new ResponseUserDTO();
-        responseUserDTO.setUsername("ted");
-        responseUserDTO.setFullname("Ted Lasso");
-        responseUserDTO.setEmail("lasso@gmail.com");
-        responseUserDTO.setGender("man");
-        responseUserDTO.setBirthday(LocalDate.ofYearDay(1977, 1));
-        responseUserDTO.setProfileImage("http://localhost:8080/files/avatar.jpg");
+        // ResponseUserDTO that the converter will build
+        UserRegistrationResponseDTO userRegistrationResponseDTO = new UserRegistrationResponseDTO();
+        userRegistrationResponseDTO.setUsername("ted");
+        userRegistrationResponseDTO.setFullname("Ted Lasso");
+        userRegistrationResponseDTO.setGender("man");
+        userRegistrationResponseDTO.setBirthday(LocalDate.ofYearDay(1977, 1));
+        userRegistrationResponseDTO.setProfileImage("http://localhost:8080/files/avatar.jpg");
 
         // MOCKS
         Mockito.when(storageService.store(file)).thenReturn("avatar.jpg");
         Mockito.when(passwordEncoder.encode(userRequestDTO.getPassword())).thenReturn(encodedPassword);
 
-        // Mock del repositorio - devuelve la entidad con ID
+        // Mock of the repository - it returns the entity with the id
         Mockito.when(userEntityRepository.save(any(UserEntity.class))).thenReturn(savedUserEntity);
 
-        // Mock del converter - ESTO ES LO QUE FALTABA
+        // Mock of the converter
         Mockito.when(userDTOConverter.convertUserEntityToGetUserDTO(any(UserEntity.class)))
-                .thenReturn(responseUserDTO);
+                .thenReturn(userRegistrationResponseDTO);
 
         // Act
-        ResponseUserDTO result = userEntityService.createUser(userRequestDTO, file);
+        UserRegistrationResponseDTO result = userEntityService.createUser(userRequestDTO, file);
 
         // Assert
         assertNotNull(result, "El resultado no debería ser null");
@@ -146,10 +143,9 @@ public class UserServiceTest {
         assertEquals(userRequestDTO.getUsername(), result.getUsername());
         assertEquals(userRequestDTO.getBirthday(), result.getBirthday());
         assertEquals(userRequestDTO.getGender(), result.getGender());
-        assertEquals(userRequestDTO.getEmail(), result.getEmail());
         assertEquals("http://localhost:8080/files/avatar.jpg", result.getProfileImage());
 
-        // Verificar que se guardó correctamente
+        // Verifying if it was saved correctly
         ArgumentCaptor<UserEntity> userCaptor = ArgumentCaptor.forClass(UserEntity.class);
         verify(userEntityRepository).save(userCaptor.capture());
 
@@ -158,20 +154,21 @@ public class UserServiceTest {
         assertTrue(capturedUser.getRoles().contains(UserRole.USER));
         assertEquals(1, capturedUser.getRoles().size());
 
-        // Verificar las interacciones
+        // Verifying the interactions
         verify(storageService).store(file);
         verify(userDTOConverter).convertUserEntityToGetUserDTO(any(UserEntity.class));
 
-        //Es normal que ponga cosas como USER SAVED with id null. Ya que en tests, eso no está guardado en la BD
+        //It is normal to see in console USER SAVED with id null. This is a test, it is not saved in a DB
     }
 
 
-
-//Hay que Mockear todo lo que tu método llama en el camino hasta el punto que falla.
+    /**
+     * Testing exceptions when user already exists and file is provided
+     */
     @Test
     void shouldThrowDataIntegrityExceptionWhenFileIsProvidedAndUserAlreadyExists() {
         // Given
-        RequestUserRegisterDTO userRequestDTO = new RequestUserRegisterDTO();
+        UserRegistrationRequestDTO userRequestDTO = new UserRegistrationRequestDTO();
         userRequestDTO.setUsername("ted");
         userRequestDTO.setFullname("Ted Lasso");
         userRequestDTO.setEmail("lasso@gmail.com");
@@ -180,17 +177,19 @@ public class UserServiceTest {
         userRequestDTO.setGender("man");
         userRequestDTO.setBirthday(LocalDate.ofYearDay(1977, 1));
 
-        // Archivo NO vacío
+        // Not empty file
         MockMultipartFile file = new MockMultipartFile("file", "avatar.jpg", "image/jpeg", "contenido".getBytes());
 
-        //Los dos siguientes when: son pasos previos que tu método ejecuta sí o sí al hacer el save(), aunque estén fuera del try
-        // Simular que la contraseña se codifica
+
+        //The following two when: they are previous steps in our method that are executed when save() is done.
+
+        // Password simulation
         when(passwordEncoder.encode("lasso")).thenReturn("encoded_pass");
 
-        // Simular que el almacenamiento de imagen funciona
+        // Simulating that the file storage in working
         when(storageService.store(file)).thenReturn("avatar.jpg");
 
-        // 🔥 Simular que save() lanza DataIntegrityViolationException
+        // Simulating that save() throws DataIntegrityViolationException
         when(userEntityRepository.save(any(UserEntity.class)))
                 .thenThrow(new DataIntegrityViolationException("Unique constraint violated"));
 
@@ -202,20 +201,23 @@ public class UserServiceTest {
 
         assertEquals("Failed to save User in data base: Username probably already exists", exception.getMessage());
 
-        // Verificar que NO se intentó guardar más de una vez
+        // Verifying that save() was not executed more than one time
         verify(userEntityRepository).save(any(UserEntity.class));
-        // Verificar que sí se codificó la contraseña (el flujo llegó hasta ahí)
+        // Verifying that the password was encoded
         verify(passwordEncoder).encode("lasso");
-        // Verificar que se intentó subir la imagen (si tu lógica lo hace antes del save)
+        // Verifying that the image was uploaded (at least it was attempted)
         verify(storageService).store(file);
     }
 
 
+    /**
+     * Testing exceptions when user already exists and file is not provided
+     */
     @Test
     void shouldThrowDataIntegrityExceptionWhenFileIsEmptyAndUserAlreadyExists() {
 
         // Given
-        RequestUserRegisterDTO userRequestDTO = new RequestUserRegisterDTO();
+        UserRegistrationRequestDTO userRequestDTO = new UserRegistrationRequestDTO();
         userRequestDTO.setUsername("ted");
         userRequestDTO.setFullname("Ted Lasso");
         userRequestDTO.setEmail("lasso@gmail.com");
@@ -224,11 +226,10 @@ public class UserServiceTest {
         userRequestDTO.setGender("man");
         userRequestDTO.setBirthday(LocalDate.ofYearDay(1977, 1));
 
-        // Archivo vacío
+        // Empty file
         MockMultipartFile emptyFile = new MockMultipartFile("file", new byte[0]); // o new byte[] {}
 
         when(passwordEncoder.encode("lasso")).thenReturn("encoded_pass");
-        // ❌ NO mockeamos storageService.store(), porque no se llamará
 
         when(userEntityRepository.save(any()))
                 .thenThrow(new DataIntegrityViolationException("..."));
@@ -239,14 +240,17 @@ public class UserServiceTest {
 
         assertEquals("Failed to save User in data base: Username probably already exists", ex.getMessage());
 
-        // ✅ Verificamos explícitamente que NO se llamó a store
+        // Verifying that store was not called
         verify(storageService, never()).store(any());
     }
 
+    /**
+     * Testing the exception thrown when passwords don't match
+     */
     @Test
     void shouldThrowNewUserWithDifferentPasswordsExceptionWhenPasswordsDontMatch(){
         // Given
-        RequestUserRegisterDTO userRequestDTO = new RequestUserRegisterDTO();
+        UserRegistrationRequestDTO userRequestDTO = new UserRegistrationRequestDTO();
         userRequestDTO.setUsername("ted");
         userRequestDTO.setFullname("Ted Lasso");
         userRequestDTO.setEmail("lasso@gmail.com");
@@ -255,16 +259,14 @@ public class UserServiceTest {
         userRequestDTO.setGender("man");
         userRequestDTO.setBirthday(LocalDate.ofYearDay(1977, 1));
 
-        // Archivo NO vacío
-        MockMultipartFile file = new MockMultipartFile("file", "avatar.jpg", "image/jpeg", "contenido".getBytes());
 
+        MockMultipartFile file = new MockMultipartFile("file", "avatar.jpg", "image/jpeg", "contenido".getBytes());
 
         NewUserWithDifferentPasswordsException ex = assertThrows(NewUserWithDifferentPasswordsException.class, ()->
                 userEntityService.createUser(userRequestDTO, file));
 
         assertEquals("The passwords don't match", ex.getMessage());
 
-        // Verificar que NO se llamó a nada (buena práctica para asegurar aislamiento), como no se hace el save() no se ejecutan
         verify(passwordEncoder, never()).encode(anyString());
         verify(storageService, never()).store(any());
         verify(userEntityRepository, never()).save(any());

@@ -4,6 +4,7 @@ package com.users.UsersMicroservice.controllers;
 import com.users.UsersMicroservice.repositories.StorageService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
@@ -18,70 +19,64 @@ import java.io.IOException;
 
 
 @Controller
-@RequiredArgsConstructor
+@RequiredArgsConstructor @Log4j2
 public class FileController {
 	
 	/**
-	 * Ver toda la descripción de esta clase en mis apuntes de API
-	 * 
-	 * En conjunto, este método toma el nombre del archivo de la URL, obtiene el archivo usando el servicio de almacenamiento, 
-	 * determina el tipo MIME y devuelve el archivo como respuesta HTTP. El navegador o cliente que realiza la solicitud recibirá 
-	 * el archivo con el tipo de contenido adecuado para visualización o descarga.
+	 * In short, this method takes the filename from the URL, retrieves the file using the storage service,
+     * determines the MIME type, and returns the file as an HTTP response. The browser or client making the request
+     * will receive the file with the appropriate content type for viewing or downloading.
 	 */
 
 	/**
-	 * Un objeto Logger para registrar información en los registros del sistema (log). 
-	 * Aquí se usa para registrar errores o información sobre el proceso de determinación del tipo de contenido.
+	 * A Logger object for recording information in the system logs. Here it is used to record errors or information
+     * about the content type determination process.
 	 */
 	private static final Logger logger = LoggerFactory.getLogger(FileController.class);
 	
  	private final StorageService storageService;
 	
  	/**
- 	 * Este metodo se encarga de procesar una solicitud para obtener un archivo específico.
- 	 * @GetMapping(value="/files/{filename:.+}"): Este mapeo de URL especifica que el método responde a solicitudes GET 
- 	 * a la ruta /files/{filename}, donde {filename} representa el nombre del archivo solicitado. 
- 	 * {filename:.+} permite cualquier extensión de archivo (.+ coincide con cualquier carácter), asegurando que el nombre de
- 	 * archivo tenga en cuenta el punto (.) y cualquier extensión (por ejemplo, file.txt).
- 	 * @param filename
- 	 * @param request
- 	 * @return
+ 	 * This method handles a request to retrieve a specific file.
+     * @GetMapping(value="/files/{filename:.+}"): This URL mapping specifies that the method responds to GET requests
+     * to the path /files/{filename}, where {filename} represents the name of the requested file.
+     * {filename:.+} allows any file extension (.+ matches any character), ensuring that the filename takes into
+     * account the period (.) and any extension (e.g., file.txt).
+     * @param filename
+     * @param request
+     * @return
  	 */
 	@GetMapping(value="/files/{filename:.+}")
 	@ResponseBody
 	public ResponseEntity<Resource> serveFile(@PathVariable String filename, HttpServletRequest request) { //HttpServletRequest request: Permite acceder a la solicitud HTTP completa, útil para obtener detalles como el tipo de contenido.
 
-		
 		Resource file = storageService.loadAsResource(filename);
 		
         String contentType = null;
         
-        /**
-         * request.getServletContext().getMimeType(...): Intenta determinar el tipo MIME del archivo 
-         * (por ejemplo, image/png o text/plain) según la extensión. 
-         * 
-         * Manejo de excepción: Si hay un error, el logger registra que no se pudo determinar el tipo de archivo.
-         * 
-         * Tipo de contenido predeterminado: Si contentType sigue siendo null, se establece en application/octet-stream, 
-         * el tipo genérico para archivos binarios (usado generalmente para descargas).
+        /*
+         * request.getServletContext().getMimeType(...):` Attempts to determine the MIME type of the file (for example,
+         * image/png or text/plain) based on the extension.
+         *
+         * Exception handling: If an error occurs, the logger logs that the file type could not be determined.
+         *
+         * Default content type: If `contentType` remains `null`, it is set to `application/octet-stream`,
+         * the generic type for binary files (generally used for downloads).
          */
         try {
             contentType = request.getServletContext().getMimeType(file.getFile().getAbsolutePath());
         } catch (IOException ex) {
-            logger.info("Could not determine file type.");
+            log.info("Could not determine file type.");
         }
 
         if(contentType == null) {
             contentType = "application/octet-stream";
         }
 		
-        /**
-         * ResponseEntity.ok(): Crea una respuesta HTTP con estado 200 (OK).
-         * 
-         * .contentType(MediaType.parseMediaType(contentType)): Establece el tipo de contenido en el encabezado de la respuesta HTTP, 
-         * utilizando el tipo determinado anteriormente.
-         * 
-         * .body(file): Incluye el archivo como el cuerpo de la respuesta.
+        /*
+         * ResponseEntity.ok(): Creates an HTTP response with a status of 200 (OK).
+         * .contentType(MediaType.parseMediaType(contentType)): Sets the content type in the HTTP response header, using the type specified above.
+         * .body(file): Includes the file as the response body.
          */
 		return ResponseEntity.ok()
 				.contentType(MediaType.parseMediaType(contentType))

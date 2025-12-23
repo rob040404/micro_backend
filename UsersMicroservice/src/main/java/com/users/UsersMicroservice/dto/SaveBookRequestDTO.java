@@ -6,11 +6,15 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.UUID;
+
+/**
+ * DTO for saving a new book into a list
+ */
 @Getter @Setter
-public class SaveBookDTO {
+public class SaveBookRequestDTO {
 
     @NotNull @NotBlank
-    private String userListId;
+    private UUID userListId;
     @NotNull
     private Long bookId;
 }

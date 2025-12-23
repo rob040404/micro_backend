@@ -9,7 +9,7 @@ import lombok.*;
 import java.time.LocalDate;
 
 @Getter @Setter @Builder @AllArgsConstructor @NoArgsConstructor
-public class RequestUserRegisterDTO {
+public class UserRegistrationRequestDTO {
 
     @NotBlank @NotNull
 	private String username;

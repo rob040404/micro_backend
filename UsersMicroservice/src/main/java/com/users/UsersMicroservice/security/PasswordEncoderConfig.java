@@ -6,9 +6,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
- * Es bueno separar el PasswordEncoder del SecurityCnfig, porque al manejas UserDetails y otras cosas se puede generar unas inyecciones circulares
- * 
- * PERO DE MOMENTO LO DEJO EN EL SecurityConfig
+ * PasswordEncoder Configuration class
  */
 @Configuration
 public class PasswordEncoderConfig {

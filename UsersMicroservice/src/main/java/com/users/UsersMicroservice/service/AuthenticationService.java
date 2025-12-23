@@ -2,33 +2,43 @@ package com.users.UsersMicroservice.service;
 
 import com.users.UsersMicroservice.security.APIKeyAuthentication;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+/**
+ * Validates incoming requests by checking a configured API key in a specified HTTP header.
+ * If valid, returns an authentication token for Spring Security context.
+ */
+@Service
+@Log4j2
 public class AuthenticationService {
 
-    private static final String token_header = "users_apikey";
-    //private static final String authToken = "kajds324DJSKNDdnjsaDNJWaA12SDDax09324dsDITncsaeu95482";
+    private final String expectedApiKey;
+    private final String headerName;
 
-    private static String authToken;
-
-    @Value("${app.users.users.apikey}") //Porque Value no funciona en static, hay que poner setter
-    public void setAuthToken(String token) {
-        AuthenticationService.authToken = token;
+    public AuthenticationService(
+            @Value("${app.users.users.apikey}") String expectedApiKey,
+            @Value("${app.users.header.apikey}") String headerName
+    ){
+        this.expectedApiKey=expectedApiKey;
+        this.headerName=headerName;
     }
 
-    public static APIKeyAuthentication getAuthentication(HttpServletRequest request){
+    public APIKeyAuthentication getAuthentication(HttpServletRequest request){
+        //Extracts the value of the right header
+        String apiKey = request.getHeader(headerName);
 
-        String apiKey = request.getHeader(token_header);
-
-        if(apiKey == null || !apiKey.equals(authToken)){
-            throw new BadCredentialsException("Invalid ApiKey");
+        //Validates that it matches the api key
+        if(apiKey == null || !apiKey.equals(expectedApiKey)){
+            throw new BadCredentialsException("Wrong Credentials");
         }
 
-        return new APIKeyAuthentication(apiKey, AuthorityUtils.NO_AUTHORITIES);
+        return new APIKeyAuthentication(
+                apiKey,
+                AuthorityUtils.createAuthorityList("ROLE_API_CLIENT")
+        );
     }
 }

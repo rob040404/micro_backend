@@ -1,8 +1,8 @@
 package com.social.SocialMicroservice.exceptions;
 
 public class NoUserWithSuchUserNameException extends RuntimeException {
-    public NoUserWithSuchUserNameException(String message) {
+    public NoUserWithSuchUserNameException() {
 
-        super("No user with such username: " + message);
+        super("No user with such username");
     }
 }

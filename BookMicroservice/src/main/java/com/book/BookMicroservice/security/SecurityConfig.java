@@ -1,6 +1,7 @@
 package com.book.BookMicroservice.security;
 
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,18 +16,15 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfigurationSource;
 
+/**
+ * Security Configuration Class
+ */
 @Configuration
 @EnableWebSecurity
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SecurityConfig {
 
-    @Autowired
     private final CorsConfigurationSource corsConfigurationSource;
-
-    @Autowired
-    private final JwtRequestFilter jwtRequestFilter;
-
-    @Autowired
     private final ApiFilter apiFilter;
 
     @Bean
@@ -46,30 +44,30 @@ public class SecurityConfig {
                                 "/swagger-resources/**",
                                 "/v2/api-docs/**"
                         ).permitAll()
-                        .requestMatchers(HttpMethod.POST, "/book/**" ).permitAll()
+                        // Public endpoints
                         .requestMatchers(HttpMethod.OPTIONS, "/user/auth/vote").permitAll()  // <-- esto es clave
+                        .requestMatchers(HttpMethod.POST, "/book/search" ).permitAll()
+                        .requestMatchers(HttpMethod.GET, "/user/all_reviews/**").permitAll()
+                        // Protected endpoints (require authentication + roles)
                         .requestMatchers(HttpMethod.POST, "/user/auth/vote").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.POST, "/user/auth/review").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/user/all_reviews/**").permitAll()
-                        //.requestMatchers(HttpMethod.POST, "/user/auth/vote").authenticated() // ✅ ahora solo requiere token válido, sin roles
+                        // Everything else requires authentication
                         .anyRequest().authenticated()
                 )
 
 
                 .addFilterBefore(apiFilter, UsernamePasswordAuthenticationFilter.class)
-                //aquí lo pongo con autowired, no con new, porque no puedo inyectar la dependencia en otros sitio. ApiFilter a lo mejor también por eso
-               // .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                //Desactivamos la autenticación por formulario
+                //We disabled form authentication
                 .httpBasic(httpBasic -> httpBasic.disable())
                 .formLogin(form -> form.disable());
 
         return http.build();
     }
 
-    // Desactiva la autenticación por defecto (no hay login aquí)
+    // Disables authentication by default. We don't have login in this microservice
     @Bean
     public AuthenticationManager authenticationManager(
             AuthenticationConfiguration config) throws Exception {

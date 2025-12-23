@@ -5,18 +5,17 @@ import lombok.*;
 import java.time.LocalDate;
 import java.util.Set;
 
+/**
+ * DTO for user registration response
+ */
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor @Builder
-public class ResponseUserDTO {
-
-	//Info que podemos devolver del usuario tras hacer el registro
+public class UserRegistrationResponseDTO {
 
 	private String username;
 	private String fullname;
-	private String email; // ¡¡Quitar para que email no sea visible (al menos no completo)!!
 	private String gender;
 	protected LocalDate birthday;
-	private Set<String> roles;
 	private String profileImage;
 	
 }

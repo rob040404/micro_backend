@@ -1,65 +1,56 @@
 package com.book.BookMicroservice.client;
 
-import com.book.BookMicroservice.dto.response.ResponseUserDTO;
+import com.book.BookMicroservice.dto.response.UserResponseDTO;
+import com.book.BookMicroservice.exception.UserNotObtainedException;
 import com.book.BookMicroservice.security.JWTUtil;
 import com.book.BookMicroservice.service.CustomUserDetails;
-import com.book.BookMicroservice.service.Util;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.http.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestTemplate;
 
-import java.net.URI;
-import java.net.URISyntaxException;
+
 import java.util.UUID;
 
-@Getter
+/**
+ * Consumer class where we define the requests to other microservice
+ */
 @Component
 public class UserServiceClient {
 
-
-    private JWTUtil jwtUtil;
-
+    private final JWTUtil jwtUtil;
     private final RestClient userRestClient;
+    private final String usersApikey;
 
-    private static final String api_url = "http://localhost:9001";
-    private static final String full_api_url = api_url + "/getUserId";
-
-    String users_apikey;
-
-    // Inyección por constructor (mejor práctica). Ase podría usar AllArgsConstruct en vez del constructor manual
     public UserServiceClient(JWTUtil jwtUtil, RestClient userRestClient, @Value("${app.users.users.apikey}")String usersApikey) {
         this.jwtUtil = jwtUtil;
         this.userRestClient = userRestClient;
-        this.users_apikey=usersApikey;
+        this.usersApikey =usersApikey;
     }
 
+    /**
+     * Method used to call Users Microservice and obtain the user's  username
+     * @param authentication From which we extract the user details
+     * @return The user's username as a String
+     */
     public String getUsername(Authentication authentication){
 
         CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
         UUID userId = details.getId();
 
         try {
-            ResponseUserDTO response = userRestClient
+            UserResponseDTO response = userRestClient
                     .get()
-                    .uri("/user/api/users/{id}", userId) // ruta relativa
-                    .header("users_apikey", this.users_apikey)     // o elimina si usaste defaultHeader
+                    .uri("/user/api/users/{id}", userId)
+                    .header("users_apikey", this.usersApikey)
                     .retrieve()
-                    .body(ResponseUserDTO.class);
+                    .body(UserResponseDTO.class);
 
             return response.getUsername();
         } catch (RestClientException e) {
-            // Manejo de errores: 404, 500, timeout, etc.
-            throw new RuntimeException("Error al obtener el nombre del usuario", e);
+            throw new UserNotObtainedException("Username was not obtained");
         }
-
     }
 
 

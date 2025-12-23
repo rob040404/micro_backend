@@ -14,6 +14,9 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Kafka configuration class
+ */
 @Configuration
 public class KafkaProducerConfig {
 
@@ -24,15 +27,18 @@ public class KafkaProducerConfig {
     //Generic fabric
     @Bean
     public ProducerFactory<String, Object> producerFactory() {
+
+        //Map object where we define the configuration
         Map<String, Object> config = new HashMap<>();
 
         //Establishes to which Kafka brokers the Producer should connect
         config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        //The key of the Kafka message will be serialized as a String
+        //The key of the Kafka key will be serialized as a String
         config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        //The value oth the Kafka message will be serialized as a JSON
+        //The value of the Kafka message will be serialized as a JSON
         config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
-        //Includes metha data of types in the header. Example: every message will include aheader liek: __TypeId__: "followRequest"
+        //Includes metha data of types in the header. Example: every message will include a header like:
+        // __TypeId__: "followRequest"
         config.put(JsonSerializer.ADD_TYPE_INFO_HEADERS, true);
 
         /*
