@@ -197,7 +197,7 @@ public class BookService{
 
         if (authentication == null) return null;
 
-        if (authentication.getPrincipal() instanceof CustomUserDetails user) {
+        if (authentication.getDetails() instanceof CustomUserDetails user) {
             return user.getId();
         }
 
