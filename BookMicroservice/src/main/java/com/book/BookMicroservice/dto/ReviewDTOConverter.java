@@ -18,6 +18,7 @@ public class ReviewDTOConverter {
 	public ReviewResponseDTO fromRatingToReviewDTO(Rating rating) {
 		
 		return ReviewResponseDTO.builder()
+                .id(rating.getId())
 				.reviewDTO(rating.getReview())
 				.bookIdDTO(rating.getBook().getId())
                 .username(rating.getUsername())

@@ -102,7 +102,8 @@ public class BookService{
         if(userId != null){
             Optional <Rating> existingRatingOpt = ratingService.findExistingRating(userId, book);
             if(existingRatingOpt.isPresent()) {
-                rating = existingRatingOpt.get().getRating();
+                //If users rating/vote is null we send 0, because that's how the frontend manage it
+                rating = Optional.ofNullable(existingRatingOpt.get().getRating()).orElse(0);
                 userReview = existingRatingOpt.get().getReview();
             }
         }

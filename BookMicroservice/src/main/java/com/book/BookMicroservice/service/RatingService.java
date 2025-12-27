@@ -146,8 +146,8 @@ public class RatingService {
     public Page <ReviewResponseDTO> getAllReviews(Long bookId, int page, int size){
 
         // Validate and cap page size
-        if (size <= 0) size = 10;
-        if (size > 100) size = 100;
+        if (size <= 0) size = 2;
+        if (size > 10) size = 10;
 
         // Check book exists
         if (!bookRepository.existsById(bookId)) {
@@ -157,10 +157,12 @@ public class RatingService {
         Sort sort = Sort.by("reviewDate").descending();
         Pageable pageable = PageRequest.of(page, size, sort);
 
+        //Caching to be implemented here
         Page<Rating> ratings = ratingRepository.findByBookId(bookId, pageable);
 
         List<ReviewResponseDTO> content = ratings.getContent().stream()
                 .map(rating -> new ReviewResponseDTO(
+                        rating.getId(),
                         rating.getReview(),
                         bookId,
                         rating.getUsername()
@@ -168,9 +170,7 @@ public class RatingService {
                 .toList();
 
         return new PageImpl<>(content, pageable, ratings.getTotalElements());
-
     }
-
 
     public Optional<Rating> findExistingRating(UUID userId, Book book) {
         return ratingRepository.findByUserIdAndBook(userId, book);
