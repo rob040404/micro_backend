@@ -20,6 +20,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
@@ -154,30 +155,56 @@ public class UserEntityService extends BaseService<UserEntity, UUID, UserEntityR
      * @param authentication The authentication object to extract the user's details
      * @return String with the information of the saved book and the list it fas saved into
      */
+    @Transactional
     public String saveBookToList(SaveBookRequestDTO newBook, Authentication authentication){
 
         String email= (String) authentication.getPrincipal();
         UserEntity user = userEntityRepository.findByEmail(email)
                 .orElseThrow(UserNotFoundException::new);
 
-        // We verify that the list belongs to the user
-        UserList list = userListRepository.findById(newBook.getUserListId())
-                .orElseThrow(()-> new UserListNotFoundException(" List was not found"));
+        for(UUID list: newBook.getUserListId()){
 
-        if (!list.getUser().getId().equals(user.getId())) {
-            throw new AccessDeniedException("You can only add books to your own lists");
+            // We verify that the list belongs to the user
+            UserList userList = userListRepository.findById(list)
+                    .orElseThrow(()-> new UserListNotFoundException(" List was not found"));
+
+            if (!userList.getUser().getId().equals(user.getId())) {
+                throw new AccessDeniedException("You can only add books to your own lists");
+            }
+
+            BookList book = new BookList();
+            book.setBookId(newBook.getBookId());
+            book.setList(userList);
+            BookList savedBook =bookListRepository.save(book);
+
+            log.info("Book {} saved in list {} for user {}",
+                    savedBook.getBookId(), savedBook.getList(), user.getId());
         }
 
-        BookList book = new BookList();
-        book.setBookId(newBook.getBookId());
-        book.setList(list);
-        BookList savedBook =bookListRepository.save(book);
-
-        log.info("Book {} saved in list {} for user {}",
-                newBook.getBookId(), newBook.getUserListId(), user.getId());
-
-        return "Book with id"+ savedBook.getBookId() + "has been saved in list " +savedBook.getList();
+        return "Book with id has been saved in list " ;
     }
 
+    /*
+    public void getUsersListsWithBook(Authentication authentication, Long bookID){
 
+        // Valdation of bookId Do it with
+        if (bookID == null) {
+            throw new IllegalArgumentException("Book ID cannot be null");
+        }
+
+        // Validar autenticación
+        if (authentication == null || !(authentication.getDetails() instanceof CustomUserDetails)) {
+            throw new AccessDeniedException("User not authenticated or invalid details");
+        }
+
+        CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
+        UUID userID = details.getId();
+
+        if (userID == null) {
+            throw new IllegalStateException("User ID cannot be null");
+        }
+
+    }
+    
+     */
 }

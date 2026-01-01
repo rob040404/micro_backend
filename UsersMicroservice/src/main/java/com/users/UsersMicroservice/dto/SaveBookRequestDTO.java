@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -14,7 +15,7 @@ import java.util.UUID;
 public class SaveBookRequestDTO {
 
     @NotNull @NotBlank
-    private UUID userListId;
+    private List<UUID> userListId;
     @NotNull
     private Long bookId;
 }
