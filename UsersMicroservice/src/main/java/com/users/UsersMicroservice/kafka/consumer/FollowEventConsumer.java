@@ -18,7 +18,7 @@ public class FollowEventConsumer {
      * Method that detects follow request messages
      * @param event
      */
-    @KafkaListener(topics = "${topic.follow-requests}", groupId = "${group.users}")
+    //@KafkaListener(topics = "${topic.follow-requests}", groupId = "${group.users}")
     public void onFollowRequest(FollowRequestEventRequestDTO event) {
         log.info("Follow request: followerId={}, followedId={}, status={}, createdAt={}",
                 event.followerId(), event.followedId(), event.status(), event.createdAt());
@@ -30,7 +30,7 @@ public class FollowEventConsumer {
      * A method thar detects answers to follow request messages
      * @param event
      */
-    @KafkaListener(topics = "${topic.follow-answers}", groupId = "${group.users}")
+    //@KafkaListener(topics = "${topic.follow-answers}", groupId = "${group.users}")
     public void onFollowAnswer(FollowAnsweredEventRequestDTO event){
         log.info("{} has accepted {} since {}", event.followedId(), event.followerId(), event.followedSince());
         //followService.processAnswerRequest(event);

@@ -1,5 +1,4 @@
 services:
-  ## MySQL
   mysql:
     image: mysql:8.0
     environment:
@@ -11,9 +10,32 @@ services:
     networks:
       - app-network
 
-  ## Kafka and zookeeper: introduce when needed
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.4.0
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - app-network
 
-  ## Redis
+  kafka:
+    image: confluentinc/cp-kafka:7.4.0
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    networks:
+      - app-network
+
   redis:
     image: redis:7.2-alpine
     container_name: redis
@@ -22,9 +44,26 @@ services:
     networks:
       - app-network
 
-  ## Social Microservice. Introduce when needed
 
-  ## Book Microservice
+  social-service:
+    build: ./SocialService
+    ports:
+      - "9003:9003"
+    environment:
+      APP_SECURITY_BLOT_APIKEY_SECRET: ${APP_SECURITY_BLOT_APIKEY}
+      APP_USERS_USERS_APIKEY_SECRET: ${APP_USERS_USERS_APIKEY}
+      APP_USERS_USERS_API_URL_SECRET: ${APP_USERS_USERS_API_URL_SECRET}
+      APP_SOCIAL_SOCIAL_APIKEY_SECRET: ${APP_SOCIAL_SOCIAL_APIKEY_SECRET}
+      APP_SOCIAL_SOCIAL_HEADER_SECRET: ${APP_SOCIAL_SOCIAL_HEADER_SECRET}
+      SPRING_PROFILES_ACTIVE: docker
+    depends_on:
+      - mysql
+      - kafka
+      - redis
+    networks:
+      - app-network
+
+
   book-service:
     build: ./BookMicroservice
     ports:
@@ -34,22 +73,19 @@ services:
       DB_PASSWORD: ${DB_PASSWORD}
       APP_SECURITY_BLOT_APIKEY: ${APP_SECURITY_BLOT_APIKEY}
       APP_BOOKS_BOOKS_APIKEY: ${APP_BOOKS_BOOKS_APIKEY}
-      APP_BOOKS_HEADER_APIKEY: ${APP_BOOKS_HEADER_APIKEY}
       APP_USERS_USERS_APIKEY: ${APP_USERS_USERS_APIKEY}
-      APP_USERS_USERS_API_URL_SECRET: ${APP_USERS_USERS_API_URL_SECRET}
-      APP_SOCIAL_SOCIAL_API_URL_SECRET: ${APP_SOCIAL_SOCIAL_API_URL_SECRET}
       SPRING_PROFILES_ACTIVE: docker
     depends_on:
       - mysql
+      - kafka
       - redis
     networks:
       - app-network
 
-  ##Users Microservice
   user-service:
     build: ./UsersMicroservice
     ports:
-      - "9001:9001"
+      - "9003:9003"
     environment:
       DB_USERNAME: ${DB_USERNAME}
       DB_PASSWORD: ${DB_PASSWORD}
@@ -68,18 +104,18 @@ services:
       SPRING_PROFILES_ACTIVE: docker
     depends_on:
       - mysql
+      - kafka
       - redis
     networks:
       - app-network
 
-  ## Security Microservice
+
   security-service:
     build: ./security
     ports:
       - "9000:9000"
     environment:
       APP_SECURITY_BLOT_APIKEY: ${APP_SECURITY_BLOT_APIKEY}
-      APP_SECURITY_HEADER_APIKEY: ${APP_SECURITY_HEADER_APIKEY}
       APP_USERS_USERS_APIKEY: ${APP_USERS_USERS_APIKEY}
       APP_USERS_USERS_API_URL_SECRET: ${APP_USERS_USERS_API_URL_SECRET}
       SPRING_PROFILES_ACTIVE: docker
