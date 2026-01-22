@@ -80,6 +80,13 @@ public class GlobalControllerAdvice /*extends ResponseEntityExceptionHandler*/{
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
     }
 
+    @ExceptionHandler(MaxNumOfListsReachedException.class)
+    public ResponseEntity<ApiError> handleMaxNumOfListsReachedException(MaxNumOfListsReachedException ex){
+        log.warn("Max number os lists reached by user", ex);
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
+    }
+
     /**
      * Method that captures all validation errors, so we don't have to do BindingResult result any time
      * @param ex MethodArgumentNotValidException

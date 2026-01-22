@@ -24,10 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Este servicio extiende BaseService. Usará sus métodos
@@ -149,6 +146,51 @@ public class UserEntityService extends BaseService<UserEntity, UUID, UserEntityR
 
     }
 
+    public List <SendUsersListsWithBookResponseDTO> createSeveralLists(List <String> newLists, Authentication authentication){
+
+        // Authentication validation
+        if (authentication == null || !(authentication.getDetails() instanceof CustomUserDetails)) {
+            throw new AccessDeniedException("User not authenticated or invalid details");
+        }
+
+        CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
+        UUID userID = details.getId();
+
+        if (userID == null) {
+            throw new AccessDeniedException("User not authenticated or invalid details");
+        }
+
+        UserEntity user = userEntityRepository.findById(userID).orElseThrow(UserNotFoundException::new);
+
+        //User can only have 10 lists, so we control this
+        long maxUserLists = 10;
+        long numUserLists = userListRepository.countByUser(user);
+
+        List<SendUsersListsWithBookResponseDTO> responseList = new ArrayList<>();
+
+        for(String list: newLists){
+            if (numUserLists > maxUserLists){
+                throw new MaxNumOfListsReachedException("Max number of lists reached");
+            }
+            UserList userList = new UserList();
+            userList.setListName(list);
+            userList.setUser(user);
+
+            UserList savedUserlist = userListRepository.save(userList);
+            log.info("List saved: {}", savedUserlist);
+
+            responseList.add(new SendUsersListsWithBookResponseDTO(
+                    savedUserlist.getId(),
+                    savedUserlist.getListName(),
+                    false,
+                    bookListRepository.countByList(savedUserlist))
+            );
+        }
+
+
+        return responseList;
+    }
+
     /**
      * Called from the addBook controller, so the user can add a book to one of his/her lists
      * @param newBook The book that should be saved.
@@ -184,15 +226,20 @@ public class UserEntityService extends BaseService<UserEntity, UUID, UserEntityR
         return "Book with id has been saved in list " ;
     }
 
-    /*
-    public void getUsersListsWithBook(Authentication authentication, Long bookID){
 
-        // Valdation of bookId Do it with
+    /**
+     * This method is called by the controller. Which is called from the frontend when the user is in a specific book's
+     * book sheet. So we need to send all users created lists and if the specified book is present in dome of them.
+     * @return A list of dto objects with the following information: user's list id, user's list name, if book is present
+     */
+    public  List <SendUsersListsWithBookResponseDTO> getUsersListsWithBook(Authentication authentication, Long bookID){
+
+        // Validation of bookId
         if (bookID == null) {
             throw new IllegalArgumentException("Book ID cannot be null");
         }
 
-        // Validar autenticación
+        // Authentication validation
         if (authentication == null || !(authentication.getDetails() instanceof CustomUserDetails)) {
             throw new AccessDeniedException("User not authenticated or invalid details");
         }
@@ -201,10 +248,75 @@ public class UserEntityService extends BaseService<UserEntity, UUID, UserEntityR
         UUID userID = details.getId();
 
         if (userID == null) {
-            throw new IllegalStateException("User ID cannot be null");
+            throw new AccessDeniedException("User not authenticated or invalid details");
         }
 
+        //If user has no lists we return it empty
+        List <UserList> userLists = userListRepository.findByUserId(userID);
+
+        List <SendUsersListsWithBookResponseDTO> responseDTOList = new ArrayList<>();
+
+        //If there are no list created by the user, we send an empty list
+        if (userLists.isEmpty()){
+            return responseDTOList;
+        }
+
+
+        for (UserList userList: userLists){
+
+            SendUsersListsWithBookResponseDTO responseDTO = new SendUsersListsWithBookResponseDTO();
+            responseDTO.setListId(userList.getId());
+            responseDTO.setListName(userList.getListName());
+            responseDTO.setBooksCount(bookListRepository.countByList(userList));
+
+            //We find out if the current book present in the list and set it as true or false
+            responseDTO.setBookIsPresent(bookListRepository.existsByListAndBookId(userList, bookID));
+
+            responseDTOList.add(responseDTO);
+        }
+
+        return responseDTOList;
     }
-    
-     */
+
+    public GenericApiResponse addBookToSeveralLists(SaveBookRequestDTO listIds, Authentication authentication){
+
+        // Validation of bookId
+        if (listIds == null
+                || listIds.getBookId() == null
+                || listIds.getUserListId() == null
+                || listIds.getUserListId().isEmpty()) {
+
+            throw new IllegalArgumentException("Lists cannot be null or empty");
+        }
+
+        // Authentication validation
+        if (authentication == null || !(authentication.getDetails() instanceof CustomUserDetails)) {
+            throw new AccessDeniedException("User not authenticated or invalid details");
+        }
+
+        CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
+        UUID userID = details.getId();
+
+        if (userID == null) {
+            throw new AccessDeniedException("User not authenticated or invalid details");
+        }
+
+        Long bookId = listIds.getBookId();
+
+        for (UUID listId: listIds.getUserListId()){
+           Optional <UserList> optList = userListRepository.findById(listId);
+
+           if (optList.isPresent()){
+               UserList userList = optList.get();
+               BookList bookToList = new BookList();
+               bookToList.setList(userList);
+               bookToList.setBookId(bookId);
+               bookListRepository.save(bookToList);
+           }
+        }
+
+        return new GenericApiResponse("Books saved to lists");
+    }
+
+
 }
