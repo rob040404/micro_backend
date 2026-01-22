@@ -20,21 +20,25 @@ import java.util.Map;
 
 /**
  * Configuration class for kafka's consumer
+ *
+ * IMPORTANT: for now, we are not using Kafka in production. We will activate this beans and the whole functionality
+ * when needed.
  */
-@Configuration
+//@Configuration
 public class KafkaConsumerConfig {
 
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServers;
 
-    // Inyecta tu KafkaTemplate (debe estar definido como @Bean en otra config)
+    // Inyecta KafkaTemplate (debe estar definido como @Bean en otra config)
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
     public KafkaConsumerConfig(KafkaTemplate<String, Object> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    @Bean
+    //We will activate this bean when we implement Kafka in production
+   // @Bean
     public ConsumerFactory<String, Object> consumerFactory() {
         Map<String, Object> config = new HashMap<>();
 
@@ -91,7 +95,8 @@ public class KafkaConsumerConfig {
      * and assign the configured consumer factory to it.
      */
 
-    @Bean
+    //@Bean
+    //We will activate this bean when we implement Kafka in production
     public ConcurrentKafkaListenerContainerFactory<String, Object> kafkaListenerContainerFactory() {
 
         ConcurrentKafkaListenerContainerFactory<String, Object> factory =
