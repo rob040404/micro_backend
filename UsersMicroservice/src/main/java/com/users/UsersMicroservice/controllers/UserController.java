@@ -20,6 +20,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -156,5 +158,27 @@ public class UserController {
         log.trace("POST /add book controller: {}", newBook.getBookId());
         return ResponseEntity.status(HttpStatus.CREATED).body(userEntityService.saveBookToList(newBook, authentication));
     }
+
+    @GetMapping("/auth/getUsersListsWithBook/{bookId}")
+    public ResponseEntity<List<SendUsersListsWithBookResponseDTO>>
+    getUsersListsWithBook(@PathVariable Long bookId, Authentication authentication){
+
+        return ResponseEntity.status(HttpStatus.OK).body(userEntityService.getUsersListsWithBook(authentication, bookId));
+    }
+
+    @PostMapping("/auth/createSeveralLists")
+    public ResponseEntity<List<SendUsersListsWithBookResponseDTO>> createSeveralLists(@RequestBody List<String> newLists, Authentication authentication){
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(userEntityService.createSeveralLists(newLists, authentication));
+    }
+
+    @PostMapping("/auth/addBookToSeveralLists")
+    public ResponseEntity<GenericApiResponse> addBookToSeveralLists(@Valid @RequestBody SaveBookRequestDTO listIds, Authentication authentication){
+
+        log.info("Entering addBookToSeveralLists controller with DTO: {}", listIds);
+        return ResponseEntity.status(HttpStatus.CREATED).body(userEntityService.addBookToSeveralLists(listIds, authentication));
+    }
+
+
 
 }
