@@ -42,6 +42,7 @@ public class UserEntityService extends BaseService<UserEntity, UUID, UserEntityR
     private UserListRepository userListRepository;
     private BookListRepository bookListRepository;
     private final CacheService cacheService;
+    private final S3StorageService s3StorageService;
 
     /**
      * Method for user creation that is called from the controller
@@ -57,12 +58,18 @@ public class UserEntityService extends BaseService<UserEntity, UUID, UserEntityR
 
         if (Objects.equals(newUser.getPassword(), newUser.getPassword2())) {    //Both passwords should be equal
 
-            if(!file.isEmpty()) {
-                String image = storageService.store(file); //It returns the name of the stored file name
+            if(file != null && !file.isEmpty()) {
+                // El servicio ahora nos devuelve la URL final de Amazon directamente
+                urlImage = s3StorageService.store(file);
+
+                /*String image = storageService.store(file); //It returns the name of the stored file name
                 urlImage = MvcUriComponentsBuilder            //We construct the uri we will use for the database
                         .fromMethodName(FileController.class, "serveFile", image, null) //It takes the information from method serveFile of FileController
                         .build().toString();								//We construct all the uri path of the file to String
+
+                 */
             }
+
 
             //We build the UserEntity with builder
             UserEntity userEntity = UserEntity.builder()

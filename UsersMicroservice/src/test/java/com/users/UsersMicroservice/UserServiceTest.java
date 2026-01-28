@@ -11,6 +11,7 @@ import com.users.UsersMicroservice.repositories.BookListRepository;
 import com.users.UsersMicroservice.repositories.StorageService;
 import com.users.UsersMicroservice.repositories.UserEntityRepository;
 import com.users.UsersMicroservice.repositories.UserListRepository;
+import com.users.UsersMicroservice.service.S3StorageService;
 import com.users.UsersMicroservice.service.UserEntityService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,7 +45,7 @@ public class UserServiceTest {
     private PasswordEncoder passwordEncoder;
 
     @Mock
-    private StorageService storageService;
+    private S3StorageService s3StorageService;
 
     @Mock
     private UserDTOConverter userDTOConverter;
@@ -124,7 +125,7 @@ public class UserServiceTest {
         userRegistrationResponseDTO.setProfileImage("http://localhost:8080/files/avatar.jpg");
 
         // MOCKS
-        Mockito.when(storageService.store(file)).thenReturn("avatar.jpg");
+        Mockito.when(s3StorageService.store(file)).thenReturn("avatar.jpg");
         Mockito.when(passwordEncoder.encode(userRequestDTO.getPassword())).thenReturn(encodedPassword);
 
         // Mock of the repository - it returns the entity with the id
@@ -155,7 +156,7 @@ public class UserServiceTest {
         assertEquals(1, capturedUser.getRoles().size());
 
         // Verifying the interactions
-        verify(storageService).store(file);
+        verify(s3StorageService).store(file);
         verify(userDTOConverter).convertUserEntityToGetUserDTO(any(UserEntity.class));
 
         //It is normal to see in console USER SAVED with id null. This is a test, it is not saved in a DB
@@ -187,7 +188,7 @@ public class UserServiceTest {
         when(passwordEncoder.encode("lasso")).thenReturn("encoded_pass");
 
         // Simulating that the file storage in working
-        when(storageService.store(file)).thenReturn("avatar.jpg");
+        when(s3StorageService.store(file)).thenReturn("avatar.jpg");
 
         // Simulating that save() throws DataIntegrityViolationException
         when(userEntityRepository.save(any(UserEntity.class)))
@@ -206,7 +207,7 @@ public class UserServiceTest {
         // Verifying that the password was encoded
         verify(passwordEncoder).encode("lasso");
         // Verifying that the image was uploaded (at least it was attempted)
-        verify(storageService).store(file);
+        verify(s3StorageService).store(file);
     }
 
 
@@ -241,7 +242,7 @@ public class UserServiceTest {
         assertEquals("Failed to save User in data base: Invalid Input Data", ex.getMessage());
 
         // Verifying that store was not called
-        verify(storageService, never()).store(any());
+        verify(s3StorageService, never()).store(any());
     }
 
     /**
@@ -268,7 +269,7 @@ public class UserServiceTest {
         assertEquals("The passwords don't match", ex.getMessage());
 
         verify(passwordEncoder, never()).encode(anyString());
-        verify(storageService, never()).store(any());
+        verify(s3StorageService, never()).store(any());
         verify(userEntityRepository, never()).save(any());
 
     }
