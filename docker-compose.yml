@@ -93,8 +93,9 @@ services:
 
 volumes:
   mysql_existing:
-    external: true
-    name: 86d81aeed83666fe5a7d455b754e2dc008a3d72ab395f337569346d1b9ac1594
+   # external: true
+   # name: 86d81aeed83666fe5a7d455b754e2dc008a3d72ab395f337569346d1b9ac1594
+   ## The upper line is for local testing
 
 networks:
   app-network:
