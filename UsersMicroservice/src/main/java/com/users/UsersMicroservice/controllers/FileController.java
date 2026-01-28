@@ -28,12 +28,7 @@ public class FileController {
      * will receive the file with the appropriate content type for viewing or downloading.
 	 */
 
-	/**
-	 * A Logger object for recording information in the system logs. Here it is used to record errors or information
-     * about the content type determination process.
-	 */
-	private static final Logger logger = LoggerFactory.getLogger(FileController.class);
-	
+
  	private final StorageService storageService;
 	
  	/**
