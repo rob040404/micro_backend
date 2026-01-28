@@ -1,13 +1,12 @@
-# ETAPA 1: Compilación
-FROM maven:3.8.5-openjdk-17-slim AS build
-WORKDIR /app
-COPY . .
-# Compilamos directamente (el clean package ya descarga lo necesario)
-RUN mvn clean package -DskipTests
+# Imagen base con Java 17 (ligera y estándar)
+FROM eclipse-temurin:17-jdk-focal
 
-# ETAPA 2: Ejecución
-FROM eclipse-temurin:17-jdk-jammy
-WORKDIR /app
-COPY --from=build /app/target/*.jar app.jar
-EXPOSE 9000 
-ENTRYPOINT ["java", "-Xmx512m", "-Xms256m", "-jar", "app.jar"]
+# Copia el JAR generado por Maven (Spring Boot)
+COPY target/*.jar app.jar
+
+# Expón el puerto que usa tu BookMicroservice
+# (ajusta si no es 8082; común: 8082, 8080, 9001, etc.)
+EXPOSE 9000
+
+# Comando para ejecutar la aplicación
+ENTRYPOINT ["java", "-Xmx512m", "-Xms256m", "-jar", "/app.jar"]
