@@ -1,12 +1,25 @@
 # Usa una imagen base ligera con Java 17
-FROM eclipse-temurin:17-jdk-focal
+# --- ETAPA 1: Compilación (Build) ---
+FROM maven:3.8.5-openjdk-17-slim AS build
+WORKDIR /app
 
-# Copia el JAR generado por Maven (ajusta el nombre si es necesario)
-COPY target/*.jar app.jar
+# Copiamos solo el pom.xml primero para aprovechar la caché de Docker de las dependencias
+COPY pom.xml .
+RUN mvn dependency:go-offline
 
-# Expón el puerto que usa tu microservicio de seguridad
-# (típicamente 8081, pero confirma el tuyo en application.yml)
+# Copiamos el código fuente y compilamos el .jar
+COPY src ./src
+RUN mvn clean package -DskipTests
+
+# --- ETAPA 2: Ejecución (Run) ---
+FROM eclipse-temurin:17-jdk-jammy
+WORKDIR /app
+
+# Copiamos el JAR directamente desde la etapa anterior (sin necesidad de carpeta target local)
+COPY --from=build /app/target/*.jar app.jar
+
+# Exponemos el puerto
 EXPOSE 9000
 
-# Comando para ejecutar la app
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+# Ejecutamos con límites de memoria para evitar que Java intente usar más RAM de la que tiene la EC2
+ENTRYPOINT ["java", "-Xmx512m", "-Xms256m", "-jar", "app.jar"]
