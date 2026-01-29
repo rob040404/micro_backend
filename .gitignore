@@ -6,3 +6,4 @@ UsersMicroservice/logs/*
 BookMicroservice/*.log
 BookMicroservice/logs/**.log
 logs/
+*.sql

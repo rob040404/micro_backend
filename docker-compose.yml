@@ -9,7 +9,7 @@ services:
     volumes:
       ##- mysql_existing:/var/lib/mysql (For local testing) Delete the inferior lines
       # 1. Saves the data in a volume (Persist data between container restarts)
-      - mysaql_data:/var/lib/mysql
+      - mysql_data:/var/lib/mysql
       # 2. Creates a file with the initial data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     networks:
